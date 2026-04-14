@@ -295,7 +295,7 @@
             100% { transform: rotate(405deg) scale(0.8); opacity: 0.3; box-shadow: 0 0 0 rgba(212, 175, 55, 0); } 
         }
         
-        /* =========================================================
+       /* =========================================================
            [4] DAILY LOG SPECIFIC STYLES
            ========================================================= */
         /* 🌟 화면 덜렁거림 완벽 차단 및 상단 여백 확보 */
@@ -306,24 +306,23 @@
         #view-daily .progress-fill { background: var(--daily-green); box-shadow: 0 0 10px rgba(50, 215, 75, 0.3); }
         #view-daily .prism-loader { border-color: var(--daily-green); box-shadow: 0 0 20px rgba(50, 215, 75, 0.4); }
 
-        /* 🚨 범인 검거: align-items: center 삭제하여 상단바 찌그러짐 복구! */
         .d-input-area { flex: 1; display: flex; flex-direction: column; padding: 0 25px; height: 100%; }
         
-        /* 🌟 입력 카드 중앙 정렬 및 여백 밸런스 패치 (margin: auto 적용) */
-        .d-input-card { width: 100%; max-width: 400px; margin: auto auto 20px auto; background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 35px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 160px; display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.3s; flex-shrink: 0; }
+        /* 🌟 1. 입력 카드 위로 바짝 끌어올리기 (상단 게이지바에서 딱 40px만 띄움) */
+        .d-input-card { width: 100%; max-width: 400px; margin: 40px auto 25px auto; background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 35px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 160px; display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.3s; flex-shrink: 0; }
         
         .d-label { font-size: 15px; color: #E8E8ED; margin-bottom: 10px; font-weight: 600; letter-spacing: 1px; }
         .d-val-num { font-size: 44px; font-weight: 300; color: #fff; letter-spacing: -1px; display: inline-block; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
         .d-unit { font-size: 18px; color: #E8E8ED; margin-left: 5px; font-weight: 400; }
         
-        /* 🌟 높이 흔들림 방지 박스 */
+        /* 🌟 높이 흔들림 방지 멘트 박스 */
         .d-msg-box { min-height: 40px; margin-top: 15px; display: flex; align-items: center; justify-content: center; }
         .d-live-metric, .d-warn-txt { font-size: 13px !important; font-weight: 600; line-height: 1.4; word-break: keep-all; margin: 0; }
         .d-live-metric { color: var(--daily-green); opacity: 0.9; }
         .d-warn-txt { color: var(--error); display: none; }
         
-        /* 🌟 키패드 하단 여백(padding-bottom) 50px 확보 및 넓이 고정 */
-        .d-keypad { width: 100%; max-width: 400px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-bottom: 50px; }
+        /* 🌟 2. 키패드를 입력창 밑에 착! 붙이고, 남는 빈 공간은 전부 바닥(bottom)으로 밀어버림 */
+        .d-keypad { width: 100%; max-width: 400px; margin: 0 auto auto auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-bottom: 50px; }
         .d-key { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); color: #E8E8ED; padding: 18px 0; font-size: 26px; font-weight: 300; cursor: pointer; border-radius: 20px; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .d-key:active { background: rgba(255,255,255,0.1); transform: scale(0.9) translateY(2px); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .d-key.del { font-size: 14px; color: #8B949E; font-weight: 600; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; }
