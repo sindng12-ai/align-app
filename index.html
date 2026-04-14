@@ -307,18 +307,21 @@
         #view-daily .prism-loader { border-color: var(--daily-green); box-shadow: 0 0 20px rgba(50, 215, 75, 0.4); }
 
         .d-input-area { flex: 1; display: flex; flex-direction: column; padding: 0 25px; height: 100%; }
-        .d-input-card { background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 30px 20px 35px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 150px; position: relative; transition: 0.3s; flex-shrink: 0; margin-top: 10px; }
         
-        /* 🌟 라벨 가독성 대폭 향상 */
+        /* 🌟 입력 카드 중앙 정렬 및 여백 밸런스 패치 */
+        .d-input-card { background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 35px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 160px; display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.3s; flex-shrink: 0; margin-top: 10px; }
+        
         .d-label { font-size: 15px; color: #E8E8ED; margin-bottom: 10px; font-weight: 600; letter-spacing: 1px; }
         .d-val-num { font-size: 44px; font-weight: 300; color: #fff; letter-spacing: -1px; display: inline-block; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
         .d-unit { font-size: 18px; color: #E8E8ED; margin-left: 5px; font-weight: 400; }
         
-        /* 🌟 에러 멘트 & 프리뷰 멘트 폰트 12.5px로 완벽 통일 및 굵기 상향 */
-        .d-live-metric { font-size: 12.5px; color: var(--daily-green); margin-top: 8px; font-weight: 600; opacity: 0.9; height: 34px; letter-spacing: 0.5px; transition: color 0.2s; word-break: keep-all; line-height: 1.4;}
-        .d-warn-txt { font-size: 12.5px; color: var(--error); margin-top: 8px; display: none; font-weight: 600; word-break: keep-all; line-height: 1.4; }
+        /* 🌟 높이 흔들림 방지 박스: 에러 멘트와 안내 멘트가 똑같은 좌표에서 켜지도록 세팅 */
+        .d-msg-box { min-height: 36px; margin-top: 12px; display: flex; align-items: center; justify-content: center; }
+        .d-live-metric { font-size: 12.5px; color: var(--daily-green); font-weight: 600; opacity: 0.9; letter-spacing: 0.5px; transition: color 0.2s; word-break: keep-all; line-height: 1.4; display: block; }
+        .d-warn-txt { font-size: 12.5px; color: var(--error); display: none; font-weight: 600; word-break: keep-all; line-height: 1.4; }
         
-        .d-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; padding-top: 15px; padding-bottom: 40px; }
+        /* 🌟 키패드 하단 여백(padding-bottom)을 80px로 대폭 늘려 바닥에 붙는 현상 해결 */
+        .d-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; padding-top: 15px; padding-bottom: 80px; }
         .d-key { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); color: #E8E8ED; padding: 16px 0; font-size: 26px; font-weight: 300; cursor: pointer; border-radius: 20px; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .d-key:active { background: rgba(255,255,255,0.1); transform: scale(0.9) translateY(2px); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .d-key.del { font-size: 13px; color: #8B949E; font-weight: 600; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; }
@@ -2224,8 +2227,10 @@ input, textarea {
             <div class="d-input-card" id="d-card">
                 <div class="d-label" id="d-label">오늘의 총 매출액</div>
                 <div><span class="d-val-num" id="d-val">0</span><span class="d-unit" id="d-unit">₩</span></div>
-                <div class="d-live-metric" id="d-live-preview"></div>
-                <div class="d-warn-txt" id="d-warn">오류 메시지</div>
+                <div class="d-msg-box">
+                    <div class="d-live-metric" id="d-live-preview"></div>
+                    <div class="d-warn-txt" id="d-warn">오류 메시지</div>
+                </div>
             </div>
 
             <div class="d-keypad">
@@ -3787,7 +3792,6 @@ function d_reset() {
         document.getElementById('d-step-tag').innerText = `STEP ${d_step+1}/5`;
         document.getElementById('d-pg-fill').style.width = `${(d_step+1)*20}%`; 
 
-        // 🌟 [이전 버튼 마법 교체] 단계에 따라 달력과 화살표를 바꿔치기 합니다!
         const prevBtn = document.getElementById('d-prev-btn');
         const calBtn = document.getElementById('d-calendar-btn');
         if (d_step > 0) {
@@ -3798,7 +3802,9 @@ function d_reset() {
             if(calBtn) { calBtn.style.opacity = '1'; calBtn.style.pointerEvents = 'auto'; }
         }
 
-        preview.innerText = ''; warn.style.display = 'none'; next.style.opacity = '1'; next.style.pointerEvents = 'auto';
+        // 🌟 초기화 시 프리뷰는 켜고, 에러는 끔
+        preview.innerText = ''; preview.style.display = 'block'; warn.style.display = 'none'; 
+        next.style.opacity = '1'; next.style.pointerEvents = 'auto';
         card.style.borderColor = 'var(--dark-border)'; val.style.color = '#fff'; preview.style.color = 'var(--daily-green)'; 
 
         if (d_data[d_step] === '') {
@@ -3807,40 +3813,37 @@ function d_reset() {
         }
 
         if (d_step === 2 && d_data[d_step] !== '') {
-            if (cur > totalClients) { warn.innerText = "지정 고객은 총 고객보다 많을 수 없습니다."; warn.style.display = 'block'; next.style.opacity = '0.2'; next.style.pointerEvents = 'none'; card.style.borderColor = 'rgba(255, 69, 58, 0.4)'; val.style.color = 'var(--error)'; } 
+            if (cur > totalClients) { 
+                warn.innerText = "지정 고객은 총 고객보다 많을 수 없습니다."; 
+                preview.style.display = 'none'; // 💡 에러 켜질 땐 프리뷰 강제 소등!
+                warn.style.display = 'block'; 
+                next.style.opacity = '0.2'; next.style.pointerEvents = 'none'; card.style.borderColor = 'rgba(255, 69, 58, 0.4)'; val.style.color = 'var(--error)'; 
+            } 
             else { const percent = totalClients > 0 ? ((cur / totalClients) * 100).toFixed(1) : "0.0"; preview.innerText = `현재 지정률: ${percent}%`; }
         } 
        else if (d_step === 3 && d_data[d_step] !== '') {
             if (cur < totalClients) {
                 warn.innerText = "사용한 슬롯(칸) 수는 접객 수보다 적을 수 없습니다.";
-                warn.style.display = 'block'; next.style.opacity = '0.2'; next.style.pointerEvents = 'none';
-                card.style.borderColor = 'rgba(255, 69, 58, 0.4)'; val.style.color = 'var(--error)';
+                preview.style.display = 'none'; // 💡 에러 켜질 땐 프리뷰 강제 소등!
+                warn.style.display = 'block'; 
+                next.style.opacity = '0.2'; next.style.pointerEvents = 'none'; card.style.borderColor = 'rgba(255, 69, 58, 0.4)'; val.style.color = 'var(--error)';
             } 
             else {
-                // 🌟 무조건 통과 (차단 해제)
-                warn.style.display = 'none'; next.style.opacity = '1'; next.style.pointerEvents = 'auto';
-
                 const avgTime = totalClients > 0 ? (cur * 30 / totalClients).toFixed(0) : "0";
                 let msg = `고객 1인당 평균 소요 시간: 약 ${avgTime}분`;
-                let msgColor = "#8E8E93"; // 기본 회색
+                let msgColor = "#8E8E93"; 
 
                 if (cur > userSlots) {
                     const over = cur - userSlots;
-                    if (over <= 3) {
-                        msg = `🔥 표준 근무를 넘긴 열정! (약 ${over}칸 초과)\n오늘 정말 고생 많으셨어요. 퇴근 후 꼭 휴식하세요!`;
-                        msgColor = "#FF9500"; // 주황색
-                    } else {
-                        msg = `🚨 과부하 구간 진입! (약 ${over}칸 초과)\n성장도 좋지만 건강이 최우선입니다. 무리하지 마세요!`;
-                        msgColor = "#FF453A"; // 빨간색
-                    }
+                    if (over <= 3) { msg = `🔥 표준 근무를 넘긴 열정! (약 ${over}칸 초과)\n오늘 정말 고생 많으셨어요. 꼭 휴식하세요!`; msgColor = "#FF9500"; } 
+                    else { msg = `🚨 과부하 구간 진입! (약 ${over}칸 초과)\n성장도 좋지만 건강이 최우선입니다. 무리하지 마세요!`; msgColor = "#FF453A"; }
                 } else if (cur === userSlots) {
-                    msg = `✨ 완벽한 몰입! 오늘 하루 빈틈없이 채우셨네요.\n마스터급 시간 관리 능력을 보여주셨습니다!`;
-                    msgColor = "var(--accent-gold)";
+                    msg = `✨ 완벽한 몰입! 오늘 하루 빈틈없이 채우셨네요.\n마스터급 시간 관리 능력을 보여주셨습니다!`; msgColor = "var(--accent-gold)";
                 }
                 
                 preview.innerText = msg;
                 preview.style.color = msgColor;
-                preview.style.whiteSpace = "pre-line"; // 줄바꿈 적용
+                preview.style.whiteSpace = "pre-line";
             }
         }
     }
