@@ -301,23 +301,28 @@
         #view-daily .step-indicator { color: var(--daily-green); }
         #view-daily .progress-fill { background: var(--daily-green); box-shadow: 0 0 10px rgba(50, 215, 75, 0.3); }
         #view-daily .prism-loader { border-color: var(--daily-green); box-shadow: 0 0 20px rgba(50, 215, 75, 0.4); }
-
-        .d-input-area { flex: 1; display: flex; flex-direction: column; padding: 0 30px; }
-.d-input-card { background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 30px 20px 35px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 150px; position: relative; transition: 0.3s; flex-shrink: 0; }
-        .d-label { font-size: 14px; color: #8B949E; margin-bottom: 10px; font-weight: 400; letter-spacing: 1px; }
-        .d-val-num { font-size: 44px; font-weight: 300; color: #fff; letter-spacing: -1px; display: inline-block; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
-        .d-unit { font-size: 16px; color: #8B949E; margin-left: 5px; font-weight: 300; }
-        .d-live-metric { font-size: 11px; color: var(--daily-green); margin-top: 8px; font-weight: 500; opacity: 0.8; height: 28px; letter-spacing: 0.5px; transition: color 0.2s; word-break: keep-all; line-height: 1.4;}
-        .d-warn-txt { font-size: 11px; color: var(--error); margin-top: 8px; display: none; font-weight: 500; word-break: keep-all; }
         
-        .d-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; padding-top: 25px; padding-bottom: 90px; }
+        /* 🌟 스크롤 완전 차단 (덜렁거림 방지) */
+        #view-daily .scroll-container { overflow: hidden !important; padding: 0; } 
+
+        .d-input-area { flex: 1; display: flex; flex-direction: column; padding: 0 25px; }
+        .d-input-card { background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 30px 20px 35px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 150px; position: relative; transition: 0.3s; flex-shrink: 0; margin-top: 15px; }
+        
+        /* 🌟 가독성 대폭 향상 (크기 및 밝기 조절) */
+        .d-label { font-size: 15px; color: #E8E8ED; margin-bottom: 10px; font-weight: 500; letter-spacing: 1px; }
+        .d-val-num { font-size: 44px; font-weight: 300; color: #fff; letter-spacing: -1px; display: inline-block; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
+        .d-unit { font-size: 18px; color: #E8E8ED; margin-left: 5px; font-weight: 400; }
+        .d-live-metric { font-size: 11px; color: var(--daily-green); margin-top: 8px; font-weight: 500; opacity: 0.8; height: 28px; letter-spacing: 0.5px; transition: color 0.2s; word-break: keep-all; line-height: 1.4;}
+        .d-warn-txt { font-size: 13px; color: var(--error); margin-top: 8px; display: none; font-weight: 600; word-break: keep-all; } /* 폰트 13px로 확대 */
+        
+        .d-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: auto; padding-top: 20px; padding-bottom: 90px; }
         .d-key { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); color: #E8E8ED; padding: 16px 0; font-size: 26px; font-weight: 300; cursor: pointer; border-radius: 20px; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .d-key:active { background: rgba(255,255,255,0.1); transform: scale(0.9) translateY(2px); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .d-key.del { font-size: 13px; color: #8B949E; font-weight: 600; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; }
         .d-key.next { background: rgba(50, 215, 75, 0.1); border-color: rgba(50, 215, 75, 0.3); color: var(--daily-green); font-weight: 400; box-shadow: 0 8px 20px rgba(50, 215, 75, 0.15); }
         .d-key.next:active { background: rgba(50, 215, 75, 0.25); transform: scale(0.9) translateY(2px); box-shadow: 0 2px 10px rgba(50, 215, 75, 0.2); }
 
-        .d-checklist-view { display: none; flex: 1; flex-direction: column; overflow: hidden; padding: 0 30px 20px; }
+        .d-checklist-view { display: none; flex: 1; flex-direction: column; overflow: hidden; padding: 0 25px 20px; }
         .d-checklist-title { font-size: 22px; font-weight: 300; color: #fff; letter-spacing: -0.5px; line-height: 1.4; margin-bottom: 20px; flex-shrink: 0; }
         .d-checklist-title strong { font-weight: 700; color: var(--daily-green); }
         .d-check-list-container { flex: 1; overflow-y: auto; padding-bottom: 20px; display: flex; flex-direction: column; gap: 14px; -webkit-overflow-scrolling: touch; }
@@ -336,12 +341,12 @@
         .d-toggle-switch input:checked + .d-toggle-slider { background-color: var(--daily-green); border-color: var(--daily-green); }
         .d-toggle-switch input:checked + .d-toggle-slider:before { transform: translateX(22px); background-color: #000; }
         .d-btn-submit { width: 100%; background: var(--daily-green); color: #000; border: none; border-radius: 16px; padding: 18px 0; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; cursor: pointer; margin-top: 15px; flex-shrink: 0; box-shadow: 0 10px 20px rgba(50, 215, 75, 0.2);}
-       
-        /* 🟢 팀장의 수리: 데일리 로그 하이엔드 V4 (초압축 다이어트 & 도파민 엔진) */
-        .d-result-view { display: none; position: absolute; inset: 0; background: var(--bg); z-index: 110; flex-direction: column; align-items: center; padding: 25px 20px; overflow-y: auto; }
-        #d-capture-area { width: 100%; max-width: 414px; background: #050507; padding: 25px 20px 35px; border-radius: 24px; position: relative; display: flex; flex-direction: column; align-items: center; }
         
-        /* 완벽한 캡처를 위한 SVG 스마트 링 (사이즈 축소) */
+        .d-result-view { display: none; position: absolute; inset: 0; background: var(--bg); z-index: 110; flex-direction: column; align-items: center; padding: 0 20px 25px; overflow-y: auto; }
+        .d-result-view::-webkit-scrollbar { display: none; }
+        /* 🌟 리포트 캡처 여백 확보 */
+        #d-capture-area { width: 100%; max-width: 414px; background: #050507; padding: 50px 20px 35px; border-radius: 24px; position: relative; display: flex; flex-direction: column; align-items: center; }
+        
         .d-svg-ring { transform: rotate(-90deg); width: 100px; height: 100px; margin: 0 auto 10px; filter: drop-shadow(0 0 10px rgba(50,215,75,0.4)); }
         .d-svg-circle-bg { fill: none; stroke: rgba(255,255,255,0.05); stroke-width: 8; }
         .d-svg-circle-fill { fill: none; stroke: var(--daily-green); stroke-width: 8; stroke-linecap: round; transition: stroke-dashoffset 1.5s cubic-bezier(0.2, 1, 0.2, 1); }
@@ -349,7 +354,6 @@
         .d-res-score-inner { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .d-res-score { font-family: 'Montserrat', sans-serif; font-size: 36px; font-weight: 800; color: #fff; letter-spacing: -1px; line-height: 1; text-shadow: 0 0 15px rgba(50, 215, 75, 0.4); margin-top: 5px;}
         
-        /* 4구 독립 글래스 캡슐 계기판 (여백 다이어트) */
         .d-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 20px; }
         .d-stat-capsule { background: linear-gradient(145deg, rgba(30,30,35,0.8), rgba(10,10,12,0.9)); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; justify-content: center; gap: 6px; box-shadow: 0 6px 15px rgba(0,0,0,0.3); position: relative; overflow: hidden; min-height: 75px; }
         .d-stat-val { font-size: 24px; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif; display: flex; align-items: baseline; gap: 3px; letter-spacing: -0.5px; line-height: 1; }
@@ -357,7 +361,6 @@
         .d-stat-label { font-size: 11px; color: #8B949E; font-weight: 600; letter-spacing: -0.3px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
         .d-stat-unit { font-size: 11px; font-weight: 400; color: #8B949E; font-family: 'Pretendard', sans-serif; }
         
-        /* 🟢 팀장의 수리: 도파민 비교 텍스트 (하이엔드 뱃지 스타일로 업그레이드) */
         .d-compare-up { font-size: 10px; color: var(--daily-green); font-weight: 700; font-family: 'Pretendard', sans-serif; background: rgba(50, 215, 75, 0.15); padding: 3px 6px; border-radius: 4px; display: inline-block; line-height: 1; }
         .d-compare-down { font-size: 10px; color: var(--error); font-weight: 700; font-family: 'Pretendard', sans-serif; background: rgba(255, 69, 58, 0.15); padding: 3px 6px; border-radius: 4px; display: inline-block; line-height: 1; }
         .d-compare-same { font-size: 10px; color: #A0AAB5; font-weight: 600; font-family: 'Pretendard', sans-serif; background: rgba(255, 255, 255, 0.05); padding: 3px 6px; border-radius: 4px; display: inline-block; line-height: 1; }
@@ -365,8 +368,9 @@
         .d-insight-zone { width: 100%; background: rgba(50, 215, 75, 0.05); border: 1px solid rgba(50, 215, 75, 0.3); border-radius: 14px; padding: 20px 15px; margin-top: 5px; text-align: left; }
         .d-res-rank { font-size: 14px; font-weight: 800; color: var(--daily-green); letter-spacing: 0.5px; margin-bottom: 10px; display: flex; align-items: center; }
         .d-res-rank::before { content: ''; display: inline-block; width: 4px; height: 14px; background: var(--daily-green); margin-right: 8px; border-radius: 2px; }
-        .d-res-report { line-height: 1.5; color: #E8E8ED; font-size: 12.5px; text-align: left; word-break: keep-all; margin-bottom: 12px; letter-spacing: -0.3px; font-weight: 300; }
-        .d-res-presc { background: rgba(0,0,0,0.4); border-left: 3px solid var(--daily-green); padding: 12px; border-radius: 0 6px 6px 0; line-height: 1.5; color: #A1A1AA; font-size: 11.5px; word-break: keep-all; letter-spacing: -0.3px; font-weight: 300; }
+        /* 🌟 리포트 본문 가독성 상향 (크기 및 자간 조절) */
+        .d-res-report { line-height: 1.6; color: #E8E8ED; font-size: 13.5px; text-align: left; word-break: keep-all; margin-bottom: 15px; letter-spacing: -0.3px; font-weight: 300; }
+        .d-res-presc { background: rgba(0,0,0,0.4); border-left: 3px solid var(--daily-green); padding: 15px; border-radius: 0 8px 8px 0; line-height: 1.6; color: #E8E8ED; font-size: 13.5px; word-break: keep-all; letter-spacing: -0.3px; font-weight: 300; }
         
         .d-action-group { width: 100%; max-width: 414px; display: flex; flex-direction: column; gap: 10px; padding: 0 20px; margin-top: 10px; margin-bottom: 50px;}
 
@@ -2184,14 +2188,18 @@ input, textarea {
          ========================================================= -->
     <div id="view-daily" class="page-view">
         <div id="d-input-view" class="d-input-area">
-            <div class="top-bar" style="padding: 40px 0 15px;">
-                <div class="nav-btn" style="position: relative; display: flex; align-items: center; justify-content: center; cursor: pointer;">
-                    <svg id="d-calendar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" style="position: relative; z-index: 1;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                    
-                    <input type="date" id="d-manual-date" 
-                           style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; -webkit-appearance: none; color-scheme: dark;"
-                           onclick="if(typeof this.showPicker === 'function') this.showPicker();"
-                           onchange="if(this.value){ document.getElementById('d-calendar-icon').style.stroke = 'var(--accent-gold)'; alert('과거 기록 날짜가 [' + this.value + '] 로 설정되었습니다.'); } else { document.getElementById('d-calendar-icon').style.stroke = 'rgba(255,255,255,0.4)'; }">
+            <div class="top-bar" style="padding: 60px 0 15px;">
+                <div style="position: relative; width: 36px; height: 36px;">
+                    <div class="nav-btn hidden" id="d-prev-btn" onclick="d_goBack()" style="position: absolute; top:0; left:0; transition: 0.3s;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </div>
+                    <div class="nav-btn" id="d-calendar-btn" style="position: absolute; top:0; left:0; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s;">
+                        <svg id="d-calendar-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" style="position: relative; z-index: 1;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                        <input type="date" id="d-manual-date" 
+                               style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; -webkit-appearance: none; color-scheme: dark;"
+                               onclick="if(typeof this.showPicker === 'function') this.showPicker();"
+                               onchange="if(this.value){ document.getElementById('d-calendar-icon').style.stroke = 'var(--daily-green)'; alert(`기록 날짜가 [${this.value}] 로 설정되었습니다.`); } else { document.getElementById('d-calendar-icon').style.stroke = 'rgba(255,255,255,0.4)'; }">
+                    </div>
                 </div>
                 
                 <div class="page-title">DAILY LOG</div>
@@ -2201,13 +2209,9 @@ input, textarea {
                 </div>
             </div>
 
-               <div class="progress-wrapper" style="padding:0;">
+            <div class="progress-wrapper" style="padding:0;">
                 <div class="step-indicator"><span id="d-step-tag">STEP 1/5</span><span>PROJECT VL</span></div>
                 <div class="progress-rail"><div class="progress-fill" id="d-pg-fill"></div></div>
-            </div>
-
-            <div id="d-undo-area" style="height:20px; visibility:hidden; margin-bottom:10px; text-align:right;">
-                <button onclick="d_goBack()" style="background:none; border:none; color:#8B949E; font-size:11px; text-decoration:underline; cursor:pointer;">이전 수정</button>
             </div>
 
             <div class="d-input-card" id="d-card">
@@ -2234,7 +2238,7 @@ input, textarea {
         </div>
 
         <div id="d-checklist-view" class="d-checklist-view">
-            <div class="top-bar" style="padding: 40px 0 15px;">
+            <div class="top-bar" style="padding: 60px 0 15px;">
                 <div class="nav-btn" onclick="d_goBackFromChecklist()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
                 <div class="page-title">ROUTINE CHECK</div>
                 <div class="nav-btn hidden"></div>
@@ -2324,7 +2328,7 @@ input, textarea {
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                     오늘의 리포트 이미지로 저장하기
                 </button>
-                <button style="flex: 1; height: 56px; background: var(--card-bg); color: var(--accent-gold); border: 1px solid rgba(212,175,55,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 12px; font-size: 14px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.2s;" onclick="app.goHome(true)" onmousedown="this.style.transform='scale(0.98)'; this.style.background='rgba(212,175,55,0.1)';" onmouseup="this.style.transform='scale(1)'; this.style.background='var(--card-bg)';">마감 및 홈으로</button>
+                <button style="flex: 1; height: 56px; background: rgba(50, 215, 75, 0.1); color: var(--daily-green); border: 1px solid rgba(50, 215, 75, 0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 12px; font-size: 14px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.2s;" onclick="app.goHome(true)" onmousedown="this.style.transform='scale(0.98)'; this.style.background='rgba(50, 215, 75, 0.2)';" onmouseup="this.style.transform='scale(1)'; this.style.background='rgba(50, 215, 75, 0.1)';">마감 및 홈으로</button>
             </div>
         </div>
     </div>
@@ -3775,7 +3779,17 @@ function d_reset() {
         document.getElementById('d-unit').innerText = d_configs[d_step].u;
         document.getElementById('d-step-tag').innerText = `STEP ${d_step+1}/5`;
         document.getElementById('d-pg-fill').style.width = `${(d_step+1)*20}%`; 
-        document.getElementById('d-undo-area').style.visibility = d_step > 0 ? 'visible' : 'hidden';
+
+        // 🌟 [이전 버튼 마법 교체] 단계에 따라 달력과 화살표를 바꿔치기 합니다!
+        const prevBtn = document.getElementById('d-prev-btn');
+        const calBtn = document.getElementById('d-calendar-btn');
+        if (d_step > 0) {
+            if(prevBtn) prevBtn.classList.remove('hidden');
+            if(calBtn) { calBtn.style.opacity = '0'; calBtn.style.pointerEvents = 'none'; }
+        } else {
+            if(prevBtn) prevBtn.classList.add('hidden');
+            if(calBtn) { calBtn.style.opacity = '1'; calBtn.style.pointerEvents = 'auto'; }
+        }
 
         preview.innerText = ''; warn.style.display = 'none'; next.style.opacity = '1'; next.style.pointerEvents = 'auto';
         card.style.borderColor = 'var(--dark-border)'; val.style.color = '#fff'; preview.style.color = 'var(--daily-green)'; 
