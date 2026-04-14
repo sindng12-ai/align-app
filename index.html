@@ -207,7 +207,7 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1); animation: fadeIn 0.3s ease; }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; transition: opacity 0.6s ease; }
         .bottom-nav.hide { transform: translateY(150px) !important; opacity: 0 !important; pointer-events: none !important; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
         .nav-item.active { color: #fff; }
@@ -3372,6 +3372,10 @@ const app = {
                 localStorage.removeItem('isCeoAuth'); // 사용한 증명서는 폐기
                 window.loginAs(authName, 'Director'); // 👈 비번 안 묻고 바로 입장!
             } else {
+                // 🌟 [팀장 수리] 대문에서 프로필로 넘어갈 때 하단 바 튀어나옴 방지
+                const nav = document.getElementById('global-nav');
+                if(nav) { nav.style.opacity = '0'; nav.style.display = 'none'; }
+
                 // 일반적인 경우(공용 모드 등)는 기존처럼 프로필 명단 오픈
                 const gate = document.getElementById('gate-overlay');
                 const loginGate = document.getElementById('login-gate');
@@ -5627,9 +5631,13 @@ function pr_setMode(mode) {
 
             // 실제 라운지로 진입하는 동작 모터
             const enterApp = () => {
+                const nav = document.getElementById('global-nav'); // 하단 바 요소 가져오기
+                
                 if(position.toUpperCase().includes('PARTNER') || position.includes('파트너') || position.includes('인턴')) {
                     const partnerRoom = document.getElementById('partner-room');
                     if(partnerRoom) {
+                        if(nav) { nav.style.display = 'none'; } // 파트너는 하단 바 아예 끔
+                        
                         partnerRoom.style.opacity = '0';
                         partnerRoom.style.display = 'flex';
                         
@@ -5638,7 +5646,6 @@ function pr_setMode(mode) {
                         if(typeof p_renderInventory === 'function') p_renderInventory();
                         if(typeof renderPartnerExp === 'function') setTimeout(renderPartnerExp, 100);
                         
-                        // 파트너룸 페이드인
                         setTimeout(() => { 
                             partnerRoom.style.transition = 'opacity 0.6s ease';
                             partnerRoom.style.opacity = '1'; 
@@ -5648,21 +5655,25 @@ function pr_setMode(mode) {
                 } else {
                     const appFrame = document.getElementById('app-frame');
                     if(appFrame) {
-                        app.goHome(); // 홈 화면 요소들 배치
+                        app.goHome(); // 홈 화면 세팅
+                        
+                        // 🌟 하단 바와 메인 화면을 투명하게 준비시킴
+                        if(nav) { nav.style.display = 'flex'; nav.style.opacity = '0'; }
                         appFrame.style.opacity = '0';
                         appFrame.style.display = 'flex'; 
                         
-                        // 앱 프레임(하단 바 포함)을 스르륵 페이드인!
+                        // 🌟 완벽하게 동시 페이드인! (증발 버그 픽스)
                         setTimeout(() => { 
                             appFrame.style.transition = 'opacity 0.6s ease';
                             appFrame.style.opacity = '1'; 
+                            if(nav) { nav.style.transition = 'opacity 0.6s ease'; nav.style.opacity = '1'; }
                             window.showWelcomeToast(name, position);
                         }, 50); 
                     }
                 }
             };
 
-            // 만약 프로필 선택창이 열려있다면 스르륵 끄고 입장, 대문에서 직통으로 왔다면 즉시 입장!
+            // 대문에서 프로필 거쳐서 오면 스르륵 전환, 직통이면 즉시 전환
             if(loginGate && loginGate.style.display !== 'none') {
                 loginGate.style.transition = 'opacity 0.4s ease';
                 loginGate.style.opacity = '0';
@@ -6009,17 +6020,24 @@ function pr_setMode(mode) {
 
             const appFrame = document.getElementById('app-frame');
             const gate = document.getElementById('gate-overlay');
+            const nav = document.getElementById('global-nav'); // 🌟 하단 바 동기화
 
-            // 앱 프레임 전체를 부드럽게 암전시킵니다
+            // 앱 프레임과 하단 바를 0.4초 동안 동시에 암전
             if(appFrame) {
                 appFrame.style.transition = 'opacity 0.4s ease';
                 appFrame.style.opacity = '0';
             }
+            if(nav) {
+                nav.style.transition = 'opacity 0.4s ease';
+                nav.style.opacity = '0';
+            }
 
-            // 암전이 끝난 후, 뒤에서 화면을 전환하고 대문을 엽니다.
+            // 완전히 까맣게 꺼진 후, 백그라운드에서 초기화 진행
             setTimeout(() => { 
                 if(appFrame) appFrame.style.display = 'none';
-                app.goHome(); // 다음 접속을 위해 홈으로 배경 리셋
+                if(nav) nav.style.display = 'none';
+                
+                app.goHome(); // 홈으로 리셋
                 
                 if(gate) {
                     gate.style.display = 'flex';
