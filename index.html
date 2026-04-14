@@ -5609,7 +5609,7 @@ function pr_setMode(mode) {
             window.loginAs(name, position);
         };
 
-        // 🚀 [입장 전담] 비번 묻지 않고 문만 열어주는 놈 (B2B 게이트 통과 시 바로 여기로 옴)
+        // 🚀 [입장 전담] 블랙아웃(암전) 대기 시간 없이 초고속 입장!
         const originalLoginAs2 = window.loginAs;
         window.loginAs = function(name, position) {
             document.getElementById('gate-overlay').style.display = 'none';
@@ -5624,52 +5624,54 @@ function pr_setMode(mode) {
             if(document.getElementById('p-display-name')) document.getElementById('p-display-name').innerText = name;
 
             const loginGate = document.getElementById('login-gate');
-            const nav = document.getElementById('global-nav'); // 🌟 팀장 수술: 하단 바 동기화
-            if(loginGate) {
-                // 프로필 선택창 부드럽게 암전 (동시에 하단 바도 투명하게 대기)
+
+            // 실제 라운지로 진입하는 동작 모터
+            const enterApp = () => {
+                if(position.toUpperCase().includes('PARTNER') || position.includes('파트너') || position.includes('인턴')) {
+                    const partnerRoom = document.getElementById('partner-room');
+                    if(partnerRoom) {
+                        partnerRoom.style.opacity = '0';
+                        partnerRoom.style.display = 'flex';
+                        
+                        p_switchTab('quest'); 
+                        if(typeof renderPartnerQuestList === 'function') renderPartnerQuestList();
+                        if(typeof p_renderInventory === 'function') p_renderInventory();
+                        if(typeof renderPartnerExp === 'function') setTimeout(renderPartnerExp, 100);
+                        
+                        // 파트너룸 페이드인
+                        setTimeout(() => { 
+                            partnerRoom.style.transition = 'opacity 0.6s ease';
+                            partnerRoom.style.opacity = '1'; 
+                            window.showWelcomeToast(name, '파트너');
+                        }, 50);
+                    }
+                } else {
+                    const appFrame = document.getElementById('app-frame');
+                    if(appFrame) {
+                        app.goHome(); // 홈 화면 요소들 배치
+                        appFrame.style.opacity = '0';
+                        appFrame.style.display = 'flex'; 
+                        
+                        // 앱 프레임(하단 바 포함)을 스르륵 페이드인!
+                        setTimeout(() => { 
+                            appFrame.style.transition = 'opacity 0.6s ease';
+                            appFrame.style.opacity = '1'; 
+                            window.showWelcomeToast(name, position);
+                        }, 50); 
+                    }
+                }
+            };
+
+            // 만약 프로필 선택창이 열려있다면 스르륵 끄고 입장, 대문에서 직통으로 왔다면 즉시 입장!
+            if(loginGate && loginGate.style.display !== 'none') {
                 loginGate.style.transition = 'opacity 0.4s ease';
                 loginGate.style.opacity = '0';
-                if(nav) { nav.style.display = 'flex'; nav.style.opacity = '0'; } 
-                
                 setTimeout(() => { 
                     loginGate.style.display = 'none'; 
-                    
-                    if(position.toUpperCase().includes('PARTNER') || position.includes('파트너') || position.includes('인턴')) {
-                        const partnerRoom = document.getElementById('partner-room');
-                        if(partnerRoom) {
-                            partnerRoom.style.opacity = '0';
-                            partnerRoom.style.display = 'flex';
-                            
-                            p_switchTab('quest'); 
-                            if(typeof renderPartnerQuestList === 'function') renderPartnerQuestList();
-                            if(typeof p_renderInventory === 'function') p_renderInventory();
-                            if(typeof renderPartnerExp === 'function') setTimeout(renderPartnerExp, 100);
-                            
-                            // 파트너룸 페이드인
-                            setTimeout(() => { 
-                                partnerRoom.style.transition = 'opacity 0.6s ease';
-                                partnerRoom.style.opacity = '1'; 
-                                window.showWelcomeToast(name, '파트너');
-                            }, 50);
-                        }
-                    } else {
-                        const appFrame = document.getElementById('app-frame');
-                        if(appFrame) {
-                            // 🌟 핵심: 화면이 꺼져있을 때(opacity 0) 미리 홈 탭으로 렌더링을 끝내버림
-                            app.goHome(); 
-                            
-                            appFrame.style.opacity = '0';
-                            appFrame.style.display = 'flex'; 
-                            
-                            // 홈 화면이 완벽히 세팅된 후 스르륵 페이드인
-                            setTimeout(() => { 
-                                appFrame.style.transition = 'opacity 0.6s ease';
-                                appFrame.style.opacity = '1'; 
-                                window.showWelcomeToast(name, position);
-                            }, 50); 
-                        }
-                    }
-                }, 400); // 암전 대기 시간
+                    enterApp();
+                }, 400);
+            } else {
+                enterApp();
             }
         };
 
@@ -6000,30 +6002,24 @@ function pr_setMode(mode) {
             if(modal) modal.classList.remove('show');
         };
 
-       // 🟢 2. 화면 깜빡임이 완벽히 차단된 진짜 로그아웃 실행 함수
+       // 🟢 2. 화면 깜빡임과 잔상이 완벽히 차단된 진짜 로그아웃
         window.executeLogout = function() {
             hideLogoutModal(); 
             localStorage.removeItem('alignCurrentUser');
 
             const appFrame = document.getElementById('app-frame');
             const gate = document.getElementById('gate-overlay');
-            const nav = document.getElementById('global-nav'); // 🌟 팀장 수술: 하단 바 동기화
 
-            // 앱 프레임과 하단 바를 동시에 부드럽게 암전(Fade-out) 시킵니다
+            // 앱 프레임 전체를 부드럽게 암전시킵니다
             if(appFrame) {
                 appFrame.style.transition = 'opacity 0.4s ease';
                 appFrame.style.opacity = '0';
-            }
-            if(nav) {
-                nav.style.transition = 'opacity 0.4s ease';
-                nav.style.opacity = '0';
             }
 
             // 암전이 끝난 후, 뒤에서 화면을 전환하고 대문을 엽니다.
             setTimeout(() => { 
                 if(appFrame) appFrame.style.display = 'none';
-                if(nav) nav.style.display = 'none';
-                app.goHome(); // 다음 접속 시 무조건 홈부터 시작하도록 백그라운드 리셋
+                app.goHome(); // 다음 접속을 위해 홈으로 배경 리셋
                 
                 if(gate) {
                     gate.style.display = 'flex';
