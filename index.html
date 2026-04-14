@@ -2038,17 +2038,28 @@ input, textarea {
             </div>
         </div>
 
-    </div> <div id="login-gate" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050507; z-index: 99999; flex-direction: column; justify-content: center; align-items: center; font-family: 'Pretendard', sans-serif; transition: opacity 0.5s ease;">
+    </div> <div id="login-gate" style="display: none; position: fixed; inset: 0; background: #050507; z-index: 99999; flex-direction: column; justify-content: center; align-items: center; font-family: 'Pretendard', sans-serif; transition: opacity 0.5s ease;">
         
-        <div style="text-align: center; margin-bottom: 50px;">
-    <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; color: var(--accent-gold); letter-spacing: 8px; margin-bottom: 10px; font-weight: 500;" class="app-brand-title">ALIGN</div>
-            <div style="font-family: 'Montserrat', sans-serif; font-size: 25px; color: #ffffff; font-weight: 300; letter-spacing: 1px;">Who's working today?</div>
+        <div style="text-align: center; margin-bottom: 30px; width: 100%;">
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); letter-spacing: 4px; margin-bottom: 12px; font-weight: 700;" class="app-brand-title">ALIGN</div>
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 22px; color: #ffffff; font-weight: 300; letter-spacing: 1px;">SELECT PROFILE</div>
         </div>
 
-        <div id="profile-list" style="display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; padding: 0 20px;">
-        </div>
-<button onclick="location.reload()" style="margin-top: 50px; background: transparent; border: none; color: #8E8E93; font-size: 14px; text-decoration: underline; cursor: pointer;">돌아가기</button>
+        <div id="profile-list" style="display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; width: 100%; box-sizing: border-box; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+            </div>
 
+        <div style="display: flex; gap: 40px; margin-top: 40px;">
+            <div onclick="addNewProfile()" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.6; transition: 0.2s;" onmousedown="this.style.opacity='1'" onmouseup="this.style.opacity='0.6'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                <span style="font-size: 10px; color: #fff; margin-top: 8px; letter-spacing: 1px; font-family: 'Montserrat';">ADD STAFF</span>
+            </div>
+            <div onclick="deleteProfile()" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.6; transition: 0.2s;" onmousedown="this.style.opacity='1'" onmouseup="this.style.opacity='0.6'">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF453A" stroke-width="1.5"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span style="font-size: 10px; color: #FF453A; margin-top: 8px; letter-spacing: 1px; font-family: 'Montserrat';">REMOVE</span>
+            </div>
+        </div>
+
+        <button onclick="location.reload()" style="margin-top: 30px; background: transparent; border: none; color: #5C6370; font-size: 11px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; letter-spacing: 1px;">이전으로 돌아가기</button>
     </div>
 
    <div class="app-frame" id="app-frame" style="display: none;">
@@ -5539,64 +5550,44 @@ function pr_setMode(mode) {
             { name: '지아', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED' }
         ];
 
-        // 2. 화면에 프로필들을 쫙 그려주는 마법 (디자인 업그레이드!)
+        // 2. 화면에 프로필들을 쫙 그려주는 마법 (넷플릭스 스와이프 핏!)
         window.renderProfiles = function() {
             const container = document.getElementById('profile-list');
             if(!container) return;
-            container.innerHTML = ''; 
 
-            // 로컬에 저장된 배열 불러오기
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles;
+
+            let html = '';
+            // 빈 공간 패딩용 더미 투명 박스 (처음과 끝) - 스크롤 중앙 정렬 꿀팁
+            html += `<div style="min-width: calc(50vw - 70px); flex-shrink: 0;"></div>`;
 
             profiles.forEach(p => {
                 const initial = p.name.charAt(0).toUpperCase();
-                let bgColor, textColor, borderStyle, shadowStyle, nameColor;
+                let ringColor, titleColor, boxBg;
 
                 if (p.title.toUpperCase().includes('DIRECTOR') || p.title.includes('원장') || p.title.includes('대표')) {
-                    bgColor = 'linear-gradient(135deg, #D4AF37, #8a7123)'; textColor = '#050507'; borderStyle = 'border: 1px solid rgba(212,175,55,0.5);'; shadowStyle = 'box-shadow: 0 4px 15px rgba(212,175,55,0.3);'; nameColor = '#ffffff';
+                    ringColor = 'rgba(212,175,55,0.8)'; titleColor = 'var(--accent-gold)'; boxBg = 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(0,0,0,0.8))';
                 } 
                 else if (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) {
-                    bgColor = '#050507'; textColor = 'var(--daily-green)'; borderStyle = 'border: 1px solid rgba(50,215,75,0.4);'; shadowStyle = 'box-shadow: inset 0 0 15px rgba(50,215,75,0.15), 0 4px 10px rgba(50,215,75,0.1);'; nameColor = '#ffffff';
+                    ringColor = 'rgba(50,215,75,0.4)'; titleColor = '#8B949E'; boxBg = 'linear-gradient(135deg, rgba(50,215,75,0.05), rgba(0,0,0,0.8))';
                 } 
                 else {
-                    // 🌟 티타늄 실버 그라데이션 광택 강화!
-                    bgColor = 'linear-gradient(135deg, #48484A 0%, #1C1C1E 100%)'; textColor = '#E8E8ED'; borderStyle = 'border: 1px solid rgba(255,255,255,0.15);'; shadowStyle = 'box-shadow: 0 5px 15px rgba(0,0,0,0.5);'; nameColor = '#ffffff';
+                    ringColor = 'rgba(255,255,255,0.4)'; titleColor = '#E8E8ED'; boxBg = 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(0,0,0,0.8))';
                 }
-                
-               // 🌟 직급 텍스트 색상 전용 스위치 (골드/그린/화이트)
-                const titleColor = (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) ? 'var(--daily-green)' : 
-                                   (p.title.toUpperCase().includes('DIRECTOR') || p.title.includes('원장') || p.title.includes('대표')) ? 'var(--accent-gold)' : '#E8E8ED';
 
-                container.innerHTML += `
-                    <div onclick="attemptProfileLogin('${p.name}', '${p.title}')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; transition: transform 0.2s;">
-                        <div style="width: 80px; height: 80px; border-radius: 50%; background: ${bgColor}; ${borderStyle} display: flex; justify-content: center; align-items: center; margin-bottom: 15px; ${shadowStyle}">
-                            <span style="color: ${textColor}; font-size: 28px; font-weight: ${bgColor.includes('gradient') ? '600' : '300'};">${initial}</span>
+                html += `
+                    <div onclick="attemptProfileLogin('${p.name}', '${p.title}')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; flex-shrink: 0; scroll-snap-align: center; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+                        <div style="width: 100px; height: 100px; border-radius: 30px; background: ${boxBg}; border: 1px solid ${ringColor}; display: flex; justify-content: center; align-items: center; margin-bottom: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                            <span style="color: #fff; font-size: 32px; font-weight: 300;">${initial}</span>
                         </div>
-                        <div style="color: ${nameColor}; font-size: 16px; font-weight: 500; margin-bottom: 4px;">${p.name}</div>
-                        <div style="color: ${titleColor}; font-size: 11px; letter-spacing: 1px; font-weight: 600;">${p.title.toUpperCase()}</div>
+                        <div style="color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 4px; letter-spacing: -0.5px;">${p.name}</div>
+                        <div style="color: ${titleColor}; font-size: 10px; letter-spacing: 2px; font-weight: 700; font-family: 'Montserrat';">${p.title.toUpperCase()}</div>
                     </div>
                 `;
             });
-
-            // [+ 직원 추가] 버튼
-            container.innerHTML += `
-                <div onclick="addNewProfile()" style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: transparent; border: 1px dashed rgba(255,255,255,0.3); display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
-                        <span style="color: rgba(255,255,255,0.5); font-size: 32px; font-weight: 300;">+</span>
-                    </div>
-                    <div style="color: rgba(255,255,255,0.5); font-size: 14px; font-weight: 400; margin-bottom: 4px;">직원 추가</div>
-                </div>
-            `;
-
-            // [- 직원 삭제] 버튼
-            container.innerHTML += `
-                <div onclick="deleteProfile()" style="display: flex; flex-direction: column; align-items: center; cursor: pointer;">
-                    <div style="width: 80px; height: 80px; border-radius: 50%; background: transparent; border: 1px dashed rgba(255,69,58,0.3); display: flex; justify-content: center; align-items: center; margin-bottom: 15px;">
-                        <span style="color: rgba(255,69,58,0.5); font-size: 32px; font-weight: 300;">-</span>
-                    </div>
-                    <div style="color: rgba(255,69,58,0.5); font-size: 14px; font-weight: 400; margin-bottom: 4px;">직원 삭제</div>
-                </div>
-            `;
+            
+            html += `<div style="min-width: calc(50vw - 70px); flex-shrink: 0;"></div>`;
+            container.innerHTML = html;
         };
 
 
@@ -5633,10 +5624,12 @@ function pr_setMode(mode) {
             if(document.getElementById('p-display-name')) document.getElementById('p-display-name').innerText = name;
 
             const loginGate = document.getElementById('login-gate');
+            const nav = document.getElementById('global-nav'); // 🌟 팀장 수술: 하단 바 동기화
             if(loginGate) {
-                // 프로필 선택창 부드럽게 암전
+                // 프로필 선택창 부드럽게 암전 (동시에 하단 바도 투명하게 대기)
                 loginGate.style.transition = 'opacity 0.4s ease';
                 loginGate.style.opacity = '0';
+                if(nav) { nav.style.display = 'flex'; nav.style.opacity = '0'; } 
                 
                 setTimeout(() => { 
                     loginGate.style.display = 'none'; 
@@ -6014,16 +6007,22 @@ function pr_setMode(mode) {
 
             const appFrame = document.getElementById('app-frame');
             const gate = document.getElementById('gate-overlay');
+            const nav = document.getElementById('global-nav'); // 🌟 팀장 수술: 하단 바 동기화
 
-            // 앱 프레임을 부드럽게 암전(Fade-out) 시킵니다
+            // 앱 프레임과 하단 바를 동시에 부드럽게 암전(Fade-out) 시킵니다
             if(appFrame) {
                 appFrame.style.transition = 'opacity 0.4s ease';
                 appFrame.style.opacity = '0';
+            }
+            if(nav) {
+                nav.style.transition = 'opacity 0.4s ease';
+                nav.style.opacity = '0';
             }
 
             // 암전이 끝난 후, 뒤에서 화면을 전환하고 대문을 엽니다.
             setTimeout(() => { 
                 if(appFrame) appFrame.style.display = 'none';
+                if(nav) nav.style.display = 'none';
                 app.goHome(); // 다음 접속 시 무조건 홈부터 시작하도록 백그라운드 리셋
                 
                 if(gate) {
