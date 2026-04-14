@@ -207,7 +207,7 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1); }
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1); animation: fadeIn 0.3s ease; }
         .bottom-nav.hide { transform: translateY(150px) !important; opacity: 0 !important; pointer-events: none !important; }
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
         .nav-item.active { color: #fff; }
@@ -9612,7 +9612,8 @@ window.cal_selectDate = function(year, month, d) {
 
     let threadsHtml = '';
     if(dayEvents.length === 0) {
-        threadsHtml = `<div style="color:#A0AAB5; text-align:center; padding: 20px 0;">등록된 일정이 없습니다. 성장에 집중하는 하루를 보내세요! 🚀</div>`;
+        // 🌟 [팀장의 수리] 캘린더 빈 화면 가독성 교정
+        threadsHtml = `<div style="color:#A0AAB5; text-align:center; padding: 20px 0; line-height: 1.6;">등록된 일정이 없습니다.<br>성장에 집중하는 하루를 보내세요!</div>`;
     } else {
         dayEvents.forEach(ev => {
             let badgeClass = 'designer';
@@ -9665,9 +9666,9 @@ window.cal_selectDate = function(year, month, d) {
                 <div id="chip-white" onclick="cal_setTheme('white')" style="flex:1; text-align:center; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1); color: #8E8E93; padding: 10px 0; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;">휴무</div>
             </div>
             
-            <input type="text" id="cal-new-content" placeholder="이 날짜에 스레드 남기기..." style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px 12px; border-radius: 8px; font-size: 16px; outline:none; width: 100%; box-sizing: border-box;">
+            <input type="text" id="cal-new-content" placeholder="새로운 일정이나 공유할 내용을 입력하세요..." style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px 12px; border-radius: 8px; font-size: 15px; outline:none; width: 100%; box-sizing: border-box;">
             
-            <button onclick="cal_addEvent('${dateStr}', ${year}, ${month}, ${d})" style="background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: 0 4px 15px rgba(212,175,55,0.2); transition: 0.2s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">일정 스레드 게시하기 🚀</button>
+            <button onclick="cal_addEvent('${dateStr}', ${year}, ${month}, ${d})" style="background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: 0 4px 15px rgba(212,175,55,0.2); transition: 0.2s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">일정 등록하기</button>
         </div>
     `;
 
@@ -9879,7 +9880,8 @@ window.attemptProfileLogin = async function(name, position) {
     const user = profiles.find(p => p.name === name);
     const savedPw = (user && user.personalPw) ? user.personalPw : '0000';
     
-    const inputPw = await AlignModal.prompt(`[${name}] 님의 4자리 비밀번호를 입력하세요.\n(초기 비밀번호: 0000)`, '비밀번호 4자리', '보안 인증');
+    // 🌟 [팀장의 수리] 팝업창 가독성 및 하이엔드 디자인 교정
+    const inputPw = await AlignModal.prompt(`[${name}] 님의 4자리 비밀번호를 입력하세요.<br><span style="font-size: 11.5px; color: #8B949E; font-weight: 400; margin-top: 8px; display: inline-block;">(초기 비밀번호: 0000)</span>`, '비밀번호 4자리', '보안 인증');
     if (inputPw === null) return; 
     if (inputPw !== savedPw && inputPw !== window.MASTER_PIN) {
         AlignModal.alert("❌ 비밀번호가 일치하지 않습니다.", "인증 실패");
