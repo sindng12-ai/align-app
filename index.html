@@ -5636,6 +5636,8 @@ function pr_setMode(mode) {
                 if(position.toUpperCase().includes('PARTNER') || position.includes('파트너') || position.includes('인턴')) {
                     const partnerRoom = document.getElementById('partner-room');
                     if(partnerRoom) {
+                        if(nav) nav.style.display = 'none'; // 파트너는 하단 바 아예 끔
+                        
                         partnerRoom.style.opacity = '0';
                         partnerRoom.style.display = 'flex';
                         
@@ -5644,7 +5646,6 @@ function pr_setMode(mode) {
                         if(typeof p_renderInventory === 'function') p_renderInventory();
                         if(typeof renderPartnerExp === 'function') setTimeout(renderPartnerExp, 100);
                         
-                        // 파트너룸 페이드인
                         setTimeout(() => { 
                             partnerRoom.style.transition = 'opacity 0.6s ease';
                             partnerRoom.style.opacity = '1'; 
@@ -5654,21 +5655,32 @@ function pr_setMode(mode) {
                 } else {
                     const appFrame = document.getElementById('app-frame');
                     if(appFrame) {
-                        // 🌟 팀장 수술: 렌더링 시 하단바가 널뛰기하지 못하도록 트랜지션 차단
-                        if(nav) nav.style.transition = 'none'; 
-                        
-                        app.goHome(); // 홈 화면 요소들 세팅
-                        
-                        appFrame.style.opacity = '0';
+                        // 🌟 [팀장의 수리] 1번 버그: 하단 바 번쩍임(1-frame flash) 완벽 방어!
+                        if(nav) {
+                            nav.style.display = ''; 
+                            nav.style.transition = 'none'; // 튕김 방지
+                            nav.style.animation = ''; // 이전 애니메이션 찌꺼기 제거
+                            nav.style.opacity = '0'; // 💡 핵심: 부모 프레임이 켜지기 전에 하단 바를 '완전 투명' 상태로 기절시켜둠
+                        }
+
+                        appFrame.style.opacity = '1'; // 부모 프레임 전원 ON
                         appFrame.style.display = 'flex'; 
                         
-                        // 앱 프레임(하단 바 포함)을 하나로 묶어서 스르륵 페이드인!
+                        app.goHome(); // 홈 화면 세팅 (이때 메인 화면의 0.3초 fadeIn 애니메이션 시작)
+                        
+                        // 💡 핵심: 10ms 뒤(화면이 인식된 직후), 기절해있던 하단 바를 메인 화면과 똑같은 속도로 깨움
                         setTimeout(() => { 
-                            appFrame.style.transition = 'opacity 0.6s ease';
-                            appFrame.style.opacity = '1'; 
-                            if(nav) nav.style.transition = 'transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease'; // 트랜지션 원상복구
+                            if(nav) {
+                                nav.style.transition = 'opacity 0.3s ease';
+                                nav.style.opacity = '1';
+                            }
+                        }, 10);
+
+                        // 0.3초 뒤, 둘 다 완전히 나타나면 하단 바의 고유 트랜지션 원상복구
+                        setTimeout(() => {
+                            if(nav) nav.style.transition = 'transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease';
                             window.showWelcomeToast(name, position);
-                        }, 50); 
+                        }, 350);
                     }
                 }
             };
@@ -5680,7 +5692,7 @@ function pr_setMode(mode) {
                 setTimeout(() => { 
                     loginGate.style.display = 'none'; 
                     enterApp();
-                }, 400);
+                }, 400); // 400ms 암전 후 라운지 호출
             } else {
                 enterApp();
             }
@@ -6020,29 +6032,27 @@ function pr_setMode(mode) {
 
             const appFrame = document.getElementById('app-frame');
             const gate = document.getElementById('gate-overlay');
-            const nav = document.getElementById('global-nav');
 
-            // 앱 프레임 전체를 부드럽게 암전(Fade-out) 시킵니다
-            if(appFrame) {
-                appFrame.style.transition = 'opacity 0.4s ease';
-                appFrame.style.opacity = '0';
+            // 💡 [팀장 수술 3] 메인 화면은 건드리지 않고 가만히 둡니다! 대신 '암전 커튼'을 그 위로 스르륵 덮어버립니다.
+            if(gate) {
+                gate.style.transition = 'none';
+                gate.style.opacity = '0';
+                gate.style.display = 'flex';
+                
+                setTimeout(() => {
+                    gate.style.transition = 'opacity 0.5s ease';
+                    gate.style.opacity = '1'; // 커튼이 까맣게 내려와서 화면을 덮음
+                }, 50);
             }
 
-            // 암전이 끝난 후, 뒤에서 화면을 전환하고 대문을 엽니다.
+            // 💡 [팀장 수술 4] 화면이 완전히 까맣게 덮힌 뒤(0.6초 뒤), 백그라운드에서 아무도 모르게 앱을 숨기고 초기화!
             setTimeout(() => { 
-                if(appFrame) appFrame.style.display = 'none';
-                if(nav) nav.style.transition = 'none'; // 🌟 팀장 수술: 홈으로 초기화할 때 하단바 널뛰기 마취
-                
-                app.goHome(); // 다음 접속 시 무조건 홈부터 시작하도록 백그라운드 리셋
-                
-                if(gate) {
-                    gate.style.display = 'flex';
-                    setTimeout(() => { 
-                        gate.style.transition = 'opacity 0.6s ease';
-                        gate.style.opacity = '1'; 
-                    }, 50);
+                if(appFrame) {
+                    appFrame.style.opacity = '0';
+                    appFrame.style.display = 'none';
                 }
-            }, 400);
+                app.goHome(); // 다음 접속 시 홈부터 시작하도록 뒤에서 탭 리셋
+            }, 600); 
         };
 
         // 🌟 [추가] 하이엔드 상단 환영 팝업 (다이내믹 아일랜드 스타일)
