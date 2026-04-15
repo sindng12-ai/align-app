@@ -2639,7 +2639,7 @@ input, textarea {
                         <div class="m-item-info" style="width: 50%;">
                             <div class="m-item-label" style="margin: 0; line-height: 1.4;">
                                 이번 달 기본급 (정착지원금)
-                                <div onclick="event.preventDefault(); event.stopPropagation(); AlignModal.alert('<b>초급(기본급) 모드</b>에서는 2단계(SALES)에서 시술이나 정액권 매출을 입력해도 <b>급여에 합산되지 않습니다.</b><br><br>오직 <b>[기본급 + 점판 수당]</b>만으로 급여가 계산됩니다.<br><br><span style=\'font-size:11px; color:#8B949E;\'>※ 단, 매장의 총매출 통계 분석을 위해 시술 실적은 평소처럼 정확히 기입해 주셔야 합니다.</span>', '💡 초급(기본급) 정산 안내');" 
+                                <div onclick="event.preventDefault(); event.stopPropagation(); AlignModal.alert('<b>초급(기본급) 모드</b>에서는 2단계(SALES)에서 시술이나 정액권 매출을 입력해도 <br><b>급여에 합산되지 않습니다.</b><br><br>오직 <b>[기본급 + 점판 수당 ± 교차 수당]</b><br>만으로 급여가 계산됩니다.<br><br><span style=\'font-size:11px; color:#8B949E;\'>※ 단, 매장의 총매출 통계 분석을 위해 <br>시술 실적은 평소처럼 정확히 기입해 주셔야 합니다.</span>', '💡 초급(기본급) 정산 안내');" 
                                      style="display: inline-flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: auto; margin-left: 2px; vertical-align: middle; padding-bottom: 2px;">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
                                 </div>
@@ -2803,7 +2803,7 @@ input, textarea {
                 <div id="sub-sec-5" class="sub-sec-group" style="display: none; animation: fadeUp 0.2s ease;">
                     <div style="background: rgba(212, 175, 55, 0.05); padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(212, 175, 55, 0.2); margin-bottom: 20px;">
                         <div style="font-size: 13.5px; font-weight: 700; color: var(--accent-gold); margin-bottom: 8px;">💡 교차 수당 통계 분리</div>
-                        <div style="font-size: 12.5px; color: #8E8E93; line-height: 1.6; word-break: keep-all;">타인의 회원권을 쓰거나 내 회원권을 다른 직원이 사용했을 때, 정확한 통계 보존을 위해 이곳에 별도로 입력하세요.</div>
+                        <div style="font-size: 12.5px; color: #8E8E93; line-height: 1.6; word-break: keep-all;">타인의 회원권을 쓰거나 내 회원권을 다른 직원이 사용했을 때, 정확한 계산을 위해 이곳에 별도로 입력하세요.</div>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         <label class="m-input-item" style="margin:0; padding: 14px 20px;"><div class="m-item-info"><div class="m-item-label">타인권 수당(+)</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="oT" class="m-item-input num-format" placeholder="0" oninput="mo_formatMoney(this)"></div></label>
@@ -3001,15 +3001,15 @@ input, textarea {
             <div class="v-settings-card" style="margin-bottom: 25px; border-radius: 16px;">
                 <label class="v-settings-row" style="padding: 15px 18px;">
                     <div class="v-item-info"><div class="v-item-label" style="font-size: 13px; color: var(--accent-gold);">목표 매출액</div></div>
-                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" class="v-item-input num-format" id="v-set-goal" placeholder="10,000,000" style="font-size: 16px; color: var(--accent-gold);"><span class="v-item-unit" style="font-size: 12px;">원</span></div>
+                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" autocomplete="off" class="v-item-input num-format" id="v-set-goal" placeholder="10,000,000" style="font-size: 16px; color: var(--accent-gold);"><span class="v-item-unit" style="font-size: 12px;">원</span></div>
                 </label>
                 <label class="v-settings-row" style="padding: 15px 18px;">
                     <div class="v-item-info"><div class="v-item-label" style="font-size: 13px; color: var(--daily-green);">하루 평균 슬롯</div></div>
-                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" class="v-item-input" id="v-set-slots" placeholder="20" maxlength="2" style="font-size: 16px; color: var(--daily-green);"><span class="v-item-unit" style="font-size: 12px;">칸</span></div>
+                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" autocomplete="off" class="v-item-input" id="v-set-slots" placeholder="20" maxlength="2" style="font-size: 16px; color: var(--daily-green);"><span class="v-item-unit" style="font-size: 12px;">칸</span></div>
                 </label>
                 <label class="v-settings-row" style="padding: 15px 18px;">
                     <div class="v-item-info"><div class="v-item-label" style="font-size: 13px;">한 달 근무 일수</div></div>
-                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" class="v-item-input" id="v-set-days" placeholder="25" maxlength="2" style="font-size: 16px;"><span class="v-item-unit" style="font-size: 12px;">일</span></div>
+                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" autocomplete="off" class="v-item-input" id="v-set-days" placeholder="25" maxlength="2" style="font-size: 16px;"><span class="v-item-unit" style="font-size: 12px;">일</span></div>
                 </label>
             </div>
 
@@ -3017,11 +3017,11 @@ input, textarea {
             <div class="v-settings-card" style="margin-bottom: 25px; border-radius: 16px;">
                 <label class="v-settings-row" style="padding: 15px 18px;">
                     <div class="v-item-info"><div class="v-item-label" style="font-size: 13px;">기본 커트 단가</div></div>
-                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" class="v-item-input num-format" id="v-set-base-price" placeholder="20,000" style="font-size: 16px;"><span class="v-item-unit" style="font-size: 12px;">원</span></div>
+                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" autocomplete="off" class="v-item-input num-format" id="v-set-base-price" placeholder="20,000" style="font-size: 16px;"><span class="v-item-unit" style="font-size: 12px;">원</span></div>
                 </label>
                 <label class="v-settings-row" style="padding: 15px 18px;">
                     <div class="v-item-info"><div class="v-item-label" style="font-size: 13px;">주력 부분 시술 단가</div><div class="v-item-sub">다운펌, 두피스파 등</div></div>
-                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" class="v-item-input num-format" id="v-set-premium-price" placeholder="15,000" style="font-size: 16px;"><span class="v-item-unit" style="font-size: 12px;">원</span></div>
+                    <div class="v-item-input-wrapper"><input type="text" inputmode="numeric" autocomplete="off" class="v-item-input num-format" id="v-set-premium-price" placeholder="15,000" style="font-size: 16px;"><span class="v-item-unit" style="font-size: 12px;">원</span></div>
                 </label>
             </div>
 
@@ -3383,13 +3383,23 @@ const app = {
                 if(span.id !== 'res-inc-group' && span.id !== 'res-base-group') span.innerText = '0 원';
             });
 
-            // 점판 이익금 기본급 모드에서도 보이게 함
+           // 점판 이익금 기본급 모드에서도 보이게 함
             let resP_span = document.getElementById('resP');
             if(resP_span) {
                 let resP_div = resP_span.parentElement;
                 let incGroup = document.getElementById('res-inc-group');
                 if(resP_div.parentElement === incGroup) {
                     incGroup.parentNode.insertBefore(resP_div, incGroup.nextSibling);
+                }
+            }
+            
+            // 🌟 [팀장의 수술] 교차 정산액도 기본급 모드에서 보이게 밖으로 꺼냄
+            let resE_span = document.getElementById('resE');
+            if(resE_span) {
+                let resE_div = resE_span.parentElement;
+                let incGroup = document.getElementById('res-inc-group');
+                if(resE_div.parentElement === incGroup) {
+                    incGroup.parentNode.insertBefore(resE_div, incGroup.nextSibling);
                 }
             }
             
@@ -5380,7 +5390,9 @@ function pr_setMode(mode) {
             const pBonus = getTwoTrackProductBonus();
 
             if (pr_mode === 'base') {
-                tempGross = pr_parse('pr-base-val') + pBonus;
+                // 🌟 [팀장의 수술] 기본급 모드에서도 교차 수당(타인권-본인권)을 계산하여 세금 부과 대상에 합산!
+                const eBonus = (pr_parse('oT') - pr_parse('mT')) * (pr_parse('pr-set-tRate') / 100);
+                tempGross = pr_parse('pr-base-val') + pBonus + eBonus;
             } else {
                 const calcBonusSplit = (prefix, rateCard, rateCash) => {
                     const cardAndNpay = pr_parse(prefix + 'Card') + pr_parse(prefix + 'Npay'); 
@@ -5454,7 +5466,12 @@ function pr_setMode(mode) {
 
             if (pr_mode === 'base') {
                 const baseSalary = pr_parse('pr-base-val');
-                gross = baseSalary + productBonus;
+                const crossTicketRate = pr_parse('pr-set-tRate') / 100;
+                // 🌟 [팀장의 수술] 기본급 모드용 교차 수당 단독 계산!
+                const externalTicketBonus = (pr_parse('oT') - pr_parse('mT')) * crossTicketRate;
+
+                // 🌟 총수당에 교차 수당을 합산! (본인권 차감이 더 크면 알아서 마이너스 됨)
+                gross = baseSalary + productBonus + externalTicketBonus;
                 net = gross - totalDeductions;
 
                 document.getElementById('res-base-group').style.display = 'block';
@@ -5466,7 +5483,14 @@ function pr_setMode(mode) {
                     resP.innerText = formatNumber(Math.round(productBonus)) + ' 원';
                     resP.parentElement.style.display = 'flex';
                 }
-           } else {
+                
+                // 🌟 영수증에 '교차 정산액' 줄도 표시되도록 밖으로 꺼내줌
+                let resE = document.getElementById('resE');
+                if(resE) {
+                    resE.innerText = formatNumber(Math.round(externalTicketBonus)) + ' 원';
+                    resE.parentElement.style.display = 'flex';
+                }
+            } else {
                 const cardFeeRate = pr_parse('pr-set-fee') / 100;
                 const sRateCard = pr_parse('pr-set-sRate') / 100;
                 const sRateCash = pr_parse('pr-set-sRateCash') / 100;
@@ -10021,14 +10045,16 @@ document.addEventListener('DOMContentLoaded', () => {
 /* 👆 제스처 엔진 복사 완료 👆 *
 
 // =========================================================
-// 🎯 [SMART FOCUS ENGINE V3] 모바일 키보드 화면 끼임 & 네비게이션 간섭 완벽 방어 시스템
+// 🎯 [SMART FOCUS ENGINE V4] 모바일 키보드 완벽 방어 (하단 바 완전 증발 엔진)
 // =========================================================
 document.addEventListener('focusin', (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        // 🌟 1. 키보드가 올라오면 하단 네비게이션 바를 즉시 숨깁니다 (오토 하이드)
+        // 🌟 1. 아이폰 키보드가 올라오면 하단 바를 화면에서 완전히 없애버립니다. (display: none)
         const nav = document.getElementById('global-nav');
-        if(nav) nav.classList.add('hide');
+        if(nav) {
+            nav.style.display = 'none';
+        }
 
         setTimeout(() => {
             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -10040,20 +10066,20 @@ document.addEventListener('focusout', (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
         setTimeout(() => {
-            // 🌟 2. 키보드가 내려가면 하단 네비게이션 바를 다시 부드럽게 꺼냅니다
+            // 🌟 2. 키보드가 내려가면 다시 플렉스(flex)로 복구합니다.
             const nav = document.getElementById('global-nav');
-            if(nav) nav.classList.remove('hide');
+            if(nav) {
+                nav.style.display = 'flex';
+            }
 
-            // 스마트폰 브라우저 화면 강제 원상복구
             window.scrollTo({ top: 0, behavior: 'smooth' });
             const scrollArea = target.closest('[style*="overflow-y: auto"]');
             if (scrollArea) {
                 scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
             }
-        }, 100);
+        }, 100); // 키보드 내려가는 속도 대기
     }
 });
-
 /* 👆 스마트 포커스 엔진 복사 완료 👆 */
 
 // 🌟 [팀장의 수리: 모바일 스침 터치(Quick Tap) 애니메이션 100% 보장 엔진]
@@ -10097,9 +10123,9 @@ window.v_changePersonalPw = async function() {
     let idx = profiles.findIndex(p => p.name === currentUserName);
     if(idx !== -1) {
         profiles[idx].personalPw = newPw;
-        localStorage.setItem('alignProfiles', JSON.stringify(profiles));
         localStorage.setItem('alignSavedPw', newPw);
-        AlignModal.alert("✅ 비밀번호가 안전하게 변경되었습니다.\n다음 로그인부터 적용됩니다.", "변경 완료");
+        // 🌟 [줄바꿈 교정] 자연스러운 위치에서 강제 엔터(<br>) 처리
+        AlignModal.alert("비밀번호가 안전하게 변경되었습니다.<br>다음 로그인부터 적용됩니다.", "변경 완료");
     }
 };
 
@@ -10187,7 +10213,7 @@ window.triggerTextBackdoor = async function() {
             settings.adminPassword = '0000';
             localStorage.setItem('alignSystemSettings', JSON.stringify(settings));
             
-            await AlignModal.alert("✅ 비밀번호가 [0000]으로 초기화되었습니다.\n이제 오피스에 진입합니다.", "초기화 완료");
+            await AlignModal.alert("비밀번호가 [0000]으로 초기화되었습니다.\n이제 오피스에 진입합니다.", "초기화 완료");
             window.currentPin = '0000';
             checkPin();
         } else if(secretKey !== null) {
@@ -10199,7 +10225,8 @@ window.triggerTextBackdoor = async function() {
 
 // 3. 🧹 초기화 및 데이터 마감 구역
 window.v_resetData = async function() {
-    if(!(await AlignModal.confirm("이번 달 현재 디자이너의 실적 및 퀘스트 기록만 초기화하시겠습니까?\n다른 직원의 데이터는 삭제되지 않습니다.", "개인 데이터 초기화"))) return;
+    // 🌟 [줄바꿈 교정] 문단 분리 및 보조 텍스트 폰트 축소로 가독성 극대화
+    if(!(await AlignModal.confirm("이번 달 현재 디자이너의 실적 및<br>퀘스트 기록만 초기화하시겠습니까?<br><br><span style='font-size:11px; color:#8B949E; font-weight:400;'>※ 다른 직원의 데이터는 삭제되지 않습니다.</span>", "개인 데이터 초기화"))) return;
 
     const currentUser = localStorage.getItem('alignCurrentUser');
     const today = new Date();
@@ -10294,7 +10321,9 @@ window.m_resetShopData = async function() {
             localStorage.removeItem('vl_daily_records');
             localStorage.removeItem('vl_daily_last_record');
             
-            await AlignModal.alert("✅ 엑셀 백업 및 앱 내 히스토리 저장이 완료되었으며, 실적 데이터가 0원으로 초기화되었습니다.\n새로운 달을 힘차게 시작하세요!", "초기화 완료");
+            // 🌟 [줄바꿈 교정] 
+    await AlignModal.alert("이번 달 실적, 일일 기록 및 퀘스트 데이터가<br>모두 초기화되었습니다.", "초기화 완료");
+    location.reload();
             window.loadRealData();
             if(typeof window.renderManagerCharts === 'function') window.renderManagerCharts();
         } catch(e) {
