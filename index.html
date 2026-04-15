@@ -610,11 +610,29 @@
         .cheat-btn:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); transform: translateX(4px); }
         .cheat-btn svg { opacity: 0.5; min-width: 16px;}
 
-        /* 🟢 팀장의 수리: AI 멘토 '화이트 눈뽕' 방지 및 다크 폼 튜닝 */
-        .m-ai-result { display: none; background: rgba(25, 25, 30, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 24px 20px; margin-top: 20px; color: #E8E8ED; font-size: 13.5px; line-height: 1.6; position: relative; animation: fadeUp 0.4s ease; box-shadow: 0 15px 40px rgba(0,0,0,0.6); margin-bottom: 20px; letter-spacing: -0.3px;}
+        /* 🌟 [UI 교정] AI 결과창 에러 문구와 X버튼이 겹치지 않게 여백 최적화 */
+        .m-ai-result { display: none; background: rgba(25, 25, 30, 0.95); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 25px 20px; margin-top: 20px; color: #E8E8ED; font-size: 13.5px; line-height: 1.6; position: relative; animation: fadeUp 0.4s ease; box-shadow: 0 15px 40px rgba(0,0,0,0.6); margin-bottom: 20px; letter-spacing: -0.3px;}
         .m-ai-result.show { display: block; }
-        .m-ai-result .close-btn { position: absolute; top: 12px; right: 12px; cursor: pointer; color: #8B949E; border: none; background: rgba(255,255,255,0.05); width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.2s;}
+        .m-ai-result .close-btn { position: absolute; top: 15px; right: 15px; cursor: pointer; color: #8B949E; border: none; background: rgba(255,255,255,0.05); width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: 0.2s;}
         .m-ai-result .close-btn:active { background: rgba(255,255,255,0.1); color: #fff; transform: scale(0.9); }
+
+/* 🌟🌟 RETRY 아이콘 버튼 스타일 🌟🌟 */
+        .m-retry-btn { 
+            display: flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            border-radius: 8px; 
+            color: #8E8E93; 
+            cursor: pointer; 
+            transition: 0.3s cubic-bezier(0.2, 1, 0.2, 1);
+        }
+        .m-retry-btn:active { 
+            transform: scale(0.9) rotate(180deg); 
+            background: rgba(212, 175, 55, 0.1); 
+            color: var(--accent-gold); 
+            border-color: var(--accent-gold); 
+        }
 
         /* =========================================================
            [6] MY VL PROFILE STYLES
@@ -690,28 +708,35 @@
         .v-btn-show:active { transform: scale(0.95); background: rgba(255,255,255,0.2); }
 
 
-        /* 🌟 Global Toast (하이엔드 다크 글래스 상단 드롭다운 에디션) */
+       /* 🌟 Global Toast (하이엔드 다크 글래스 상단 드롭다운 에디션) */
         #toast, .toast, #v-toast, .v-toast { 
             position: fixed; 
-            top: -20px; /* 평소엔 화면 천장 위에 숨어있음 */
+            top: -20px; 
             left: 50%; 
-            transform: translate(-50%, 0) scale(0.95); /* 위에서 아래로 떨어질 준비 완료 */
-            background: rgba(20, 20, 25, 0.85); /* 묵직한 다크 글래스 배경 */
+            transform: translate(-50%, 0) scale(0.95); 
+            background: rgba(20, 20, 25, 0.9); 
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            color: #E8E8ED; /* 세련된 화이트 텍스트 */
+            color: #E8E8ED; 
             padding: 16px 26px; 
-            border: 1px solid rgba(212, 175, 55, 0.4); /* 은은한 골드 테두리 포인트 */
-            border-radius: 30px; /* 네이티브 앱 특유의 둥근 알약 핏 */
+            border: 1px solid rgba(212, 175, 55, 0.4); 
+            border-radius: 30px; 
             font-size: 13.5px; 
             font-weight: 600; 
             letter-spacing: 0.5px; 
             line-height: 1.5; 
             text-align: center !important; 
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* 묵직한 그림자 */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
             opacity: 0; 
             pointer-events: none; 
-            transition: all 0.5s cubic-bezier(0.2, 1, 0.2, 1); /* 탄력있는 애니메이션 */
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.2, 1); 
             z-index: 999999; 
+            
+            /* 🌟 [원장님 예리한 지적 반영] 반응형 스마트 줄바꿈 엔진! */
+            width: max-content;
+            max-width: 85vw; /* 화면 밖으로 뚫고 나가지 않도록 85% 안전선 구축 */
+            white-space: pre-line !important; /* 강제 한 줄 고정 해제, <br>은 인식하되 길면 알아서 넘어감 */
+            word-break: keep-all !important; /* '입/력' 처럼 단어 중간에 흉하게 찢어지는 현상 완벽 방어 */
+            overflow-wrap: break-word; /* 긴 영어나 URL이 들어와도 안전하게 박스 안에서 꺾임 */
         }
         
         /* 🌟 알림창을 다이내믹 아일랜드 밑으로 우아하게 떨어뜨리는 마법의 스위치 */
@@ -2543,16 +2568,19 @@ input, textarea {
                 <!-- PAGE 3: AI ADVICE -->
                 <div class="m-page" id="page-ai">
                     <div class="ai-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-    <div style="display: flex; align-items: center; gap: 8px;">
-        <svg width="18" height="18" ...> AI 아이콘 </svg>
-        <span class="ai-title">AI MENTOR</span>
-    </div>
-    
-    <button onclick="m_setupAIPage(m_analyzedData); if(typeof app !== 'undefined') app.toast('AI 멘토를 다시 호출합니다.');" 
-            style="background: transparent; border: none; color: #5C6370; font-size: 10px; cursor: pointer; margin-top: 2px; letter-spacing: 1px; font-weight: 600;">
-        RETRY
-    </button>
-</div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: #fff;">AI MENTOR</span>
+                        </div>
+                        
+                        <button class="m-retry-btn" onclick="m_setupAIPage(m_analyzedData); if(typeof app !== 'undefined') app.toast('AI 멘토를 다시 호출합니다.');">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                        </button>
+                    </div>
                     <div class="ai-chat-card"><p class="ai-text" id="m-ai-greeting">데이터를 분석 중입니다...</p></div>
                     
                     <div><span class="r-label" style="margin-bottom: 4px;">MAGIC CHEAT KEYS</span></div>
@@ -4095,14 +4123,14 @@ function m_nextStep() {
             const fanCust = parseInt(document.getElementById('m-fan-cust').value.replace(/[^0-9]/g, '') || 0, 10);
             const newCust = parseInt(document.getElementById('m-new-cust').value.replace(/[^0-9]/g, '') || 0, 10);
 
-            // 🌟 [팀장의 수리] 에러 멘트를 간결하게 압축하고 정확한 위치에 강제 줄바꿈(<br>) 적용!
-            if (workDays === 0 || workDays > 31) { app.toast("올바른 근무 일수를<br>1~31일 사이로 입력해 주세요."); return; }
-            if (totalVisits === 0) { app.toast("총 접객 수를<br>1명 이상 입력해 주세요."); return; }
-            if (pureCust === 0) { app.toast("순수 방문 고객 수를<br>1명 이상 입력해 주세요."); return; }
+            // 🌟 [팀장의 수리] 모바일 화면 찢어짐을 막기 위해 텍스트 다이어트 및 <br> 최적화!
+            if (workDays === 0 || workDays > 31) { app.toast("올바른 근무 일수를<br>1~31일 사이로 입력하세요."); return; }
+            if (totalVisits === 0) { app.toast("총 접객 수는<br>최소 1명 이상 입력해 주세요."); return; }
+            if (pureCust === 0) { app.toast("순수 방문 고객은<br>최소 1명 이상이어야 합니다."); return; }
             
             // 논리 방어
-            if (pureCust > totalVisits) { app.toast("순수 방문 고객은<br>총 접객 수를 초과할 수 없습니다."); return; }
-            if ((fanCust + newCust) > pureCust) { app.toast("지정 고객과 신규 고객의 합이<br>순수 방문 고객보다 많습니다."); return; }
+            if (pureCust > totalVisits) { app.toast("순수 방문 고객이<br>총 접객 수보다 많을 수 없습니다."); return; }
+            if ((fanCust + newCust) > pureCust) { app.toast("지정 + 신규 고객의 합이<br>순수 방문 고객보다 많습니다."); return; }
         }
         
         // 🚨 에러 없이 무사히 통과했다면 다음 단계로 이동!
@@ -4807,18 +4835,19 @@ function m_runEngine(data) {
         let customButtonsHTML = topActions.map((act, i) => {
             const match = act.match(/<strong>\[(.*?)\]<\/strong>/);
             const keyword = match ? match[1] : `맞춤 미션 ${i+1}`;
-                       
+                        
             const cleanPrompt = act.replace(/<[^>]*>?/gm, '').replace(/'/g, "\\'").replace(/"/g, '&quot;'); 
             
-            return `<button class="cheat-btn" onclick="triggerAICustom('${cleanPrompt}')">💡 [${keyword}] 실행 스크립트 짜줘<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>`;
+            // 🌟 [UI 교정] 버튼 텍스트를 구질구질하지 않게 하이엔드 단어로 압축!
+            return `<button class="cheat-btn" onclick="triggerAICustom('${cleanPrompt}')">💡 [${keyword}] 스크립트 생성<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>`;
         }).join('');
 
-       // 🌟 3. MAGIC CHEAT KEYS: 4가지 핵심 무기 장착
+       // 🌟 3. MAGIC CHEAT KEYS: 고정 버튼들의 텍스트도 간결하고 세련되게 다이어트!
         const fixedButtonsHTML = `
-            <button class="cheat-btn" onclick="triggerAI('upsell')">🪄 거절 없는 객단가 UP (자연스러운 추가 제안)<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-            <button class="cheat-btn" onclick="triggerAI('homecare')">💊 마법의 홈케어 처방전 (전문가 제품 판매 화법)<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-            <button class="cheat-btn" onclick="triggerAI('rebook')">⏰ 재방문 주기 각인술 (다음 예약 픽스 멘트)<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
-            <button class="cheat-btn" onclick="triggerAI('faq')" style="border-color: var(--accent-gold); color: var(--accent-gold);">📚 실전 고객 Q&A 스터디 (하루 1분 지식 충전)<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            <button class="cheat-btn" onclick="triggerAI('upsell')">🪄 거절 없는 객단가 UP 제안법<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            <button class="cheat-btn" onclick="triggerAI('homecare')">💊 마법의 홈케어 처방 화법<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            <button class="cheat-btn" onclick="triggerAI('rebook')">⏰ 다음 예약 100% 픽스 멘트<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+            <button class="cheat-btn" onclick="triggerAI('faq')" style="border-color: var(--accent-gold); color: var(--accent-gold);">📚 실전 단골 Q&A 지식 충전<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
         `;
         cheatContainer.innerHTML = customButtonsHTML + fixedButtonsHTML;
     }
@@ -4884,17 +4913,17 @@ ${inventoryContext}
     }
 
 
-   async function fetchAI(promptText, resultBox, contentBox, loadingBox) {
-    // 🧠 지능형 열쇠 선택: 개인 키가 없으면 매장 공용 키를 가져옵니다.
-    const pKey = JSON.parse(localStorage.getItem('vl_user_settings') || '{}').apiKey;
-    const sKey = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}').apiKey;
-    const apiKey = (pKey && pKey.trim()) ? pKey.trim() : (sKey ? sKey.trim() : "");
+  async function fetchAI(promptText, resultBox, contentBox, loadingBox) {
+        // 🧠 지능형 열쇠 선택: 개인 키가 없으면 매장 공용 키를 가져옵니다.
+        const pKey = JSON.parse(localStorage.getItem('vl_user_settings') || '{}').apiKey;
+        const sKey = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}').apiKey;
+        const apiKey = (pKey && pKey.trim()) ? pKey.trim() : (sKey ? sKey.trim() : "");
 
-    try {
-        if(!apiKey) throw new Error("API KEY MISSING");
+        try {
+            if(!apiKey) throw new Error("API KEY MISSING");
             
-            // 가장 안정적인 최신 모델(gemini-1.5-flash) 사용
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            // 🌟 [팀장 픽스] 구글 서버에서 폐기된 1.5 구형 모델을 최신 'gemini-2.5-flash' 모델로 전면 교체!
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
             
             // systemInstruction을 빼고, promptText 자체에 역할을 합쳐서 보내는 가장 안전한 방식
             const safePrompt = "시스템 지침: 너는 헤어 디자이너를 돕는 최고의 미용 경영 AI 컨설턴트야.\n\n" + promptText;
@@ -4910,19 +4939,33 @@ ${inventoryContext}
             const data = await response.json(); 
             
             if (!response.ok) {
-                throw new Error(`${data.error?.message || '알 수 없는 오류 (상태코드: ' + response.status + ')'}`);
+                // 구글이 보내는 정확한 에러 메시지 추출
+                throw new Error(data.error?.message || `HTTP 에러 ${response.status}`);
             }
             
             const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
             loadingBox.style.display = 'none'; 
-            contentBox.innerText = reply || "AI 응답을 불러오지 못했습니다."; 
+            contentBox.innerHTML = reply ? reply.replace(/\n/g, '<br>') : "AI 응답을 불러오지 못했습니다."; 
             resultBox.classList.add('show');
 
         } catch (error) {
             loadingBox.style.display = 'none';
-            contentBox.innerText = error.message === "API KEY MISSING" 
-                ? "앱 하단의 [MY VL] 탭에서 구글 API Key를 입력해주세요!" 
-                : `🚨 구글 서버 에러 원인:\n${error.message}`;
+            let errorMsg = error.message;
+
+            // 🌟 [팀장 픽스] 무서운 영어 에러를 친절한 한글로 스마트하게 번역!
+            if (errorMsg === "API KEY MISSING") {
+                errorMsg = "앱 하단의 [MY VL] 탭에서 구글 API Key를 입력해주세요!";
+            } else if (errorMsg.includes('API_KEY_INVALID') || errorMsg.includes('API key not valid')) {
+                errorMsg = "구글 API 키가 잘못되었습니다. 복사한 키에 공백이 없는지 확인해 주세요.";
+            } else if (errorMsg.includes('QUOTA_EXCEEDED') || errorMsg.includes('429')) {
+                errorMsg = "구글 AI 무료 사용량을 초과했습니다. 잠시 후 다시 시도해 주세요.";
+            } else if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
+                errorMsg = "인터넷 연결이 불안정하거나 구글 서버가 응답하지 않습니다.";
+            } else {
+                errorMsg = `알 수 없는 오류가 발생했습니다.<br><span style="font-size:11px; opacity:0.7;">(사유: ${errorMsg})</span>`;
+            }
+
+            contentBox.innerHTML = `<span style='color:var(--error); font-weight:600;'>🚨 AI 호출 실패</span><br><br>${errorMsg}`;
             resultBox.classList.add('show');
         }
     }
@@ -9311,7 +9354,7 @@ window.mo_showGraduation = function(partnerName) {
     try {
         if(!apiKey) throw new Error("API KEY MISSING");
                 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
                 const response = await fetch(url, {
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' },
