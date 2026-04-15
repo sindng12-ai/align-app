@@ -306,23 +306,24 @@
         #view-daily .progress-fill { background: var(--daily-green); box-shadow: 0 0 10px rgba(50, 215, 75, 0.3); }
         #view-daily .prism-loader { border-color: var(--daily-green); box-shadow: 0 0 20px rgba(50, 215, 75, 0.4); }
 
+        /* 🚨 범인 검거: align-items: center 삭제하여 상단바 찌그러짐 복구! */
         .d-input-area { flex: 1; display: flex; flex-direction: column; padding: 0 25px; height: 100%; }
         
-        /* 🌟 1. 입력 카드 위로 바짝 끌어올리기 (상단 게이지바에서 딱 40px만 띄움) */
-        .d-input-card { width: 100%; max-width: 400px; margin: 40px auto 25px auto; background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 35px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 160px; display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.3s; flex-shrink: 0; }
+        /* 🌟 입력 카드 가로 사이즈 꽉 채우고 위쪽으로 살짝 당겨서 고정 */
+        .d-input-card { width: 100%; max-width: 400px; margin: 25px auto 15px auto; background: var(--dark-glass); backdrop-filter: blur(25px); border-radius: 28px; border: 1px solid var(--dark-border); padding: 35px 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.5); min-height: 160px; display: flex; flex-direction: column; justify-content: center; position: relative; transition: 0.3s; flex-shrink: 0; }
         
         .d-label { font-size: 15px; color: #E8E8ED; margin-bottom: 10px; font-weight: 600; letter-spacing: 1px; }
         .d-val-num { font-size: 44px; font-weight: 300; color: #fff; letter-spacing: -1px; display: inline-block; transition: 0.2s; font-family: 'Montserrat', sans-serif; }
         .d-unit { font-size: 18px; color: #E8E8ED; margin-left: 5px; font-weight: 400; }
         
-        /* 🌟 높이 흔들림 방지 멘트 박스 */
-        .d-msg-box { min-height: 40px; margin-top: 15px; display: flex; align-items: center; justify-content: center; }
-        .d-live-metric, .d-warn-txt { font-size: 13px !important; font-weight: 600; line-height: 1.4; word-break: keep-all; margin: 0; }
+        /* 🌟 에러 멘트와 프리뷰 멘트의 높이/넓이를 완전히 100% 동일하게 묶음 (밀림 방지) */
+        .d-msg-box { height: 42px; margin-top: 10px; display: flex; align-items: center; justify-content: center; }
+        .d-live-metric, .d-warn-txt { font-size: 13px !important; font-weight: 600; line-height: 1.4; word-break: keep-all; margin: 0; width: 100%; text-align: center; }
         .d-live-metric { color: var(--daily-green); opacity: 0.9; }
         .d-warn-txt { color: var(--error); display: none; }
         
-        /* 🌟 2. 키패드를 입력창 밑에 착! 붙이고, 남는 빈 공간은 전부 바닥(bottom)으로 밀어버림 */
-        .d-keypad { width: 100%; max-width: 400px; margin: 0 auto auto auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-bottom: 50px; }
+        /* 🌟 키패드 상단 여백 제거하여 입력창과 자석처럼 밀착 & 하단 40px 쿠션 유지 */
+        .d-keypad { width: 100%; max-width: 400px; margin: 0 auto auto auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding-bottom: 40px; }
         .d-key { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); color: #E8E8ED; padding: 18px 0; font-size: 26px; font-weight: 300; cursor: pointer; border-radius: 20px; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1); display: flex; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
         .d-key:active { background: rgba(255,255,255,0.1); transform: scale(0.9) translateY(2px); color: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .d-key.del { font-size: 14px; color: #8B949E; font-weight: 600; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; }
@@ -387,48 +388,42 @@
         /* =========================================================
            [5] MONTHLY PRO REPORT SPECIFIC STYLES
            ========================================================= */
-        #view-monthly .step-indicator { color: var(--accent-gold); } /* 🌟 골드로 교체 */
+        /* 🌟 [화면 덜렁거림 완벽 차단] 먼슬리 프로 락(Lock) 엔진 장착 */
+        #view-monthly { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; height: 100dvh; overflow: hidden; background: var(--bg); z-index: 5; }
+        
+        #view-monthly .step-indicator { color: var(--accent-gold); } 
         .header-section { margin-bottom: 25px; }
         .sub-desc { font-size: 13px; color: #8B949E; line-height: 1.5; word-break: keep-all; }
         .sum-label { font-size: 12px; color: var(--accent-gold); font-weight: 600; letter-spacing: 1px; display: flex; align-items: center; gap: 6px;}
         .sum-val { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.5px;}
         .sum-val span { font-family: 'Pretendard', sans-serif; font-size: 14px; font-weight: 400; color: #8B949E; margin-left: 2px;}
 
-        /* 🌟 사라진 변수 걷어내고 골드로 완벽 통일 */
         #view-monthly .progress-fill { background: var(--accent-gold); box-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
         #view-monthly .prism-loader { border-color: var(--accent-gold); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
         .m-form-slider { flex: 1; display: flex; width: 300%; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); z-index: 1; position: relative; min-height: 0; }
-        .m-step-panel { width: 33.333%; height: 100%; overflow-y: auto; padding: 0 25px 150px; -webkit-overflow-scrolling: touch; }
+        
+        /* 🌟 [고무줄 바운스 차단] 스크롤 패널 끝에서 튕기는 현상 제거 (overscroll-behavior-y 추가) */
+        .m-step-panel { width: 33.333%; height: 100%; overflow-y: auto; padding: 0 25px 150px; -webkit-overflow-scrolling: touch; overscroll-behavior-y: none; }
 
         .m-main-title { font-size: 26px; font-weight: 300; line-height: 1.4; color: #fff; letter-spacing: -1px; margin-bottom: 8px; word-break: keep-all;}
-        .m-main-title strong { font-weight: 700; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.3); } /* 골드에서 화이트로 깔끔하게 변경 */
+        .m-main-title strong { font-weight: 700; color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.3); } 
         
-/* 🌟 전체 카드의 배경색(투명도)을 살짝 올려서 '입력 가능한 폼' 느낌을 강하게 줍니다 */
         .m-input-item { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; padding: 22px 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s cubic-bezier(0.2, 1, 0.2, 1); box-shadow: inset 0 2px 10px rgba(0,0,0,0.1); cursor: pointer; }
-        
-        /* 누를 때 전체 카드가 골드빛으로 포커스! */
         .m-input-item:focus-within { background: rgba(255,255,255,0.07); border-color: rgba(212, 175, 55, 0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.3); transform: translateY(-2px); z-index: 2; position: relative;}
         
-       /* 🎨 [팀장의 수술] 왼쪽 테두리 하얀색 고집 꺾기 (골드 덮어쓰기) */
         .m-input-item.premium { border-left: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s; }
         .m-input-item.base-rev { border-left: 1px solid rgba(255,255,255,0.05); transition: border-color 0.3s; }
-        
-        /* 터치 시 무조건 골드 테두리로 덮어쓰는 강제 명령 */
         .m-input-item.premium:focus-within, 
         .m-input-item.base-rev:focus-within { border-left-color: rgba(212, 175, 55, 0.4); }
-        
         .m-input-item.sub-item { margin-top: -8px; border-top-left-radius: 6px; border-top-right-radius: 6px; }
 
-        
         .m-item-info { display: flex; flex-direction: column; width: 45%; pointer-events: none; }
         .m-item-label { font-size: 14px; font-weight: 600; color: #E8E8ED; margin-bottom: 4px; word-break: keep-all; letter-spacing: -0.3px;}
         .m-item-label[style] { color: #E8E8ED !important; } 
-        .m-item-sub { font-size: 11px; color: #8B949E; font-weight: 300; line-height: 1.4; word-break: keep-all; } /* nowrap 속성 날림 */
+        .m-item-sub { font-size: 11px; color: #8B949E; font-weight: 300; line-height: 1.4; word-break: keep-all; } 
         
         .m-item-input-wrapper { display: flex; align-items: center; justify-content: flex-end; width: 55%; }
-        
-        /* 🌟 [팀장의 수리] 비좁았던 테두리 캡슐 완벽 철거! 숫자가 100억 단위가 되어도 안 깨집니다 */
         .m-item-input { width: 100%; background: transparent; border: none; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 700; text-align: right; padding: 0; margin-right: 6px; outline: none; transition: 0.3s; }
         .m-input-item:focus-within .m-item-input { color: var(--accent-gold); text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
         .m-item-input::placeholder { color: rgba(255,255,255,0.15); font-weight: 300; }
@@ -436,11 +431,12 @@
     
         .m-auto-sum { background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.02) 100%); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 15px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         
-        /* 🎨 [팀장의 수술] 다음 단계 버튼 텍스트 가독성 복구 및 하이엔드화 */
+        /* 🌟 [하단 버튼 영역] 위치를 아이폰 환경에 맞게 견고하게 고정 */
         .m-bottom-action { 
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 25px 35px; 
+            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 25px; 
             background: linear-gradient(0deg, rgba(5,5,7,1) 50%, rgba(5,5,7,0.8) 75%, rgba(5,5,7,0) 100%); 
             z-index: 10; display: flex; gap: 10px; 
+            padding-bottom: calc(35px + env(safe-area-inset-bottom)); /* 기기별 하단 안전 여백 자동 계산 */
         }
         .m-btn-primary { 
             flex: 1; height: 56px; 
@@ -4092,11 +4088,12 @@ function m_nextStep() {
             const prodRev = parseInt(document.getElementById('m-prod-rev').value.replace(/[^0-9]/g, '') || 0, 10);
             const prodCnt = parseInt(document.getElementById('m-prod-cnt').value.replace(/[^0-9]/g, '') || 0, 10);
 
+            // 🌟 [팀장의 수리] 어색한 줄바꿈(\n) 및 공백 제거로 토스트 문구 중앙 정렬 최적화
             if ((premRev > 0 && premCnt === 0) || (premCnt > 0 && premRev === 0)) {
-                app.toast("회원권 매출액과 유치 건수를 \n 모두 입력해 주세요."); return;
+                app.toast("회원권 매출액과 유치 건수를\n모두 입력해 주세요."); return;
             }
             if ((prodRev > 0 && prodCnt === 0) || (prodCnt > 0 && prodRev === 0)) {
-                app.toast("점판 매출액과 판매 건수를 \n 모두 입력해 주세요."); return;
+                app.toast("점판 매출액과 판매 건수를\n모두 입력해 주세요."); return;
             }
         }
         else if (m_currentStep === 2) { 
@@ -4106,7 +4103,6 @@ function m_nextStep() {
             const fanCust = parseInt(document.getElementById('m-fan-cust').value.replace(/[^0-9]/g, '') || 0, 10);
             const newCust = parseInt(document.getElementById('m-new-cust').value.replace(/[^0-9]/g, '') || 0, 10);
 
-            // 🟢 팀장의 수리: STEP 2 필수 항목 무임승차 완벽 차단!
             if (workDays === 0 || workDays > 31) { app.toast("올바른 근무 일수(1~31)를 입력해 주세요."); return; }
             if (totalVisits === 0) { app.toast("총 접객 수를 1명 이상 입력해 주세요."); return; }
             if (pureCust === 0) { app.toast("순수 방문 고객 수를 1명 이상 입력해 주세요."); return; }
@@ -4119,8 +4115,7 @@ function m_nextStep() {
         // 🚨 에러 없이 무사히 통과했다면 다음 단계로 이동!
         if (m_currentStep < m_totalSteps) { m_currentStep++; m_updateUI(); } 
         else { m_submitDataAndRender(); }
-    }
-    function m_prevStep() { if (m_currentStep > 1) { m_currentStep--; m_updateUI(); } }
+    }    function m_prevStep() { if (m_currentStep > 1) { m_currentStep--; m_updateUI(); } }
 
     function m_submitDataAndRender() {
         // 🌟 1&2단계 공사: 7가지 시술 데이터 수집 및 철통 방어 문지기
