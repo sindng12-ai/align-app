@@ -2636,8 +2636,16 @@ input, textarea {
 
                 <div id="pr-base-section" style="display: none;">
                     <label class="m-input-item">
-                        <div class="m-item-info"><div class="m-item-label">이번 달 기본급 (정착지원금)</div></div>
-                        <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="pr-base-val" class="m-item-input num-format" placeholder="0"><span class="m-item-unit">원</span></div>
+                        <div class="m-item-info" style="width: 50%;">
+                            <div class="m-item-label" style="margin: 0; line-height: 1.4;">
+                                이번 달 기본급 (정착지원금)
+                                <div onclick="event.preventDefault(); event.stopPropagation(); AlignModal.alert('<b>초급(기본급) 모드</b>에서는 2단계(SALES)에서 시술이나 정액권 매출을 입력해도 <b>급여에 합산되지 않습니다.</b><br><br>오직 <b>[기본급 + 점판 수당]</b>만으로 급여가 계산됩니다.<br><br><span style=\'font-size:11px; color:#8B949E;\'>※ 단, 매장의 총매출 통계 분석을 위해 시술 실적은 평소처럼 정확히 기입해 주셔야 합니다.</span>', '💡 초급(기본급) 정산 안내');" 
+                                     style="display: inline-flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: auto; margin-left: 2px; vertical-align: middle; padding-bottom: 2px;">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-base-val" class="m-item-input num-format" placeholder="0"><span class="m-item-unit">원</span></div>
                     </label>
                 </div>
 
@@ -2651,8 +2659,8 @@ input, textarea {
                             <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-sRate" class="m-item-input" value="40" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
                         </label>
                         <label class="m-input-item" style="margin:0; padding: 14px 15px;">
-                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 12px; margin:0; color:#fff;">시술 (현금)</div></div>
-                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-sRateCash" class="m-item-input" value="45" style="font-size: 20px; color:#fff;"><span class="m-item-unit">%</span></div>
+                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 12px; margin:0;">시술 (현금)</div></div>
+                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-sRateCash" class="m-item-input" value="45" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
                         </label>
                     </div>
 
@@ -2662,8 +2670,19 @@ input, textarea {
                             <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-tkRate" class="m-item-input" value="30" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
                         </label>
                         <label class="m-input-item" style="margin:0; padding: 14px 15px;">
-                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 12px; margin:0; color:#fff;">정액권(현금)</div></div>
-                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-tkRateCash" class="m-item-input" value="35" style="font-size: 20px; color:#fff;"><span class="m-item-unit">%</span></div>
+                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 12px; margin:0;">정액권(현금)</div></div>
+                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-tkRateCash" class="m-item-input" value="35" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
+                        </label>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 25px;">
+                        <label class="m-input-item" style="margin:0; padding: 14px 15px;">
+                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 12px; margin:0;">회원권(카드)</div></div>
+                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-mRate" class="m-item-input" value="30" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
+                        </label>
+                        <label class="m-input-item" style="margin:0; padding: 14px 15px;">
+                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 12px; margin:0;">회원권(현금)</div></div>
+                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-mRateCash" class="m-item-input" value="35" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
                         </label>
                     </div>
 
@@ -2681,8 +2700,16 @@ input, textarea {
                     <span class="sec-label">점판 및 기타 요율 (%)</span>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
                         <label class="m-input-item" style="margin:0; padding: 14px 15px;">
-                            <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 11px; margin:0;">평균 원가율</div></div>
-                            <div class="m-item-input-wrapper" style="width: 50%;"><input type="text" inputmode="numeric" id="pr-set-pCost" class="m-item-input" value="30" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
+                            <div class="m-item-info" style="width: 60%;">
+                                <div class="m-item-label" style="font-size: 11px; margin:0; display: flex; align-items: center; gap: 4px;">
+                                    평균 원가율
+                                    <div onclick="event.preventDefault(); event.stopPropagation(); AlignModal.alert('스마트 장바구니(POS)로 제품을 불러오면 등록된 실제 원가로 <b>자동 계산</b>됩니다.<br><br>단, 장바구니를 쓰지 않고 <b>수동으로 점판 매출액을 입력할 때</b>는 정확한 원가를 알 수 없으므로, 이곳에 설정한 [평균 원가율]을 기준으로 수익을 짐작해 계산합니다.<br><br><span style=\'font-size:11px; color:#8B949E;\'>※ 수동 입력 없이 장바구니만 쓰신다면 <br>신경 쓰지 않으셔도 됩니다!</span>', '💡 평균 원가율 활용법');" 
+                                         style="display: flex; align-items: center; justify-content: center; cursor: pointer; pointer-events: auto;">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-item-input-wrapper" style="width: 40%;"><input type="text" inputmode="numeric" id="pr-set-pCost" class="m-item-input" value="30" style="font-size: 20px;"><span class="m-item-unit">%</span></div>
                         </label>
                         <label class="m-input-item" style="margin:0; padding: 14px 15px;">
                             <div class="m-item-info" style="width: 50%;"><div class="m-item-label" style="font-size: 11px; margin:0;">점판 마진율</div></div>
@@ -2702,7 +2729,7 @@ input, textarea {
                     </div>
                 </div>
 
-                <button class="v-btn-save" style="margin-top: 30px; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);" onclick="pr_switchStep(2)">다음: 매출 입력하기 →</button>
+                <button style="width: 100%; margin-top: 30px; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-weight: 700; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="pr_switchStep(2)">다음: 매출 실적 입력 →</button>
             </div>
 
             <div id="pr-step-2" style="display: none; animation: fadeUp 0.3s ease;">
@@ -2786,7 +2813,7 @@ input, textarea {
 
                 <div style="display: flex; gap: 10px; margin-top: 30px;">
                     <button style="flex:1; background: rgba(255,255,255,0.02); color: #8B949E; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; font-weight: 600; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="pr_switchStep(1)">← 이전</button>
-                    <button style="flex:2; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-weight: 700; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="pr_switchStep(3)">다음: 공제 및 정산 →</button>
+                    <button style="flex:2; background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; font-weight: 700; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="pr_switchStep(3)">다음: 세금 및 공제 →</button>
                 </div>
             </div>
 
@@ -2807,7 +2834,7 @@ input, textarea {
                         <div>
                             <label class="m-input-item" style="margin:0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-bottom: none;">
                                 <div class="m-item-info"><div class="m-item-label">4대보험 총액</div></div>
-                                <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="insurance" class="m-item-input num-format" placeholder="0" readonly style="color:var(--daily-green);"></div>
+                                <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="insurance" class="m-item-input num-format" placeholder="0" readonly style="color:#fff;"></div>
                             </label>
                             
                             <div onclick="const d = document.getElementById('pr-ins-detail'); d.style.display = d.style.display === 'none' ? 'flex' : 'none'; this.innerHTML = d.style.display === 'none' ? '세부 내역 입력 (선택) ▼' : '세부 내역 닫기 ▲';" 
@@ -2816,23 +2843,11 @@ input, textarea {
                                 세부 내역 입력 (선택) ▼
                             </div>
                             
-                            <div id="pr-ins-detail" style="display: none; flex-direction: column; gap: 0; margin-top: 8px; padding-left: 15px; border-left: 2px solid rgba(50, 215, 75, 0.4);">
-                                <label class="m-input-item" style="margin:0; padding: 12px 15px; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.03); border-radius: 0; min-height: 40px;">
-                                    <div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #8B949E;">국민연금</div></div>
-                                    <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-np" class="m-item-input num-format" placeholder="0" style="font-size: 15px;" oninput="pr_calcInsuranceTotal()"></div>
-                                </label>
-                                <label class="m-input-item" style="margin:0; padding: 12px 15px; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.03); border-radius: 0; min-height: 40px;">
-                                    <div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #8B949E;">건강보험</div></div>
-                                    <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-hi" class="m-item-input num-format" placeholder="0" style="font-size: 15px;" oninput="pr_calcInsuranceTotal()"></div>
-                                </label>
-                                <label class="m-input-item" style="margin:0; padding: 12px 15px; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.03); border-radius: 0; min-height: 40px;">
-                                    <div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #8B949E;">고용보험</div></div>
-                                    <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-ei" class="m-item-input num-format" placeholder="0" style="font-size: 15px;" oninput="pr_calcInsuranceTotal()"></div>
-                                </label>
-                                <label class="m-input-item" style="margin:0; padding: 12px 15px; background: transparent; border: none; border-radius: 0; min-height: 40px;">
-                                    <div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #8B949E;">산재보험</div></div>
-                                    <div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-wc" class="m-item-input num-format" placeholder="0" style="font-size: 15px;" oninput="pr_calcInsuranceTotal()"></div>
-                                </label>
+                            <div id="pr-ins-detail" style="display: none; flex-direction: column; gap: 4px; margin-top: 8px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                                <label class="m-input-item" style="margin:0; padding: 10px 15px; min-height: 45px; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 0;"><div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #A0AAB5;">국민연금</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-np" class="m-item-input num-format" placeholder="0" style="font-size: 16px;" oninput="pr_calcInsuranceTotal()"></div></label>
+                                <label class="m-input-item" style="margin:0; padding: 10px 15px; min-height: 45px; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 0;"><div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #A0AAB5;">건강보험</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-hi" class="m-item-input num-format" placeholder="0" style="font-size: 16px;" oninput="pr_calcInsuranceTotal()"></div></label>
+                                <label class="m-input-item" style="margin:0; padding: 10px 15px; min-height: 45px; background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.05); border-radius: 0;"><div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #A0AAB5;">고용보험</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-ei" class="m-item-input num-format" placeholder="0" style="font-size: 16px;" oninput="pr_calcInsuranceTotal()"></div></label>
+                                <label class="m-input-item" style="margin:0; padding: 10px 15px; min-height: 45px; background: transparent; border: none; border-radius: 0;"><div class="m-item-info"><div class="m-item-label" style="font-size: 12px; color: #A0AAB5;">산재보험</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="ins-wc" class="m-item-input num-format" placeholder="0" style="font-size: 16px;" oninput="pr_calcInsuranceTotal()"></div></label>
                             </div>
                         </div>
 
@@ -2843,7 +2858,7 @@ input, textarea {
 
                 <div style="display: flex; gap: 10px; margin-bottom: 30px;">
                     <button style="flex:1; background: rgba(255,255,255,0.02); color: #8B949E; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; font-weight: 600; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="pr_switchStep(2)">← 이전</button>
-                    <button style="flex:2; background: #fff; color:#000; box-shadow: 0 10px 30px rgba(255,255,255,0.2); border-radius: 12px; font-weight: 700; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="calculatePayroll()">내 월급 명세서 발행하기</button>
+                    <button style="flex:2; background: linear-gradient(135deg, var(--accent-gold) 0%, #AA8721 100%); color:#050507; border: none; box-shadow: 0 10px 25px rgba(212,175,55,0.3); border-radius: 12px; font-weight: 800; font-size: 14px; padding: 16px; cursor: pointer; transition: 0.2s;" onclick="calculatePayroll()" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">최종 명세서 발행하기</button>
                 </div>
 
                 <div id="payroll-receipt" style="display: none; background: rgba(255,255,255,0.02); border-radius: 24px; padding: 40px 25px; margin-top: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;">
@@ -5398,6 +5413,15 @@ function pr_setMode(mode) {
             taxInput.value = formatNumber(autoTax);
             if(typeof app !== 'undefined' && app.toast) app.toast("지급 총액(수당) 기준 3.3%가 자동 계산되었습니다.");
         }
+
+        // 🌟 [수술 완료] 타자 치는 즉시 실시간으로 더해지도록 전원(Scope)을 밖으로 꺼냈습니다!
+        window.pr_calcInsuranceTotal = function() {
+            const np = pr_parse('ins-np'); const hi = pr_parse('ins-hi');
+            const ei = pr_parse('ins-ei'); const wc = pr_parse('ins-wc');
+            const total = np + hi + ei + wc;
+            const totalInput = document.getElementById('insurance');
+            if(totalInput) totalInput.value = total > 0 ? formatNumber(total) : '';
+        };
 
         function calculatePayroll() {
             let displayName = '';
