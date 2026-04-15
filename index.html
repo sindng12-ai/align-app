@@ -4922,8 +4922,8 @@ ${inventoryContext}
         try {
             if(!apiKey) throw new Error("API KEY MISSING");
             
-            // 🌟 [팀장 픽스] 구글 서버에서 폐기된 1.5 구형 모델을 최신 'gemini-2.5-flash' 모델로 전면 교체!
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+            // 🌟 [팀장의 영구 방어막] 숫자(2.5)를 아예 빼버려서, 구글이 평생 알아서 최신 버전으로 자동 업데이트하도록 설정!
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=${apiKey}`;
             
             // systemInstruction을 빼고, promptText 자체에 역할을 합쳐서 보내는 가장 안전한 방식
             const safePrompt = "시스템 지침: 너는 헤어 디자이너를 돕는 최고의 미용 경영 AI 컨설턴트야.\n\n" + promptText;
@@ -9354,7 +9354,7 @@ window.mo_showGraduation = function(partnerName) {
     try {
         if(!apiKey) throw new Error("API KEY MISSING");
                 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=${apiKey}`;
                 const response = await fetch(url, {
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' },
