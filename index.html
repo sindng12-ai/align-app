@@ -4586,20 +4586,7 @@ function m_runEngine(data) {
             actionHTML += `</div><button id="m-btn-show-more" class="btn-show-more" onclick="m_toggleActions()">나의 숨은 문제점 및 처방 펼치기</button>`;
         }
         listEl.innerHTML = actionHTML;
-
-       const topTag = e.tags[0] ? e.tags[0].text : "";
-        let comment = '"진정한 프로는 숫자를 통해 자신을 증명합니다."';
-
-        if (e.raw.totalRev < (e.raw.goalRev * 0.7)) comment = '"목표를 낮추지 말고, 목표에 도달하기 위한 행동의 양을 늘리세요."';
-        else if (e.raw.productRev === 0) comment = '"디자인은 샵에서 끝나지 않습니다. 고객의 홈케어까지 책임져야 진짜 프로입니다."';
-        else if (e.leak >= 15) comment = '"예약표가 화려해도 노쇼가 많으면 허수입니다. 고객에게 예약의 무게감을 전달하세요."';
-        else if (topTag.includes('공백') || topTag.includes('적색경보') || topTag.includes('유입 의존') || topTag.includes('밑 빠진 독')) comment = '"핑계를 찾지 말고, 지금 당장 기존 단골에게 안부 연락부터 돌리세요."';
-        else if (topTag.includes('가성비') || topTag.includes('육체적') || topTag.includes('굴레')) comment = '"바쁘기만 한 건 노동입니다. 당신의 기술에 당당하게 가치를 매기세요."';
-        else if (e.cross < e.tier.reqCross) comment = '"커트만 쳐서는 롱런할 수 없습니다. 고객의 불편함을 해결하는 추가 시술을 제안하세요."';
-        else if (e.tier.id >= 4 && e.score >= 80) comment = '"당신은 이미 브랜드입니다. 이제는 가치를 숫자로 증명할 때입니다."';
-
-        document.getElementById('m-val-director').innerText = comment;
-
+      
         const tCut = parseInt(document.getElementById('m-cut-only').value.replace(/[^0-9]/g, '') || 0, 10);
         const tPermM = parseInt(document.getElementById('m-perm-m').value.replace(/[^0-9]/g, '') || 0, 10);
         const tPermF = parseInt(document.getElementById('m-perm-f').value.replace(/[^0-9]/g, '') || 0, 10);
