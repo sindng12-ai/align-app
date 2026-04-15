@@ -4914,36 +4914,45 @@ ${inventoryContext}
 
 
   async function fetchAI(promptText, resultBox, contentBox, loadingBox) {
-        // 🧠 지능형 열쇠 선택: 개인 키가 없으면 매장 공용 키를 가져옵니다.
-        const pKey = JSON.parse(localStorage.getItem('vl_user_settings') || '{}').apiKey;
-        const sKey = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}').apiKey;
-        const apiKey = (pKey && pKey.trim()) ? pKey.trim() : (sKey ? sKey.trim() : "");
+        // 🧠 지능형 열쇠 선택: 개인 키 -> 공용 키 순으로 꼼꼼히 확인
+        const pKeyObj = JSON.parse(localStorage.getItem('vl_user_settings') || '{}');
+        const sKeyObj = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}');
+        
+        let apiKey = "";
+        if (pKeyObj && pKeyObj.apiKey && pKeyObj.apiKey.trim() !== "") {
+            apiKey = pKeyObj.apiKey.trim();
+        } else if (sKeyObj && sKeyObj.apiKey && sKeyObj.apiKey.trim() !== "") {
+            apiKey = sKeyObj.apiKey.trim();
+        }
 
         try {
-            if(!apiKey) throw new Error("API KEY MISSING");
+            if(!apiKey) throw new Error("API_KEY_MISSING");
             
-            // 🌟 [팀장의 영구 방어막] 숫자(2.5)를 아예 빼버려서, 구글이 평생 알아서 최신 버전으로 자동 업데이트하도록 설정!
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+            // 🌟 [제미나이 직통 연결] v1beta 낡은 길을 버리고, 정식 통신망(v1)으로 2.5 최신 두뇌 호출!
+            const cleanKey = encodeURIComponent(apiKey.trim());
+            const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${cleanKey}`;
             
-            // systemInstruction을 빼고, promptText 자체에 역할을 합쳐서 보내는 가장 안전한 방식
             const safePrompt = "시스템 지침: 너는 헤어 디자이너를 돕는 최고의 미용 경영 AI 컨설턴트야.\n\n" + promptText;
+
+            // 🌟 [핵심 수술] 구글이 요구하는 완벽하고 정확한 JSON 포맷 뼈대
+            const requestBody = {
+                contents: [{ parts: [{ text: safePrompt }] }]
+            };
 
             const response = await fetch(url, {
                 method: 'POST', 
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    contents: [{ parts: [{ text: safePrompt }] }] 
-                })
+                body: JSON.stringify(requestBody)
             });
             
             const data = await response.json(); 
             
             if (!response.ok) {
-                // 구글이 보내는 정확한 에러 메시지 추출
-                throw new Error(data.error?.message || `HTTP 에러 ${response.status}`);
+                throw new Error(data.error?.message || `HTTP_ERROR_${response.status}`);
             }
             
             const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+            
             loadingBox.style.display = 'none'; 
             contentBox.innerHTML = reply ? reply.replace(/\n/g, '<br>') : "AI 응답을 불러오지 못했습니다."; 
             resultBox.classList.add('show');
@@ -4952,15 +4961,15 @@ ${inventoryContext}
             loadingBox.style.display = 'none';
             let errorMsg = error.message;
 
-            // 🌟 [팀장 픽스] 무서운 영어 에러를 친절한 한글로 스마트하게 번역!
-            if (errorMsg === "API KEY MISSING") {
-                errorMsg = "앱 하단의 [MY VL] 탭에서 구글 API Key를 입력해주세요!";
+            // 🌟 스마트 한글 번역기 (개발자용 원본 에러 코드까지 디버깅을 위해 노출)
+            if (errorMsg === "API_KEY_MISSING") {
+                errorMsg = "앱 하단의 [MY VL] 탭에서 구글 API Key를 먼저 입력해주세요!";
             } else if (errorMsg.includes('API_KEY_INVALID') || errorMsg.includes('API key not valid')) {
                 errorMsg = "구글 API 키가 잘못되었습니다. 복사한 키에 공백이 없는지 확인해 주세요.";
             } else if (errorMsg.includes('QUOTA_EXCEEDED') || errorMsg.includes('429')) {
-                errorMsg = "구글 AI 무료 사용량을 초과했습니다. 잠시 후 다시 시도해 주세요.";
+                errorMsg = "구글 AI 무료 사용량을 초과했습니다. (내일 다시 시도)";
             } else if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
-                errorMsg = "인터넷 연결이 불안정하거나 구글 서버가 응답하지 않습니다.";
+                errorMsg = "스마트폰의 광고 차단 앱(AdBlock)이 켜져 있거나 인터넷 연결이 불안정합니다.";
             } else {
                 errorMsg = `알 수 없는 오류가 발생했습니다.<br><span style="font-size:11px; opacity:0.7;">(사유: ${errorMsg})</span>`;
             }
@@ -9295,7 +9304,7 @@ window.mo_showGraduation = function(partnerName) {
             mo_calcFinance(); // 저장 후 차트 새로고침
         };
 
-        // 🌟 [AI CFO 멘토 엔진] 박사님의 피드백이 완벽히 적용된 프롬프트!
+        // 🌟 [AI CFO 멘토 엔진] 
         window.mo_callAICfo = async function() {
             const btn = document.getElementById('mo-cfo-btn');
             const reportEl = document.getElementById('mo-cfo-report');
@@ -9303,7 +9312,7 @@ window.mo_showGraduation = function(partnerName) {
             btn.style.pointerEvents = 'none';
             reportEl.innerHTML = '<span class="pulse" style="color: var(--accent-gold);">AI CFO가 직원 구성과 세무 데이터를 정밀 분석하고 있습니다...</span>';
 
-            // 1. 직원 명부 스캔 (누가 디자이너고 누가 파트너인지 색출!)
+            // 1. 직원 명부 스캔
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
             let designerCount = 0;
             let partnerCount = 0;
@@ -9346,31 +9355,53 @@ window.mo_showGraduation = function(partnerName) {
 4. 마지막으로 통장 쪼개기가 끝난 후 원장님이 이번 달에 마음 편히 집으로 가져가거나 재투자해도 되는 '진짜 순수익(Net Income)'이 얼마쯤 될지 제시하며 응원해 줘.
 5. <br> 태그와 <b> 태그를 적절히 써서 3~4문단으로 가독성 좋게 작성할 것.`;
 
-            // 🧠 지능형 열쇠 선택: 개인 키가 없으면 매장 공용 키를 가져옵니다.
-    const pKey = JSON.parse(localStorage.getItem('vl_user_settings') || '{}').apiKey;
-    const sKey = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}').apiKey;
-    const apiKey = (pKey && pKey.trim()) ? pKey.trim() : (sKey ? sKey.trim() : "");
+            // 🧠 지능형 열쇠 선택 (개인 -> 공용 순으로 꼼꼼히 확인)
+            const pKeyObj = JSON.parse(localStorage.getItem('vl_user_settings') || '{}');
+            const sKeyObj = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}');
+            
+            let apiKey = "";
+            if (pKeyObj && pKeyObj.apiKey && pKeyObj.apiKey.trim() !== "") {
+                apiKey = pKeyObj.apiKey.trim();
+            } else if (sKeyObj && sKeyObj.apiKey && sKeyObj.apiKey.trim() !== "") {
+                apiKey = sKeyObj.apiKey.trim();
+            }
 
-    try {
-        if(!apiKey) throw new Error("API KEY MISSING");
+            try {
+                if(!apiKey) throw new Error("API_KEY_MISSING");
                 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+                // 🌟 [제미나이 직통 연결] 오피스 멘토 역시 정식 통신망(v1) + 2.5 최신 두뇌로 고정!
+                const cleanKey = encodeURIComponent(apiKey.trim());
+                const url = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${cleanKey}`;
+                
+                const requestBody = {
+                    contents: [{ parts: [{ text: promptText }] }]
+                };
+
                 const response = await fetch(url, {
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ contents: [{ parts: [{ text: promptText }] }] })
+                    body: JSON.stringify(requestBody)
                 });
                 
                 const data = await response.json(); 
-                if (!response.ok) throw new Error(data.error?.message || 'API 호출 실패');
+                if (!response.ok) throw new Error(data.error?.message || `HTTP_ERROR_${response.status}`);
                 
                 const reply = data.candidates[0].content.parts[0].text;
                 reportEl.innerHTML = reply.replace(/\n/g, '<br>');
 
             } catch (error) {
-                reportEl.innerHTML = error.message === "API KEY MISSING" 
-                    ? "<span style='color:var(--error);'>🚨 하단 [MY VL] 탭의 SYSTEM 설정에서 Gemini API Key를 먼저 입력해 주세요!</span>" 
-                    : `<span style='color:var(--error);'>🚨 AI 분석 실패: ${error.message}</span>`;
+                let errorMsg = error.message;
+                if (errorMsg === "API_KEY_MISSING") {
+                    reportEl.innerHTML = "<span style='color:var(--error);'>🚨 하단 [MY VL] 탭의 SYSTEM 설정에서 Gemini API Key를 먼저 입력해 주세요!</span>";
+                } else if (errorMsg.includes('API_KEY_INVALID') || errorMsg.includes('API key not valid')) {
+                    reportEl.innerHTML = "<span style='color:var(--error);'>🚨 구글 API 키가 잘못되었습니다. 복사한 키에 공백이 없는지 확인해 주세요.</span>";
+                } else if (errorMsg.includes('QUOTA_EXCEEDED') || errorMsg.includes('429')) {
+                    reportEl.innerHTML = "<span style='color:var(--error);'>🚨 구글 AI 무료 사용량을 초과했습니다. 내일 다시 시도해 주세요.</span>";
+                } else if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
+                    reportEl.innerHTML = "<span style='color:var(--error);'>🚨 AI 분석 실패: 스마트폰의 광고 차단 앱이 켜져 있거나 통신이 불안정합니다.</span>";
+                } else {
+                    reportEl.innerHTML = `<span style='color:var(--error);'>🚨 AI 분석 실패: ${errorMsg}</span>`;
+                }
             } finally {
                 btn.innerText = "재무 컨설팅 받기";
                 btn.style.pointerEvents = 'auto';
