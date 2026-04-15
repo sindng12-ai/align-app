@@ -583,25 +583,26 @@
         .hidden-actions { display: none; flex-direction: column; gap: 20px; margin-top: 20px; border-top: 1px dashed var(--dark-line); padding-top: 20px; opacity: 0; transition: opacity 0.3s; }
         .hidden-actions.show { display: flex; opacity: 1; }
         
-        /* 🌟 디렉터 코멘트 위아래 여백 추가로 숨통 트이기 */
-        .director-quote { border-left: 2px solid var(--accent-gold); padding: 12px 0 12px 18px; margin: 30px 0; background: rgba(212, 175, 55, 0.03); position: relative; border-radius: 0 8px 8px 0; }
-        .director-quote::before { content: '"'; position: absolute; top: -8px; left: 8px; font-size: 60px; font-family: 'Montserrat', sans-serif; color: rgba(212, 175, 55, 0.12); line-height: 1; z-index: 0; }
-        .director-text { position: relative; z-index: 2; font-size: 13.5px; color: #E8E8ED; line-height: 1.6; font-style: italic; font-weight: 300; word-break: keep-all;}
-
-        /* 🌟 넥스트 레벨 시뮬레이터 전면 리디자인 (구슬 제거 & 프리미엄 핏) */
-        .m-sim-card { background: linear-gradient(135deg, rgba(28,28,30,0.8) 0%, rgba(10,10,12,0.9) 100%); border: 1px solid rgba(255,255,255,0.08); border-radius: 20px; padding: 28px 22px; margin-top: 30px; margin-bottom: 25px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); position: relative; z-index: 1;}
-        .sim-title { font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--accent-gold); margin-bottom: 22px; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; }
+       
+        /* 🌟 넥스트 레벨 시뮬레이터 전면 리디자인 (스마트 영수증 핏) */
+        .m-sim-card { background: linear-gradient(135deg, rgba(28,28,30,0.8) 0%, rgba(10,10,12,0.9) 100%); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 24px 20px; margin-top: 25px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; z-index: 1;}
+        
+        .sim-title { font-family: 'Montserrat', sans-serif; font-size: 11.5px; font-weight: 800; color: var(--accent-gold); margin-bottom: 18px; letter-spacing: 1.5px; display: flex; align-items: center; gap: 8px; }
         .sim-title::before { content: ''; display: inline-block; width: 6px; height: 6px; background: var(--accent-gold); border-radius: 50%; box-shadow: 0 0 10px var(--accent-gold); }
         
-        .sim-row { display: flex; flex-direction: column; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        .sim-row span { font-size: 11.5px; color: #8B949E; font-weight: 500; letter-spacing: -0.3px; margin-bottom: 8px; }
-        .sim-row span.val { color: #fff; font-weight: 600; font-family: 'Pretendard', sans-serif; font-size: 14.5px; line-height: 1.5; word-break: keep-all; margin-bottom: 0; } 
-        .sim-row span.val[style] { color: var(--accent-gold) !important; text-shadow: 0 0 10px rgba(212,175,55,0.2); } 
+        /* 🌟 가로 정렬로 압축 및 2줄 넘김 완벽 방어 */
+        .sim-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+        .sim-row span.label { font-size: 12.5px; color: #8B949E; font-weight: 500; letter-spacing: -0.3px; flex-shrink: 0; margin-right: 15px; padding-top: 2px; }
+        .sim-row span.val { color: #fff; font-weight: 600; font-family: 'Pretendard', sans-serif; font-size: 13.5px; line-height: 1.5; word-break: keep-all; text-align: right; } 
+        .sim-row span.val[style*="accent-gold"] { color: var(--accent-gold) !important; text-shadow: 0 0 10px rgba(212,175,55,0.2); } 
         
-        /* 🌟 예상 수익 결과 박스 하이라이트 강조 */
-        .sim-result { padding-top: 15px; margin-top: 5px; display: flex; flex-direction: column; align-items: center; background: rgba(212,175,55,0.05); border-radius: 12px; padding: 20px; border: 1px solid rgba(212,175,55,0.15); }
-        .sim-result-title { font-size: 11.5px; color: var(--accent-gold); font-weight: 700; margin-bottom: 8px; letter-spacing: -0.3px; }
-        .sim-result-val { font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 800; color: #fff; line-height: 1; text-shadow: 0 4px 15px rgba(0,0,0,0.3); letter-spacing: -1px;}
+        /* 🌟 영수증 절취선 디테일 */
+        .sim-divider { border-bottom: 1px dashed rgba(255,255,255,0.15); margin: 16px 0; }
+
+        /* 🌟 조화로운 크기로 밸런스 패치 (24px) */
+        .sim-result { display: flex; justify-content: space-between; align-items: center; background: rgba(212,175,55,0.05); border-radius: 10px; padding: 16px 15px; border: 1px solid rgba(212,175,55,0.15); }
+        .sim-result-title { font-size: 12.5px; color: var(--accent-gold); font-weight: 700; letter-spacing: -0.3px; }
+        .sim-result-val { font-family: 'Montserrat', sans-serif; font-size: 24px; font-weight: 800; color: #fff; line-height: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.3); letter-spacing: -0.5px;}
        
         /* 매직 키 패딩 및 폰트 튜닝 */
         .cheat-keys-container { display: flex; flex-direction: column; gap: 10px; }
@@ -2518,20 +2519,26 @@ input, textarea {
                     
                     <div class="m-sim-card">
                         <div class="sim-title">NEXT LEVEL SIMULATOR</div>
-                        <div class="sim-row"><span>현재 나의 객단가</span><span class="val" id="m-sim-curr-price">0원</span></div>
-                        <div class="sim-row"><span>내일의 실천 목표</span><span class="val" id="m-sim-mission" style="color: var(--accent-gold);">목표 계산 중</span></div>
+                        
+                        <div class="sim-row">
+                            <span class="label">현재 나의 객단가</span>
+                            <span class="val" id="m-sim-curr-price">0원</span>
+                        </div>
+                        
+                        <div class="sim-row">
+                            <span class="label">내일의 실천 목표</span>
+                            <span class="val" id="m-sim-mission" style="color: var(--accent-gold);">목표 계산 중</span>
+                        </div>
+                        
+                        <div class="sim-divider"></div>
+                        
                         <div class="sim-result">
                             <span class="sim-result-title">다음 달 예상 추가 수익</span>
                             <span class="sim-result-val" id="m-sim-result-val">+ 0 원</span>
                         </div>
                     </div>
 
-                    <div class="director-quote">
-                        <span class="r-label" style="color: var(--accent-gold); margin-bottom: 12px;">DIRECTOR'S COMMENT</span>
-                        <p class="director-text" id="m-val-director">"진정한 프로는 숫자를 통해 자신을 증명합니다."</p>
-                    </div>
-                </div>
-
+                   
                 <!-- PAGE 3: AI ADVICE -->
                 <div class="m-page" id="page-ai">
                     <div class="ai-header" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
