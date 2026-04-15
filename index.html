@@ -2109,7 +2109,7 @@ input, textarea {
         </div>
 
 
-        <div class="scroll-container" style="padding: 0 25px 120px;">
+        <div class="scroll-container" style="padding: 0 25px 160px;">
             
             <div style="margin-top: 15px; margin-bottom: 30px; animation: fadeUp 0.4s ease forwards;">
                 <div class="greeting" id="h-greeting" style="font-size: 24px; font-weight: 300; line-height: 1.4; margin-bottom: 12px;">안녕하세요,<br><strong>디자이너</strong>님!</div>
@@ -2622,7 +2622,7 @@ input, textarea {
             <div id="pr-tab-3" style="flex: 1; text-align: center; font-size: 11px; font-weight: 700; color: #5C6370; letter-spacing: 1px; padding-bottom: 10px; border-bottom: 2px solid transparent; cursor: pointer; transition: 0.3s;" onclick="pr_switchStep(3)">3. RECEIPT</div>
         </div>
 
-        <div class="scroll-container" style="padding: 0 25px 120px;">
+        <div class="scroll-container" style="padding: 0 25px 160px;">
             
             <div id="pr-step-1" style="animation: fadeUp 0.3s ease;">
                 <div class="header-section" style="margin-top: 0; margin-bottom: 20px;">
@@ -2914,7 +2914,7 @@ input, textarea {
             <div class="nav-btn hidden"></div>
         </div>
 
-        <div class="scroll-container" style="padding: 0 25px 120px;">
+        <div class="scroll-container" style="padding: 0 25px 160px;">
             
             <div class="v-profile-header" style="background: linear-gradient(145deg, #1c1c1e 0%, #050507 100%); border: 1px solid rgba(212,175,55,0.2); position: relative; overflow: hidden; padding: 25px 20px; border-radius: 20px; margin-bottom: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
                 <div style="position: absolute; top: -10px; right: -10px; width: 60px; height: 60px; background: radial-gradient(circle, rgba(212,175,55,0.02) 0%, transparent 80%); z-index: 0;"></div>
@@ -4923,7 +4923,7 @@ ${inventoryContext}
             if(!apiKey) throw new Error("API KEY MISSING");
             
             // 🌟 [팀장의 영구 방어막] 숫자(2.5)를 아예 빼버려서, 구글이 평생 알아서 최신 버전으로 자동 업데이트하도록 설정!
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=${apiKey}`;
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
             
             // systemInstruction을 빼고, promptText 자체에 역할을 합쳐서 보내는 가장 안전한 방식
             const safePrompt = "시스템 지침: 너는 헤어 디자이너를 돕는 최고의 미용 경영 AI 컨설턴트야.\n\n" + promptText;
@@ -9354,7 +9354,7 @@ window.mo_showGraduation = function(partnerName) {
     try {
         if(!apiKey) throw new Error("API KEY MISSING");
                 
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash:generateContent?key=${apiKey}`;
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
                 const response = await fetch(url, {
                     method: 'POST', 
                     headers: { 'Content-Type': 'application/json' },
