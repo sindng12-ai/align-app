@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#050507">
     <title>ALIGN | Master App</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
     <style>
 /* 🌟 [HOME & 커스텀 모달] 신규 UI 스타일 추가 */
@@ -474,11 +475,14 @@
     
         .m-auto-sum { background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.02) 100%); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 15px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         
-        /* 🌟 [하단 버튼 영역] 위치를 아이폰 환경에 맞게 견고하게 고정 */
+        /* 🌟 [하단 버튼 영역] 사파리 꿀렁임 완벽 방어: fixed로 바닥 밀착! */
         .m-bottom-action { 
-            position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 25px; 
+            position: fixed; /* 🌟 absolute ➔ fixed 로 변경 (초강력 본드) */
+            bottom: -1px; /* 🌟 1px 틈새 원천 차단 */
+            left: 50%; transform: translateX(-50%); max-width: 414px; /* 중앙 정렬 유지 */
+            width: 100%; padding: 20px 25px; 
             background: linear-gradient(0deg, rgba(5,5,7,1) 50%, rgba(5,5,7,0.8) 75%, rgba(5,5,7,0) 100%); 
-            z-index: 10; display: flex; gap: 10px; 
+            z-index: 9999; display: flex; gap: 10px; 
             padding-bottom: calc(35px + env(safe-area-inset-bottom)); /* 기기별 하단 안전 여백 자동 계산 */
         }
         .m-btn-primary { 
@@ -2635,7 +2639,15 @@ input, textarea {
                 </div>
             </div>
 
-            <div class="bottom-action-report" style="position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px 25px 35px; background: linear-gradient(0deg, rgba(5,5,7,1) 40%, rgba(5,5,7,0.9) 70%, rgba(5,5,7,0) 100%); z-index: 30; display: flex; gap: 10px;">
+            /* 🌟 [먼슬리 결과창 하단] 사파리 꿀렁임 완벽 방어: fixed로 바닥 밀착! */
+            .bottom-action-report { 
+                position: fixed; /* 🌟 absolute ➔ fixed 로 변경 */
+                bottom: -1px; left: 50%; transform: translateX(-50%); max-width: 414px; 
+                width: 100%; padding: 20px 25px; 
+                padding-bottom: calc(35px + env(safe-area-inset-bottom)); /* 🌟 홈바 여백 추가 */
+                background: linear-gradient(0deg, rgba(5,5,7,1) 40%, rgba(5,5,7,0.9) 70%, rgba(5,5,7,0) 100%); 
+                z-index: 9999; display: flex; gap: 10px; 
+            }
                 <button style="width: 56px; height: 56px; background: var(--bg); border: 1px solid var(--dark-line); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; transition: 0.2s;" onclick="m_copyReportToClipboard()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
                 <button style="flex: 1; height: 56px; background: var(--card-bg); color: var(--accent-gold); border: 1px solid rgba(212,175,55,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 12px; font-size: 14px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.2s;" onclick="app.goHome(true)" onmousedown="this.style.background='rgba(212,175,55,0.1)'" onmouseup="this.style.background='var(--card-bg)'">마감 및 홈으로</button>
             </div>
