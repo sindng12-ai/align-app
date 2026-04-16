@@ -89,13 +89,20 @@
         ::-webkit-scrollbar { display: none; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* 🌟 [팀장의 카무플라주] 진짜 밑바닥(html)까지 앱 배경색으로 통일하여, 아이폰이 화면을 들어 올려도 검은 박스가 안 보이게 완벽 위장! */
+        html { background: var(--bg) !important; height: 100%; }
+
         body { 
-            background: #000; color: var(--text); font-family: 'Pretendard', sans-serif; 
-            margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; 
+            background: var(--bg); color: var(--text); font-family: 'Pretendard', sans-serif; 
+            margin: 0; display: flex; justify-content: center; align-items: center; 
+            height: 100vh; height: 100dvh; /* 🌟 [팀장의 뼈대 공사] 고무줄처럼 변하는 사파리를 잡기 위한 최신 단위(dvh) 이중 잠금 */
+            overflow: hidden; 
         }
 
         .app-frame {
-            width: 100%; max-width: 414px; height: 100vh; max-height: 850px; 
+            width: 100%; max-width: 414px; 
+            height: 100vh; height: 100dvh; /* 🌟 dvh 이중 잠금 */
+            max-height: 850px; 
             background: var(--bg); position: relative; display: flex; flex-direction: column; overflow: hidden;
             @media (min-width: 415px) { border-radius: 40px; border: 1px solid #1a1a1a; box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
         }
@@ -845,7 +852,7 @@
         transform: translateX(-50%) !important; /* 강제 중앙 이동 2단계 */
         background: var(--bg);
         box-shadow: 0 0 50px rgba(0,0,0,0.5); 
-        min-height: 100vh;
+        min-height: 100vh; min-height: 100dvh; /* 🌟 dvh 이중 잠금 */
     }
 
     /* 🚫 모든 숫자 입력창의 투박한 화살표(Spinner) 제거 */
