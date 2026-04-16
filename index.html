@@ -214,21 +214,30 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        /* 🌟 [카톡 완벽 동기화] 그라데이션 폐기! 통일된 원톤(One-Tone) 네이티브 글래스 적용 */
+        /* 🌟 [변태적 디테일 픽스] 사파리의 꿀렁임을 무시하고 홈 인디케이터(바닥 끝)까지 글래스로 완벽 밀착! */
         .bottom-nav { 
-            position: absolute; bottom: 0; left: 0; width: 100%; 
-            /* 🌟 묵직하고 세련된 단일 다크톤 (투명도 88%)으로 끝까지 밀어버림 */
+            position: fixed; /* 🌟 absolute ➔ fixed 로 변경: 물리적 스마트폰 액정 바닥에 초강력 본드 접착! */
+            bottom: 0; 
+            left: 50%; /* 🌟 PC 화면에서도 앱 틀(414px) 안에 예쁘게 갇히도록 중앙 정렬 */
+            transform: translateX(-50%);
+            width: 100%; 
+            max-width: 414px; 
             background: rgba(15, 15, 18, 0.88); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            /* 🌟 홈 인디케이터(가로줄) 여백까지 같은 색의 유리가 한 덩어리로 쫙 내려감 */
+            /* 🌟 홈 인디케이터 영역을 하단 바 글래스로 100% 덮어버림 */
             padding: 15px 20px calc(15px + env(safe-area-inset-bottom)); 
-            z-index: 50; opacity: 0; 
+            z-index: 9999; /* 화면의 그 어떤 요소보다 무조건 위로 오게 멱살 잡기 */
+            opacity: 0; 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
-
-        .bottom-nav.hide { transform: translateY(150px) !important; opacity: 0 !important; pointer-events: none !important; }
+        
+        .bottom-nav.hide { 
+            transform: translate(-50%, 150px) !important; /* 🌟 숨길 때도 중앙 정렬 핏 유지 */
+            opacity: 0 !important; 
+            pointer-events: none !important; 
+        }
         
         /* 🌟 [1단계] 입력창 터치 시 하단 바 즉시 소멸! */
         body:has(input:focus, textarea:focus) .bottom-nav {
