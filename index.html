@@ -1217,7 +1217,7 @@ input, textarea {
         <div style="position: absolute; bottom: 40px; font-size: 9px; color: rgba(255,255,255,0.2); letter-spacing: 6px; font-weight: 600; font-family: 'Montserrat', sans-serif; text-align: center; line-height: 1.6;">SYSTEM MANAGED BY<br><span style="color:rgba(255,255,255,0.4);">PhD HEIUNG</span></div>
     </div>
 
-<div id="gate-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050507; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; transition: opacity 0.8s ease; font-family: 'Pretendard', sans-serif;">
+<div id="gate-overlay" style="position: fixed; inset: 0; background: #050507; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; transition: opacity 0.8s ease; font-family: 'Pretendard', sans-serif;">
         
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 40%, rgba(212,175,55,0.06) 0%, rgba(5,5,7,1) 60%); pointer-events: none;"></div>
 
@@ -1273,7 +1273,7 @@ input, textarea {
         </div>
     </div>
 
-<div id="manager-room" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050507; z-index: 9999; box-sizing: border-box; font-family: 'Pretendard', sans-serif;">
+<div id="manager-room" style="display: none; position: fixed; inset: 0; background: #050507; z-index: 9999; box-sizing: border-box; font-family: 'Pretendard', sans-serif;">
         
         <div class="mo-header-wrap">
             <div style="display: flex; justify-content: space-between; align-items: flex-end;">
@@ -2641,15 +2641,7 @@ input, textarea {
                 </div>
             </div>
 
-            /* 🌟 [먼슬리 결과창 하단] 과도한 방석 제거 및 네이티브 핏 적용! */
-        .bottom-action-report { 
-            position: fixed; 
-            bottom: -1px; left: 50%; transform: translateX(-50%); max-width: 414px; 
-            width: 100%; padding: 15px 25px; 
-            padding-bottom: calc(15px + env(safe-area-inset-bottom)); /* 🌟 35px -> 15px로 다이어트! */
-            background: linear-gradient(0deg, rgba(5,5,7,1) 40%, rgba(5,5,7,0.9) 70%, rgba(5,5,7,0) 100%); 
-            z-index: 9999; display: flex; gap: 10px; 
-        }
+           <div class="bottom-action-report" style="position: fixed; bottom: -1px; left: 50%; transform: translateX(-50%); max-width: 414px; width: 100%; padding: 15px 25px; padding-bottom: calc(15px + env(safe-area-inset-bottom)); background: linear-gradient(0deg, rgba(5,5,7,1) 40%, rgba(5,5,7,0.9) 70%, rgba(5,5,7,0) 100%); z-index: 9999; display: flex; gap: 10px;">
                 <button style="width: 56px; height: 56px; background: var(--bg); border: 1px solid var(--dark-line); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; cursor: pointer; transition: 0.2s;" onclick="m_copyReportToClipboard()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
                 <button style="flex: 1; height: 56px; background: var(--card-bg); color: var(--accent-gold); border: 1px solid rgba(212,175,55,0.3); box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 12px; font-size: 14px; font-weight: 800; letter-spacing: 1px; cursor: pointer; transition: 0.2s;" onclick="app.goHome(true)" onmousedown="this.style.background='rgba(212,175,55,0.1)'" onmouseup="this.style.background='var(--card-bg)'">마감 및 홈으로</button>
             </div>
