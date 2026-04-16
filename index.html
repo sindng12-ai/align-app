@@ -102,9 +102,9 @@
         .app-frame {
             width: 100%; max-width: 414px; 
             height: 100vh; height: 100dvh; /* 🌟 dvh 이중 잠금 */
-            max-height: 850px; 
             background: var(--bg); position: relative; display: flex; flex-direction: column; overflow: hidden;
-            @media (min-width: 415px) { border-radius: 40px; border: 1px solid #1a1a1a; box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
+            /* 🌟 [팀장의 수술] PC 화면일 때만 높이 제한(850px) 적용, 모바일은 제한 없이 바닥 끝까지 밀착! */
+            @media (min-width: 415px) { max-height: 850px; border-radius: 40px; border: 1px solid #1a1a1a; box-shadow: 0 40px 100px rgba(0,0,0,0.8); }
         }
 
         .ambient-bg { 
