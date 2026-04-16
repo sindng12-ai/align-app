@@ -1885,8 +1885,8 @@ input, textarea {
                         <div style="margin-bottom: 15px;">
                             <label style="display: block; font-size: 11px; color: #5C6370; margin-bottom: 6px;">매장 공용 Gemini API Key</label>
                             <div style="display: flex; align-items: center; gap: 8px;">
-                                <input type="password" id="sys-api-key" placeholder="직원들과 공유할 공용 키 입력" 
-                                       style="flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s;">
+                                <input type="text" id="sys-api-key" placeholder="직원들과 공유할 공용 키 입력" 
+                                       style="-webkit-text-security: disc; flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s;">
                                 <button type="button" id="mo-btn-api-toggle" onclick="mo_toggleMasterApiKey()"
                                         style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #fff; padding: 11px 12px; border-radius: 8px; font-size: 10px; font-weight: 700; letter-spacing: 1px; cursor: pointer; transition: 0.2s; font-family: 'Montserrat', sans-serif;">SHOW</button>
                             </div>
@@ -1898,7 +1898,7 @@ input, textarea {
                         <div style="font-size: 11px; color: var(--accent-gold); font-family: 'Montserrat', sans-serif; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.05em;">SECURITY</div>
                         <div>
                             <label style="display: block; font-size: 11px; color: #5C6370; margin-bottom: 6px;">경영자 오피스 마스터 비밀번호</label>
-                            <input type="password" id="sys-admin-password" placeholder="진입 시 사용할 비밀번호 입력" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                            <input type="text" id="sys-admin-password" placeholder="진입 시 사용할 비밀번호 입력" style="-webkit-text-security: disc; width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s;" onfocus="this.style.borderColor='var(--accent-gold)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
                         </div>
                     </div>
                     </div><button onclick="mo_saveSystemSettings()" style="width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 15px rgba(212,175,55,0.3);">설정 저장 및 적용하기</button>
@@ -3030,7 +3030,7 @@ input, textarea {
                 <div class="v-settings-row" style="padding: 15px 18px;">
                     <div class="v-item-info" style="width: 30%;"><div class="v-item-label" style="font-size: 13px;">API KEY</div></div>
                     <div style="display: flex; align-items: center; justify-content: flex-end; width: 70%;">
-                        <input type="password" class="v-item-input text-type" id="v-set-api-key" placeholder="Gemini API Key" autocomplete="off" style="text-align: right; letter-spacing: 2px; font-size: 14px;">
+                        <input type="text" class="v-item-input text-type" id="v-set-api-key" placeholder="Gemini API Key" autocomplete="off" style="-webkit-text-security: disc; text-align: right; letter-spacing: 2px; font-size: 14px;">
                         <button type="button" id="v-btn-api-toggle" class="v-btn-show" onclick="v_toggleApiKey()">SHOW</button>
                     </div>
                 </div>
@@ -5177,25 +5177,25 @@ function v_saveSettings() {
         if(typeof app !== 'undefined' && app.toast) app.toast("설정이 저장되었습니다.");
     }
 
+// 🌟 마이페이지 API키 SHOW/HIDE 엔진 교체
 window.v_toggleApiKey = function() {
         const input = document.getElementById('v-set-api-key');
         const btn = document.getElementById('v-btn-api-toggle');
         
-        if (input.type === 'password') {
-            input.type = 'text';
-            input.style.letterSpacing = 'normal'; // 비밀번호 아닐 땐 자간 원상복구
+        if (input.style.webkitTextSecurity === 'disc') {
+            input.style.webkitTextSecurity = 'none'; // 가림막 해제
+            input.style.letterSpacing = 'normal';
             btn.innerText = 'HIDE';
             btn.style.color = 'var(--accent-gold)';
             btn.style.borderColor = 'var(--accent-gold)';
         } else {
-            input.type = 'password';
-            input.style.letterSpacing = '2px'; // 비밀번호일 땐 보안 느낌나게 자간 넓힘
+            input.style.webkitTextSecurity = 'disc'; // 가림막 작동
+            input.style.letterSpacing = '2px';
             btn.innerText = 'SHOW';
             btn.style.color = '#fff';
             btn.style.borderColor = 'rgba(255,255,255,0.2)';
         }
     };
-
 
     // =========================================================
     // [INSTAGRAM STORY CAPTURE ENGINE] (우측 짤림 완벽 픽스본)
@@ -9158,24 +9158,23 @@ function mo_clearAllNoti() {
     if(typeof mo_updateNotification === 'function') mo_updateNotification();
 }
 
-// 👁️ 오피스 마스터 API KEY 보이기/숨기기 토글 함수 (추천 삽입 위치!)
+// 🌟 오피스 API키 SHOW/HIDE 엔진 교체
 window.mo_toggleMasterApiKey = function() {
     const input = document.getElementById('sys-api-key');
     const btn = document.getElementById('mo-btn-api-toggle');
     
-    if (input.type === 'password') {
-        input.type = 'text';
+    if (input.style.webkitTextSecurity === 'disc') {
+        input.style.webkitTextSecurity = 'none';
         btn.innerText = 'HIDE';
         btn.style.color = 'var(--accent-gold)';
         btn.style.borderColor = 'var(--accent-gold)';
     } else {
-        input.type = 'password';
+        input.style.webkitTextSecurity = 'disc';
         btn.innerText = 'SHOW';
         btn.style.color = '#fff';
         btn.style.borderColor = 'rgba(255,255,255,0.15)';
     }
 };
-
 
 // ==========================================
 // ⚙️ ALIGN 2.0: 시스템 환경 설정 (중앙 제어실 V3) 로직
@@ -10045,19 +10044,28 @@ document.addEventListener('DOMContentLoaded', () => {
 /* 👆 제스처 엔진 복사 완료 👆 *
 
 // =========================================================
-// 🎯 [SMART FOCUS ENGINE V4] 모바일 키보드 완벽 방어 (하단 바 완전 증발 엔진)
+// 🎯 [SMART FOCUS ENGINE V5] 모바일 키보드 완벽 방어 (투명 망토 & 내부 스크롤 한정 엔진)
 // =========================================================
 document.addEventListener('focusin', (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        // 🌟 1. 아이폰 키보드가 올라오면 하단 바를 화면에서 완전히 없애버립니다. (display: none)
         const nav = document.getElementById('global-nav');
         if(nav) {
-            nav.style.display = 'none';
+            // 🌟 하단 바를 투명하게 지우고 터치 불가 상태로 만듦 (레이아웃 뒤틀림 방지)
+            nav.style.opacity = '0';
+            nav.style.visibility = 'hidden';
+            nav.style.pointerEvents = 'none';
         }
-
         setTimeout(() => {
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // 🌟 전체 화면을 끌어올리는 게 아니라, 타겟이 속한 '스크롤 박스'만 부드럽게 올림!
+            const scrollArea = target.closest('.scroll-container, .mo-pages-container');
+            if(scrollArea) {
+                const targetRect = target.getBoundingClientRect();
+                const areaRect = scrollArea.getBoundingClientRect();
+                // 입력창이 화면 중앙쯤 오도록 정밀 계산
+                const offset = targetRect.top - areaRect.top - (areaRect.height / 3);
+                scrollArea.scrollBy({ top: offset, behavior: 'smooth' });
+            }
         }, 300);
     }
 });
@@ -10066,20 +10074,17 @@ document.addEventListener('focusout', (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
         setTimeout(() => {
-            // 🌟 2. 키보드가 내려가면 다시 플렉스(flex)로 복구합니다.
             const nav = document.getElementById('global-nav');
             if(nav) {
-                nav.style.display = 'flex';
-            }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            const scrollArea = target.closest('[style*="overflow-y: auto"]');
-            if (scrollArea) {
-                scrollArea.scrollTo({ top: 0, behavior: 'smooth' });
+                // 🌟 키보드가 내려가면 스르륵 다시 나타남
+                nav.style.opacity = '1';
+                nav.style.visibility = 'visible';
+                nav.style.pointerEvents = 'auto';
             }
         }, 100); // 키보드 내려가는 속도 대기
     }
 });
+
 /* 👆 스마트 포커스 엔진 복사 완료 👆 */
 
 // 🌟 [팀장의 수리: 모바일 스침 터치(Quick Tap) 애니메이션 100% 보장 엔진]
