@@ -214,17 +214,16 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        /* 🌟 [디테일 픽스] 높이(height) 고정을 풀고, 아이폰 홈바 여백(env)만큼 글래스 배경을 바닥까지 쫙 늘림! */
+        /* 🌟 [카톡 완벽 동기화] 그라데이션 폐기! 통일된 원톤(One-Tone) 네이티브 글래스 적용 */
         .bottom-nav { 
-            position: absolute; 
-            bottom: -1px; /* 🌟 물리적 화면 끝 1px의 미세한 틈새까지 완벽 차단 */
-            left: 0; width: 100%; 
-            /* 🌟 [그라데이션 글래스 마법] 위쪽은 맑은 유리(40%), 아래쪽은 먹물 유리(98%)로 자연스럽게 스며들게 코팅! */
-            background: linear-gradient(to bottom, rgba(5,5,7,0.4) 0%, rgba(5,5,7,0.85) 50%, rgba(5,5,7,0.98) 100%); 
-            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
+            position: absolute; bottom: 0; left: 0; width: 100%; 
+            /* 🌟 묵직하고 세련된 단일 다크톤 (투명도 88%)으로 끝까지 밀어버림 */
+            background: rgba(15, 15, 18, 0.88); 
+            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            padding: 18px 20px calc(19px + env(safe-area-inset-bottom)); 
+            /* 🌟 홈 인디케이터(가로줄) 여백까지 같은 색의 유리가 한 덩어리로 쫙 내려감 */
+            padding: 15px 20px calc(15px + env(safe-area-inset-bottom)); 
             z-index: 50; opacity: 0; 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
