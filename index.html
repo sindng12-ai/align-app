@@ -1173,6 +1173,18 @@ input, textarea {
             flex-shrink: 0 !important;
         }
 
+        /* 🌟 [마이크로 햅틱] 텍스트 버튼 전용 쫀득 핏 (가장 안전한 위치에 탑재!) */
+        .btn-text-back {
+            margin-top: 30px; background: transparent; border: none; 
+            color: #5C6370; font-size: 11px; text-decoration: underline; 
+            text-underline-offset: 4px; cursor: pointer; letter-spacing: 1px; 
+            transition: all 0.1s cubic-bezier(0.2, 1, 0.2, 1);
+        }
+        .btn-text-back:active {
+            color: #fff; /* 터치하는 순간 글씨가 하얗게 빛남 */
+            transform: scale(0.92); /* 터치하는 순간 쫀득하게 눌림 */
+        }
+
 </style>
 </head><body>
 
@@ -2125,7 +2137,7 @@ input, textarea {
             </div>
         </div>
 
-        <button onclick="v_goBackToGate()" style="margin-top: 30px; background: transparent; border: none; color: #5C6370; font-size: 11px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1);" onmousedown="this.style.color='#fff'; this.style.transform='scale(0.95)';" onmouseup="this.style.color='#5C6370'; this.style.transform='scale(1)';" onmouseleave="this.style.color='#5C6370'; this.style.transform='scale(1)';">이전으로 돌아가기</button>
+        <button onclick="v_goBackToGate()" class="btn-text-back">이전으로 돌아가기</button>
     </div>
 
    <div class="app-frame" id="app-frame" style="display: none;">
