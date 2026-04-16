@@ -214,7 +214,16 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; opacity: 0; transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; }
+        /* 🌟 [디테일 픽스] 높이(height) 고정을 풀고, 아이폰 홈바 여백(env)만큼 글래스 배경을 바닥까지 쫙 늘림! */
+        .bottom-nav { 
+            position: absolute; bottom: 0; left: 0; width: 100%; 
+            background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
+            border-top: 1px solid var(--dark-line); 
+            display: flex; justify-content: center; gap: 80px; align-items: center; 
+            padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); /* 👈 여기가 핵심입니다 */
+            z-index: 50; opacity: 0; 
+            transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
+        }
 
         .bottom-nav.hide { transform: translateY(150px) !important; opacity: 0 !important; pointer-events: none !important; }
         
@@ -3050,13 +3059,17 @@ input, textarea {
             </div>
 
             <span class="v-sec-title" style="margin-left: 4px;">SYSTEM & AI</span>
-            <div class="v-settings-card" style="margin-bottom: 35px; border-radius: 16px;">
-                <div class="v-settings-row" style="padding: 15px 18px;">
-                    <div class="v-item-info" style="width: 30%;"><div class="v-item-label" style="font-size: 13px;">API KEY</div></div>
-                    <div style="display: flex; align-items: center; justify-content: flex-end; width: 70%;">
-                        <input type="text" class="v-item-input text-type" id="v-set-api-key" placeholder="Gemini API Key" autocomplete="off" style="-webkit-text-security: disc; text-align: right; letter-spacing: 2px; font-size: 14px;">
-                        <button type="button" id="v-btn-api-toggle" class="v-btn-show" onclick="v_toggleApiKey()">SHOW</button>
+            <div class="v-settings-card" style="margin-bottom: 25px; border-radius: 16px;">
+                <div class="v-settings-row" style="padding: 15px 18px; display: flex; justify-content: space-between; align-items: center;">
+                    <div class="v-item-info" style="flex: 1; width: auto;">
+                        <div class="v-item-label" style="font-size: 13px; color: #fff;">Gemini API KEY</div>
+                        <div class="v-item-sub" style="word-break: keep-all;">나만의 AI 멘토 연결 키 설정</div>
                     </div>
+                    <div style="display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-shrink: 0;">                         
+                        <input type="hidden" id="v-set-api-key">
+                        <button id="v-btn-api-key" onclick="v_changeApiKey()" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 8px 15px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; white-space: nowrap;">키 설정</button>
+                    </div>
+
                 </div>
             </div>
 
@@ -5097,7 +5110,25 @@ ${inventoryContext}
             if(settings.goalRev) { goalRev = parseInt(settings.goalRev, 10); document.getElementById('v-set-goal').value = goalRev.toLocaleString('ko-KR'); }
             document.getElementById('v-set-slots').value = settings.dailySlots || 20;
             document.getElementById('v-set-days').value = settings.monthlyDays || 25;
+            
+           // 🌟 [디자인 픽스 V3] 키 유무에 따라 버튼 색상을 시그니처 골드로 우아하게 변경
             document.getElementById('v-set-api-key').value = settings.apiKey || '';
+            const apiBtn = document.getElementById('v-btn-api-key');
+            if (apiBtn) {
+                if (settings.apiKey && settings.apiKey.trim() !== '') {
+                    // 등록됨 -> 시그니처 골드 테마
+                    apiBtn.style.background = 'rgba(212,175,55,0.15)';
+                    apiBtn.style.borderColor = 'var(--accent-gold)';
+                    apiBtn.style.color = 'var(--accent-gold)';
+                } else {
+                    // 미등록 -> 화이트 글래스 테마
+                    apiBtn.style.background = 'rgba(255,255,255,0.1)';
+                    apiBtn.style.borderColor = 'rgba(255,255,255,0.2)';
+                    apiBtn.style.color = '#fff';
+                }
+            }
+
+
             if(settings.basePrice) document.getElementById('v-set-base-price').value = parseInt(settings.basePrice, 10).toLocaleString('ko-KR');
             if(settings.premiumPrice) document.getElementById('v-set-premium-price').value = parseInt(settings.premiumPrice, 10).toLocaleString('ko-KR');
             if(settings.name) {
@@ -10095,6 +10126,7 @@ window.attemptProfileLogin = async function(name, position) {
     window.loginAs(name, position);
 };
 
+// 🌟 누락되었던 alignProfiles 저장 로직 완벽 복구 완료!
 window.v_changePersonalPw = async function() {
     const currentUserName = localStorage.getItem('alignCurrentUser');
     if(!currentUserName) return;
@@ -10110,11 +10142,42 @@ window.v_changePersonalPw = async function() {
     let idx = profiles.findIndex(p => p.name === currentUserName);
     if(idx !== -1) {
         profiles[idx].personalPw = newPw;
+        // 🚨 [핵심 복구] 금고(localStorage)에 변경된 비밀번호 명부를 영구 저장합니다!
+        localStorage.setItem('alignProfiles', JSON.stringify(profiles));
         localStorage.setItem('alignSavedPw', newPw);
-        // 🌟 [줄바꿈 교정] 자연스러운 위치에서 강제 엔터(<br>) 처리
-        AlignModal.alert("비밀번호가 안전하게 변경되었습니다.<br>다음 로그인부터 적용됩니다.", "변경 완료");
+        
+        AlignModal.alert("✅ 비밀번호가 안전하게 변경되었습니다.<br>다음 로그인부터 적용됩니다.", "변경 완료");
     }
 };
+
+// 🌟 [디자인 픽스 V3] 키 유무에 따라 버튼 색상을 시그니처 골드로 우아하게 변경
+window.v_changeApiKey = async function() {
+    const newKey = await AlignModal.prompt("새로운 Gemini API Key를 붙여넣기 하세요.<br><span style='font-size:11px; color:#8B949E; font-weight:400; margin-top:6px; display:inline-block;'>※ 키를 삭제하려면 빈칸으로 두고 확인을 누르세요.</span>", "API KEY 입력", "API KEY 설정");
+    
+    if (newKey !== null) { 
+        document.getElementById('v-set-api-key').value = newKey.trim(); 
+        const apiBtn = document.getElementById('v-btn-api-key'); 
+
+        if(newKey.trim() !== '') {
+            // 등록됨 -> 시그니처 골드 테마
+            if(apiBtn) {
+                apiBtn.style.background = 'rgba(212,175,55,0.15)';
+                apiBtn.style.borderColor = 'var(--accent-gold)';
+                apiBtn.style.color = 'var(--accent-gold)';
+            }
+            AlignModal.alert("API KEY가 임시 등록되었습니다.<br>하단의 <b>[변경 사항 저장하기]</b>를 눌러야 <br>최종 반영됩니다.", "등록 대기");
+        } else {
+            // 미등록 -> 화이트 글래스 테마
+            if(apiBtn) {
+                apiBtn.style.background = 'rgba(255,255,255,0.1)';
+                apiBtn.style.borderColor = 'rgba(255,255,255,0.2)';
+                apiBtn.style.color = '#fff';
+            }
+            AlignModal.alert("API KEY가 삭제되었습니다.<br>하단의 <b>[변경 사항 저장하기]</b>를 눌러야 <br>최종 반영됩니다.", "삭제 대기");
+        }
+    }
+};
+
 
 window.addNewProfile = async function() {
     const name = await AlignModal.prompt("새 직원의 이름을 입력하세요 (예: 지훈):", "이름 입력", "직원 추가");
