@@ -237,8 +237,10 @@
             pointer-events: none !important; 
         }
         
-        /* 🌟 [1단계] 입력창 터치 시 하단 바 즉시 소멸! */
-        body:has(input:focus, textarea:focus) .bottom-nav {
+       /* 🌟 [1단계] 입력창 터치 시 하단 바 즉시 소멸 (먼슬리 프로 [다음 단계] 버튼도 묶어서 완벽 차단!) */
+        body:has(input:focus, textarea:focus) .bottom-nav,
+        body:has(input:focus, textarea:focus) .m-bottom-action,
+        body:has(input:focus, textarea:focus) .bottom-action-report {
             display: none !important;
         }
         
