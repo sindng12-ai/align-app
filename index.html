@@ -217,10 +217,14 @@
         /* 🌟 [디테일 픽스] 높이(height) 고정을 풀고, 아이폰 홈바 여백(env)만큼 글래스 배경을 바닥까지 쫙 늘림! */
         .bottom-nav { 
             position: absolute; bottom: 0; left: 0; width: 100%; 
-            background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
-            border-top: 1px solid var(--dark-line); 
+            /* 🌟 [디자인 픽스] 0.95(95%)의 답답한 먹물을 0.65(65%)의 투명한 진짜 유리로 교체! */
+            background: rgba(5, 5, 7, 0.65); 
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); 
+            /* 🌟 유리의 윗부분 경계선이 살짝 더 빛나도록 엣지 추가 */
+            border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            padding: 20px 20px calc(20px + env(safe-area-inset-bottom)); /* 👈 여기가 핵심입니다 */
+            /* 🌟 아이콘의 위아래 여백 밸런스를 18px로 더 쫀쫀하게 조율 */
+            padding: 18px 20px calc(18px + env(safe-area-inset-bottom)); 
             z-index: 50; opacity: 0; 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
