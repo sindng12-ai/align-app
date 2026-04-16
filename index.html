@@ -10044,46 +10044,44 @@ document.addEventListener('DOMContentLoaded', () => {
 /* 👆 제스처 엔진 복사 완료 👆 *
 
 // =========================================================
-// 🎯 [SMART FOCUS ENGINE V5] 모바일 키보드 완벽 방어 (투명 망토 & 내부 스크롤 한정 엔진)
+// 🎯 [SMART FOCUS ENGINE V6] 하단 바 절대 방어 (투명화가 아닌 존재 자체를 일시 소멸)
 // =========================================================
-document.addEventListener('focusin', (e) => {
+const handleKeyboardOpen = (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
         const nav = document.getElementById('global-nav');
         if(nav) {
-            // 🌟 하단 바를 투명하게 지우고 터치 불가 상태로 만듦 (레이아웃 뒤틀림 방지)
-            nav.style.opacity = '0';
-            nav.style.visibility = 'hidden';
-            nav.style.pointerEvents = 'none';
+            // 🌟 투명화 꼼수 폐기! 키보드가 뜨면 하단 바를 화면에서 완전히 없애버립니다.
+            nav.style.setProperty('display', 'none', 'important');
         }
         setTimeout(() => {
-            // 🌟 전체 화면을 끌어올리는 게 아니라, 타겟이 속한 '스크롤 박스'만 부드럽게 올림!
             const scrollArea = target.closest('.scroll-container, .mo-pages-container');
             if(scrollArea) {
                 const targetRect = target.getBoundingClientRect();
                 const areaRect = scrollArea.getBoundingClientRect();
-                // 입력창이 화면 중앙쯤 오도록 정밀 계산
                 const offset = targetRect.top - areaRect.top - (areaRect.height / 3);
                 scrollArea.scrollBy({ top: offset, behavior: 'smooth' });
             }
         }, 300);
     }
-});
+};
 
-document.addEventListener('focusout', (e) => {
+const handleKeyboardClose = (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
         setTimeout(() => {
             const nav = document.getElementById('global-nav');
             if(nav) {
-                // 🌟 키보드가 내려가면 스르륵 다시 나타남
-                nav.style.opacity = '1';
-                nav.style.visibility = 'visible';
-                nav.style.pointerEvents = 'auto';
+                // 🌟 키보드가 닫히면 하단 바를 다시 플렉스(flex)로 부활시킵니다.
+                nav.style.setProperty('display', 'flex', 'important');
             }
-        }, 100); // 키보드 내려가는 속도 대기
+        }, 100); 
     }
-});
+};
+
+// 🌟 터치와 포커스 이벤트를 이중으로 걸어서 아이폰의 변덕을 100% 잡아냅니다.
+document.addEventListener('focusin', handleKeyboardOpen);
+document.addEventListener('focusout', handleKeyboardClose);
 
 /* 👆 스마트 포커스 엔진 복사 완료 👆 */
 
