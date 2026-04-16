@@ -10047,32 +10047,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-/* 👆 제스처 엔진 복사 완료 👆 *
+/* 👆 제스처 엔진 복사 완료 👆 */
 
-// =========================================================
-// 🎯 [SMART FOCUS ENGINE V8] 네이티브 스크롤 존중 & 하단 바 숨김 전용 엔진
-// =========================================================
-document.addEventListener('focusin', (e) => {
-    const target = e.target;
-    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        // 1. 키보드가 뜨면 하단 바를 화면에서 완전히 없앰 (딸림 방지)
-        const nav = document.getElementById('global-nav');
-        if(nav) nav.style.display = 'none'; 
-        
-        // 🚨 2. 강제 스크롤(scrollIntoView) 코드 삭제! 스크롤은 스마트폰 OS에 온전히 맡깁니다.
-    }
-});
 
-document.addEventListener('focusout', (e) => {
-    const target = e.target;
-    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        setTimeout(() => {
-            // 3. 타자가 끝나고 키보드가 닫히면 하단 바 복구
-            const nav = document.getElementById('global-nav');
-            if(nav) nav.style.display = 'flex'; 
-        }, 100);
-    }
-});/* 👆 스마트 포커스 엔진 복사 완료 👆 */
 
 // 🌟 [팀장의 수리: 모바일 스침 터치(Quick Tap) 애니메이션 100% 보장 엔진]
 document.addEventListener('touchstart', function() {}, {passive: true});
