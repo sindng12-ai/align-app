@@ -214,6 +214,12 @@
             display: none !important;
         }
 
+/* 🌟 [팀장의 0초 반응 정밀 튜닝] 입력창에 커서가 생기면, */
+        /* 메인 스크롤 영역의 아래쪽 고정 여백(110px)도 즉시 env(safe-area-inset-bottom)으로 없애버려 검은 박스 소멸! */
+        body:has(input:focus, textarea:focus) .content-scroll {
+            bottom: env(safe-area-inset-bottom) !important;
+        }
+
 
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
         .nav-item.active { color: #fff; }
