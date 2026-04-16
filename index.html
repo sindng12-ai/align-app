@@ -10044,52 +10044,29 @@ document.addEventListener('DOMContentLoaded', () => {
 /* 👆 제스처 엔진 복사 완료 👆 *
 
 // =========================================================
-// 🎯 [SMART FOCUS ENGINE V7] 뷰포트 감지 센서 기반 하단 바 강제 매립 엔진
+// 🎯 [SMART FOCUS ENGINE V8] 네이티브 스크롤 존중 & 하단 바 숨김 전용 엔진
 // =========================================================
-let originalViewportHeight = window.innerHeight;
-
-window.addEventListener('resize', () => {
-    const currentViewportHeight = window.innerHeight;
-    const nav = document.getElementById('global-nav');
-    
-    if (!nav) return;
-
-    // 화면 높이가 원래보다 20% 이상 줄어들었다면 = 키보드가 올라온 것!
-    if (currentViewportHeight < originalViewportHeight * 0.8) {
-        // 🌟 키보드가 올라오면 하단 바를 투명하게 만들고 화면 완전 밖(지하 150px)으로 묻어버립니다.
-        nav.style.opacity = '0';
-        nav.style.transform = 'translateY(150px)';
-        nav.style.pointerEvents = 'none';
-        nav.style.transition = 'none'; // 애니메이션 없이 즉각 매립
-    } else {
-        // 🌟 화면이 원래 높이로 돌아왔다면 = 키보드가 내려간 것!
-        // 원래 위치로 복구하고 투명도 해제
-        nav.style.transition = 'transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease';
-        nav.style.transform = 'translateY(0)';
-        nav.style.opacity = '1';
-        nav.style.pointerEvents = 'auto';
-        
-        // 키보드가 내려갈 때 화면 레이아웃이 깨지지 않도록 한 번 잡아줌
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-});
-
-// 스크롤 편의를 위한 포커스 감지 (하단 바 제어는 위 resize 이벤트가 전담)
 document.addEventListener('focusin', (e) => {
     const target = e.target;
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        setTimeout(() => {
-            const scrollArea = target.closest('.scroll-container, .mo-pages-container');
-            if(scrollArea) {
-                const targetRect = target.getBoundingClientRect();
-                const areaRect = scrollArea.getBoundingClientRect();
-                const offset = targetRect.top - areaRect.top - (areaRect.height / 3);
-                scrollArea.scrollBy({ top: offset, behavior: 'smooth' });
-            }
-        }, 300);
+        // 1. 키보드가 뜨면 하단 바를 화면에서 완전히 없앰 (딸림 방지)
+        const nav = document.getElementById('global-nav');
+        if(nav) nav.style.display = 'none'; 
+        
+        // 🚨 2. 강제 스크롤(scrollIntoView) 코드 삭제! 스크롤은 스마트폰 OS에 온전히 맡깁니다.
     }
 });
-/* 👆 스마트 포커스 엔진 복사 완료 👆 */
+
+document.addEventListener('focusout', (e) => {
+    const target = e.target;
+    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        setTimeout(() => {
+            // 3. 타자가 끝나고 키보드가 닫히면 하단 바 복구
+            const nav = document.getElementById('global-nav');
+            if(nav) nav.style.display = 'flex'; 
+        }, 100);
+    }
+});/* 👆 스마트 포커스 엔진 복사 완료 👆 */
 
 // 🌟 [팀장의 수리: 모바일 스침 터치(Quick Tap) 애니메이션 100% 보장 엔진]
 document.addEventListener('touchstart', function() {}, {passive: true});
