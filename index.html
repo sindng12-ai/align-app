@@ -207,6 +207,8 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; opacity: 0; transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; }
+
         .bottom-nav.hide { transform: translateY(150px) !important; opacity: 0 !important; pointer-events: none !important; }
         
         /* 🌟 [1단계] 입력창 터치 시 하단 바 즉시 소멸! */
