@@ -209,6 +209,12 @@
 
         .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(5,5,7,0.95); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-top: 1px solid var(--dark-line); display: flex; justify-content: center; gap: 80px; align-items: center; padding: 0 20px 25px; z-index: 50; opacity: 0; transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; }
         .bottom-nav.hide { transform: translateY(150px) !important; opacity: 0 !important; pointer-events: none !important; }
+       /* 🌟 [팀장의 마법 센서] 화면 높이가 600px 이하로 찌그러지면(키보드 팝업 시) 하단 바 즉시 소멸! */
+        @media screen and (max-height: 600px) {
+            .bottom-nav { display: none !important; }
+        }
+
+
         .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
         .nav-item.active { color: #fff; }
         .nav-item.active svg { color: var(--accent-gold); }
@@ -10043,30 +10049,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /* 👆 제스처 엔진 복사 완료 👆 *
 
-// =========================================================
-// 🎯 [SMART FOCUS ENGINE V8] 네이티브 스크롤 존중 & 하단 바 숨김 전용 엔진
-// =========================================================
-document.addEventListener('focusin', (e) => {
-    const target = e.target;
-    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        // 1. 키보드가 뜨면 하단 바를 화면에서 완전히 없앰 (딸림 방지)
-        const nav = document.getElementById('global-nav');
-        if(nav) nav.style.display = 'none'; 
-        
-        // 🚨 2. 강제 스크롤(scrollIntoView) 코드 삭제! 스크롤은 스마트폰 OS에 온전히 맡깁니다.
-    }
-});
-
-document.addEventListener('focusout', (e) => {
-    const target = e.target;
-    if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
-        setTimeout(() => {
-            // 3. 타자가 끝나고 키보드가 닫히면 하단 바 복구
-            const nav = document.getElementById('global-nav');
-            if(nav) nav.style.display = 'flex'; 
-        }, 100);
-    }
-});/* 👆 스마트 포커스 엔진 복사 완료 👆 */
 
 // 🌟 [팀장의 수리: 모바일 스침 터치(Quick Tap) 애니메이션 100% 보장 엔진]
 document.addEventListener('touchstart', function() {}, {passive: true});
