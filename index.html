@@ -216,20 +216,17 @@
 
         /* 🌟 [변태적 디테일 픽스] 사파리의 꿀렁임을 무시하고 홈 인디케이터(바닥 끝)까지 글래스로 완벽 밀착! */
         .bottom-nav { 
-            position: fixed; /* 🌟 absolute ➔ fixed 로 변경: 물리적 스마트폰 액정 바닥에 초강력 본드 접착! */
-            bottom: 0; 
-            left: 50%; /* 🌟 PC 화면에서도 앱 틀(414px) 안에 예쁘게 갇히도록 중앙 정렬 */
-            transform: translateX(-50%);
-            width: 100%; 
-            max-width: 414px; 
+            position: fixed; 
+            bottom: -1px; /* 🌟 0이 아니라 -1px로 설정하여 물리적 액정 바깥까지 유리를 밀어버림 (틈새 원천 차단) */
+            left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 414px; 
             background: rgba(15, 15, 18, 0.88); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            /* 🌟 홈 인디케이터 영역을 하단 바 글래스로 100% 덮어버림 */
-            padding: 15px 20px calc(15px + env(safe-area-inset-bottom)); 
-            z-index: 9999; /* 화면의 그 어떤 요소보다 무조건 위로 오게 멱살 잡기 */
-            opacity: 0; 
+            /* 🌟 위에서 1px 내렸으니, 쿠션(padding)을 15px -> 16px로 1px 늘려서 보정 */
+            padding: 15px 20px calc(16px + env(safe-area-inset-bottom)); 
+            z-index: 9999; opacity: 0; 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
         
@@ -9287,44 +9284,51 @@ function mo_saveSystemSettings() {
 // 2. 설정 불러오기 및 앱 껍데기(테마/폰트/이름) 적용 함수
 function applySystemSettings() {
     const saved = localStorage.getItem('alignSystemSettings');
-    if(!saved) return; // 금고가 비어있으면 패스 (기본값 유지)
+    if(!saved) return; 
 
     const settings = JSON.parse(saved);
 
-    // [마법 1] 이름표(.app-brand-title) 단 곳 전부 매장명으로 교체 & 브라우저 탭 이름 변경
+    // [마법 1] 이름표 교체
     const mainTitleElements = document.querySelectorAll('.app-brand-title');
     mainTitleElements.forEach(el => {
         el.innerHTML = settings.brandName; 
     });
     document.title = settings.brandName + " | Master App";
 
-// [마법 2] 다크 테마 톤 변경 (벽지 + 가구 + 천장 세트 동기화)
+    // [마법 2] 다크 테마 톤 변경 및 🌟애플 홈 인디케이터 색상 강제 동기화🌟
     const root = document.documentElement;
+    let themeColorStr = '#050507'; // 애플 홈바에 칠해줄 기본 물감 색상
+
     if(settings.themeTone === 'charcoal') {
-        // 🌟 웜 차콜
         root.style.setProperty('--bg', '#16161A');       
         root.style.setProperty('--card-bg', '#222227');  
-        root.style.setProperty('--nav-bg', '--edu-blue#16161A');
-        // 블루 유지
+        root.style.setProperty('--nav-bg', '#16161A');
         root.style.setProperty('--edu-blue', '#0A84FF'); 
         root.style.setProperty('--edu-blue-dim', 'rgba(10, 132, 255, 0.15)');
+        themeColorStr = '#16161A'; // 차콜색 물감 장전
     } else if(settings.themeTone === 'emerald') {
-        // 🌲 로얄 에메랄드 (클래식 딥 그린)
         root.style.setProperty('--bg', '#0A1A14');       
         root.style.setProperty('--card-bg', '#122A20');  
         root.style.setProperty('--nav-bg', '#0A1A14');
-        // 🎨 [팀장의 수술] 에메랄드 테마 전용: 촌스러운 파랑을 우아한 민트 청록색(Teal)으로 변신!
         root.style.setProperty('--edu-blue', '#0AC29D'); 
         root.style.setProperty('--edu-blue-dim', 'rgba(10, 194, 157, 0.15)');
+        themeColorStr = '#0A1A14'; // 에메랄드색 물감 장전
     } else {
-        // 🌑 미드나잇 블랙 (오리지널)
         root.style.setProperty('--bg', '#050507');
         root.style.setProperty('--card-bg', '#1C1C1E');
         root.style.setProperty('--nav-bg', '#050507');
-        // 블루 유지
         root.style.setProperty('--edu-blue', '#0A84FF');
         root.style.setProperty('--edu-blue-dim', 'rgba(10, 132, 255, 0.15)');
-    }    // [기존 코드 대비 수정본] 수료증 구역을 제외한 영역에만 폰트 적용
+        themeColorStr = '#050507'; // 미드나잇 블랙 물감 장전
+    }
+
+    // 🌟 [변태적 디테일의 끝판왕] 브라우저 맨 위에 숨겨진 theme-color를 찾아내서 현재 배경색과 100% 동일하게 덮어버림!
+    let metaTheme = document.querySelector('meta[name="theme-color"]');
+    if(metaTheme) {
+        metaTheme.setAttribute('content', themeColorStr);
+    }
+
+    // [마법 3] 폰트 적용
     let fontCss = '';
     if(settings.fontStyle === 'classic') {
         fontCss = `@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
@@ -9336,7 +9340,6 @@ function applySystemSettings() {
         fontCss = `body *:not(#graduation-overlay *) { font-family: 'Montserrat', 'Pretendard', sans-serif !important; }`;
     }
 
-    // 기존에 덮어씌웠던 동적 스타일 태그가 있으면 지우고 새로 달기 (중복 방지)
     let oldStyle = document.getElementById('dynamic-theme-style');
     if(oldStyle) oldStyle.remove();
 
@@ -9345,7 +9348,6 @@ function applySystemSettings() {
     styleTag.innerHTML = fontCss;
     document.head.appendChild(styleTag);
 }
-
 
 // ==========================================
     // 🎓 [블랙 라벨] 디자이너 승급 수료증 엔진 (여기에 쏙 들어갑니다!)
