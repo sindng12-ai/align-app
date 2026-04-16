@@ -2125,7 +2125,7 @@ input, textarea {
             </div>
         </div>
 
-        <button onclick="location.reload()" style="margin-top: 30px; background: transparent; border: none; color: #5C6370; font-size: 11px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; letter-spacing: 1px;">이전으로 돌아가기</button>
+        <button onclick="v_goBackToGate()" style="margin-top: 30px; background: transparent; border: none; color: #5C6370; font-size: 11px; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; letter-spacing: 1px; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1);" onmousedown="this.style.color='#fff'; this.style.transform='scale(0.95)';" onmouseup="this.style.color='#5C6370'; this.style.transform='scale(1)';" onmouseleave="this.style.color='#5C6370'; this.style.transform='scale(1)';">이전으로 돌아가기</button>
     </div>
 
    <div class="app-frame" id="app-frame" style="display: none;">
@@ -10259,6 +10259,29 @@ window.deleteProfile = async function() {
     window.alignProfiles = newProfiles;
     renderProfiles();
 };
+
+// 🌟 [신규 모터] 프로필 선택 창에서 대문(게이트)으로 부드럽게 돌아가는 직통 엔진
+window.v_goBackToGate = function() {
+    const loginGate = document.getElementById('login-gate');
+    const gate = document.getElementById('gate-overlay');
+    
+    if(loginGate) {
+        loginGate.style.transition = 'opacity 0.3s ease';
+        loginGate.style.opacity = '0';
+        
+        setTimeout(() => {
+            loginGate.style.display = 'none';
+            if(gate) {
+                gate.style.display = 'flex';
+                setTimeout(() => { 
+                    gate.style.transition = 'opacity 0.4s ease';
+                    gate.style.opacity = '1'; 
+                }, 50);
+            }
+        }, 300);
+    }
+};
+
 
 window.closePartnerRoom = async function() {
     if(await AlignModal.confirm("로그아웃하고 메인 대문으로 돌아가시겠습니까?", "퇴근 확인")) {
