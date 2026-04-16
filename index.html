@@ -9322,11 +9322,23 @@ function applySystemSettings() {
         themeColorStr = '#050507'; // 미드나잇 블랙 물감 장전
     }
 
-    // 🌟 [변태적 디테일의 끝판왕] 브라우저 맨 위에 숨겨진 theme-color를 찾아내서 현재 배경색과 100% 동일하게 덮어버림!
+    // 🌟 [변태적 디테일 끝판왕 V2] 태그가 없으면 강제로 창조해서라도 아이폰의 쥐색을 덮어버립니다!
     let metaTheme = document.querySelector('meta[name="theme-color"]');
-    if(metaTheme) {
-        metaTheme.setAttribute('content', themeColorStr);
+    if(!metaTheme) { 
+        metaTheme = document.createElement('meta');
+        metaTheme.name = 'theme-color';
+        document.head.appendChild(metaTheme);
     }
+    metaTheme.setAttribute('content', themeColorStr);
+
+    // 🌟 [애플 전용 방어막] 아이폰 상태바/바닥을 투명하게 만들어주는 네이티브 강제 설정
+    let appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
+    if(!appleMeta) {
+        appleMeta = document.createElement('meta');
+        appleMeta.name = 'apple-mobile-web-app-status-bar-style';
+        document.head.appendChild(appleMeta);
+    }
+    appleMeta.setAttribute('content', 'black-translucent');
 
     // [마법 3] 폰트 적용
     let fontCss = '';
