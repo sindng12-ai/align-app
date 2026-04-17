@@ -2359,8 +2359,33 @@ input, textarea {
                     <label class="d-toggle-switch"><input type="checkbox" id="d-chk-clean"><span class="d-toggle-slider"></span></label>
                 </div>
             </div>
+
+            <div style="margin-bottom: 25px; background: rgba(255,255,255,0.02); border: 1px solid var(--accent-gold); border-radius: 16px; padding: 18px 15px; animation: fadeUp 0.5s ease forwards;">
+                <div style="font-size: 13px; font-weight: 700; color: var(--accent-gold); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+                    <span style="font-size: 16px;">🏆</span> 오늘의 베스트 파트너 (익명 칭찬)
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <select id="d-manito-name" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; appearance: none;">
+                        <option value="">선택 안 함 (오늘 서포트 없음)</option>
+                        </select>
+                    <select id="d-manito-keyword" style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; appearance: none;">
+                        <option value="">칭찬 키워드 선택</option>
+                        <option value="빛보다 빠른 샴푸">🧴 빛보다 빠른 샴푸</option>
+                        <option value="센스있는 약터치">🧪 센스있는 약터치</option>
+                        <option value="깔끔한 셋팅/마감">🧹 깔끔한 셋팅/마감</option>
+                        <option value="고객 멘탈/스몰톡 케어">💬 고객 멘탈/스몰톡 케어</option>
+                        <option value="칼같은 타임 체크">⏱️ 칼같은 타임 체크</option>
+                        <option value="조용하고 강한 서포트">🥷 조용하고 강한 서포트</option>
+                    </select>
+                </div>
+                <div style="font-size: 10.5px; color: #8E8E93; margin-top: 12px; line-height: 1.4; word-break: keep-all;">
+                    ※ 선택 시 해당 파트너에게 <b>익명</b>으로 칭찬 알림과 함께 <span style="color: var(--daily-green); font-weight: bold;">+10 EXP</span>가 몰래 지급됩니다.
+                </div>
+            </div>
+
             <button class="d-btn-submit" onclick="d_submitChecklist()">결산 완료 및 리포트 확인</button>
         </div>
+
 
         <div id="d-loading-screen" class="loader-screen">
             <div class="prism-loader"></div>
@@ -4019,13 +4044,56 @@ function d_reset() {
     }
 
     function d_next() { if(d_data[d_step] === '') return; if(d_step < 3) { d_step++; d_updateUI(); } else if(d_step === 3) { d_showChecklist(); } }
-    function d_showChecklist() { document.getElementById('d-input-view').style.display = 'none'; document.getElementById('d-checklist-view').style.display = 'flex'; }
+    
+    // 🌟 체크리스트 오픈 시, 파트너 명단 동적 로딩
+    function d_showChecklist() { 
+        document.getElementById('d-input-view').style.display = 'none'; 
+        document.getElementById('d-checklist-view').style.display = 'flex'; 
+
+        const nameSelect = document.getElementById('d-manito-name');
+        if(nameSelect) {
+            let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
+            let partners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
+            let html = '<option value="">선택 안 함 (오늘 서포트 없음)</option>';
+            partners.forEach(p => { html += `<option value="${p.name}">${p.name} 파트너</option>`; });
+            nameSelect.innerHTML = html;
+        }
+    }
+    
     function d_goBackFromChecklist() { document.getElementById('d-checklist-view').style.display = 'none'; document.getElementById('d-input-view').style.display = 'flex'; }
     function d_updateStep(type, amount) { if(d_routine[type] + amount >= 0 && d_routine[type] + amount <= 99) { d_routine[type] += amount; document.getElementById(`d-val-${type}`).innerText = d_routine[type]; } }
 
+    // 🌟 데일리 로그 제출 시, 마니또 경험치 몰래 쏴주기
     function d_submitChecklist() {
-        d_routine.chart = document.getElementById('d-chk-chart').checked; d_routine.study = document.getElementById('d-chk-study').checked; d_routine.clean = document.getElementById('d-chk-clean').checked;
-        document.getElementById('d-checklist-view').style.display = 'none'; document.getElementById('d-loading-screen').style.display = 'flex'; setTimeout(d_showResult, 2000); 
+        d_routine.chart = document.getElementById('d-chk-chart').checked; 
+        d_routine.study = document.getElementById('d-chk-study').checked; 
+        d_routine.clean = document.getElementById('d-chk-clean').checked;
+
+        const manitoName = document.getElementById('d-manito-name')?.value;
+        const manitoKeyword = document.getElementById('d-manito-keyword')?.value;
+
+        // 이름은 골랐는데 키워드를 안 골랐으면 빠꾸!
+        if (manitoName && !manitoKeyword) {
+            if(typeof app !== 'undefined' && app.toast) app.toast("칭찬 키워드를 선택해 주세요!");
+            return; 
+        }
+
+        // 파트너 금고에 +10 EXP 입금 및 편지 남기기
+        if (manitoName && manitoKeyword) {
+            const pKey = 'alignPartnerData_' + manitoName;
+            let pData = JSON.parse(localStorage.getItem(pKey)) || { exp: 0, level: 1, todayQuests: {}, lastDate: '' };
+            pData.exp += 10; 
+            
+            let notiList = pData.manitoNoti || [];
+            notiList.push(`🎉 누군가 당신을 오늘의 베스트 서포터로 추천했습니다!<br><span style="color:var(--accent-gold);">[${manitoKeyword}]</span> (+10 EXP)`);
+            pData.manitoNoti = notiList;
+            
+            localStorage.setItem(pKey, JSON.stringify(pData));
+        }
+
+        document.getElementById('d-checklist-view').style.display = 'none'; 
+        document.getElementById('d-loading-screen').style.display = 'flex'; 
+        setTimeout(d_showResult, 2000); 
     }
 
     function d_animateValue(obj, start, end, duration) {
@@ -5940,6 +6008,20 @@ function pr_setMode(mode) {
                             partnerRoom.style.transition = 'opacity 0.6s ease';
                             partnerRoom.style.opacity = '1'; 
                             window.showWelcomeToast(name, '파트너');
+
+                            // 💌 [마니또 수신] 파트너 금고에 편지가 있다면, 환영 인사 직후 서프라이즈 팝업 터뜨리기!
+                            const pKey = 'alignPartnerData_' + name;
+                            let pData = JSON.parse(localStorage.getItem(pKey));
+                            if (pData && pData.manitoNoti && pData.manitoNoti.length > 0) {
+                                setTimeout(() => {
+                                    let combinedMsg = pData.manitoNoti.join("<br><br>");
+                                    AlignModal.alert(combinedMsg, "💌 익명 칭찬 도착!");
+                                    pData.manitoNoti = []; // 편지 읽었으니 비우기
+                                    localStorage.setItem(pKey, JSON.stringify(pData));
+                                    if(typeof renderPartnerExp === 'function') renderPartnerExp(); // 경험치 올랐으니 화면 즉시 갱신
+                                }, 2500); // 웰컴 토스트(3초)가 끝나갈 무렵에 짠!
+                            }
+
                         }, 50);
                     }
                 } else {
