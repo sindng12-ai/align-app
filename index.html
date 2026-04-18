@@ -3454,7 +3454,7 @@ document.addEventListener('touchend', function (event) {
                     localStorage.setItem('alignSystemSettings', JSON.stringify(settings));
                     
                     // 똑똑한 alert 엔진을 타도록 일반 alert 호출
-                    alert(`✅ [마스터 계정 복구 완료]\n매장 코드: ${settings.brandName}\n원장님 ID: ${settings.ceoName}\n비밀번호가 0000으로 리셋되었습니다.\n해당 정보로 접속해 주세요.`);
+                    alert(`[마스터 계정 복구 완료]\n매장 코드: ${settings.brandName}\n원장님 ID: ${settings.ceoName}\n비밀번호가 0000으로 리셋되었습니다.\n해당 정보로 접속해 주세요.`);
                     
                     document.getElementById('login-company-code').value = settings.brandName;
                     document.getElementById('login-user-id').value = settings.ceoName;
@@ -7664,6 +7664,11 @@ window.p_switchTab = function(tabId) {
             // 💡 [스마트 엔진] 이미 장바구니에 똑같은 제품이 있다면? 새로 추가하지 말고 수량만 +1 !
             let existingItem = cart.find(i => i.category === cat && i.name === name);
             if (existingItem) {
+                // 🚨 [결제 폭주 방어막 장착!] 99개 이상이면 더 이상 못 담게 차단!
+                if(existingItem.qty >= 99) {
+                    if(typeof app !== 'undefined' && app.toast) app.toast("한 번에 99개까지만 발주할 수 있습니다 📦");
+                    return; // 함수 강제 종료
+                }
                 existingItem.qty = (existingItem.qty || 1) + 1;
             } else {
                 cart.push({ id: Date.now(), category: cat, name: name, qty: 1 }); // 최초 담을 땐 1개
@@ -7684,6 +7689,13 @@ window.p_switchTab = function(tabId) {
             if(item) {
                 item.qty = (item.qty || 1) + amount;
                 if(item.qty < 1) item.qty = 1; // 최소 1개는 유지 (0개로 만들려면 삭제 버튼 사용)
+                
+                // 🚨 [결제 폭주 방어막 장착!] 99개를 넘어가면 강제로 99로 고정!
+                if(item.qty > 99) {
+                    item.qty = 99;
+                    if(typeof app !== 'undefined' && app.toast) app.toast("한 번에 99개까지만 발주할 수 있습니다 📦");
+                }
+                
                 db.set('alignOrderCart', cart);
                 p_renderCart(); // 수량 변경 즉시 화면 새로고침
             }
@@ -8990,9 +9002,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                         let reqCount = grouped[lvl].length;
                         let safeLvlId = 'comp-lvl-folder-' + index; // 폴더별 고유 ID 생성
 
-                        // 🌟 아코디언 폴더 헤더 (터치하면 열리고 닫힘)
+                        // 🌟 아코디언 폴더 헤더 (터치하면 열리고 닫힘 - 다이내믹 포커스 엔진 장착!)
                         compHtml += `
-                        <div onclick="const d = document.getElementById('${safeLvlId}'); const a = this.querySelector('.folder-arrow'); if(d.style.display==='none'){d.style.display='block'; a.innerText='▲';}else{d.style.display='none'; a.innerText='▼';}" 
+                        <div onclick="const d = document.getElementById('${safeLvlId}'); const a = this.querySelector('.folder-arrow'); if(d.style.display==='none'){ document.querySelectorAll('.partner-archive-folder').forEach(el => el.style.display='none'); document.querySelectorAll('.folder-arrow').forEach(el => el.innerText='▼'); d.style.display='block'; a.innerText='▲'; } else { d.style.display='none'; a.innerText='▼'; }" 
                              style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 16px 15px; border-radius: 12px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s;"
                              onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='rgba(0,0,0,0.3)'">
                             <div style="display: flex; align-items: baseline; gap: 8px;">
@@ -9002,8 +9014,8 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                             <div class="folder-arrow" style="font-size: 10px; color: #8E8E93; font-weight: 800; transition: 0.3s;">▼</div>
                         </div>`;
                         
-                        // 🌟 아코디언 폴더 내부 (처음엔 접혀있음: display:none)
-                        compHtml += `<div id="${safeLvlId}" style="display: none; margin-top: 8px; padding: 0 2px; animation: fadeUp 0.3s ease;">`;
+                        // 🌟 아코디언 폴더 내부 (클래스 이름표 부착!)
+                        compHtml += `<div id="${safeLvlId}" class="partner-archive-folder" style="display: none; margin-top: 8px; padding: 0 2px; animation: fadeUp 0.3s ease;">`;
                         
                         compHtml += grouped[lvl].map(req => `
                         <div style="background: rgba(50, 215, 75, 0.05); border: 1px solid rgba(50, 215, 75, 0.2); padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -10632,7 +10644,7 @@ window.addNewProfile = async function() {
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles;
     const isDuplicate = profiles.find(p => p.name === name.trim());
     if(isDuplicate) {
-        AlignModal.alert(`⚠️ 이미 '${name.trim()}' (이)라는 이름의 직원이 존재합니다.\n데이터 엉킴을 막기 위해 다른 이름을 사용해 주세요!`, "중복 오류");
+        AlignModal.alert(`이미 '${name.trim()}' (이)라는 이름의 직원이 존재합니다.데이터 엉킴을 막기 위해 다른 이름을 사용해 주세요!`, "중복 오류");
         return;
     }
 
