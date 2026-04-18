@@ -1820,7 +1820,8 @@ input, textarea {
                     <div id="mo-edu-status-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
                 </div> 
             </div> 
-        <div id="mo-page-sys" class="mo-page">
+            
+            <div id="mo-page-sys" class="mo-page">
                 
                 <div class="align-panel-green">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -6346,11 +6347,13 @@ function pr_setMode(mode) {
         window.renderPartnerExp = function() {
             const currentUser = localStorage.getItem('alignCurrentUser');
             if(!currentUser) return;
-            let pData = JSON.parse(localStorage.getItem('alignPartnerData_' + currentUser)) || { exp: 0, level: 1, todayQuests: {}, lastDate: '' };
             
-            // 🌟 [배관 연결] 제어실 가중치(Track Weight) 소환
-            const savedSettings = localStorage.getItem('alignSystemSettings');
-            const trackWeight = savedSettings ? JSON.parse(savedSettings).growthTrack : 1.0;
+            // 🌟 [코드 다이어트] db 엔진으로 안전하게 파트너 데이터 로드
+            let pData = db.get('alignPartnerData_' + currentUser, { exp: 0, level: 1, todayQuests: {}, lastDate: '' });
+            
+            // 🌟 [NaN 버그 완벽 수리] PC에 설정값이 없어도 무조건 1.0으로 강제 방어!
+            const savedSettings = db.get('alignSystemSettings', {});
+            const trackWeight = parseFloat(savedSettings.growthTrack) || 1.0;
 
             const levelNames = ['🌱', '🌿', '🌳', '🌸', '🍒'];
             // 박사님의 오리지널 기준값 (2년 철학)
