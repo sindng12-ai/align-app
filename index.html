@@ -209,6 +209,13 @@
         
         .btn-glass-gold { background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.3); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; padding: 30px 20px; text-align: center; cursor: pointer; transition: all 0.4s cubic-bezier(0.2, 1, 0.2, 1); box-shadow: 0 15px 35px rgba(0,0,0,0.4); width: 100%; display: block; }
         .btn-glass-gold:active { transform: scale(0.96); background: rgba(212,175,55,0.1); }
+
+/* 🌟 [공통 UI 엔진] ALIGN 다크 글래스 패널 (아키텍처 1단계) */
+        .align-panel { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .align-panel-gold { background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .align-panel-green { background: rgba(50, 215, 75, 0.05); border: 1px solid rgba(50, 215, 75, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .align-panel-red { background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px; }
+        .align-panel-blue { background: rgba(10, 132, 255, 0.05); border: 1px solid rgba(10, 132, 255, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px; }
   
         /* Common Navs */
         .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 70px 25px 15px; z-index: 20; position: relative; background: linear-gradient(to bottom, var(--bg) 80%, transparent); flex-shrink: 0;}
@@ -1371,7 +1378,9 @@ input, textarea {
                         <div id="mo-dash-lost-desc" style="font-size: 11.5px; color: #A0AAB5; line-height: 1.5; word-break: keep-all;">직원들의 데이터가 모이면 가장 시급한 출혈 지점과 원인을 진단합니다.</div>
                     </div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 22px 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 22px 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
                         <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 1px; margin-bottom: 15px;">TOTAL REVENUE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 총 매출</span></div>
                         <div style="text-align: right;"><span id="dash-total" style="font-size: 26px; color: #ffffff; font-weight: 300; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #8E8E93; margin-left: 2px;">KRW</span></div>
                     </div>
@@ -1389,12 +1398,12 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px; margin-bottom: 25px;">
+                <div class="align-panel">
                     <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 25px;">REVENUE TREND <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 매출 추이</span></div>
                     <div style="position: relative; height: 200px; width: 100%;"><canvas id="salesChart"></canvas></div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px;">
+                <div class="align-panel">
                     <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 25px;">SERVICE SHARE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 시술 비중</span></div>
                     <div style="position: relative; height: 200px; width: 100%;"><canvas id="menuChart"></canvas></div>
                 </div>
@@ -1415,20 +1424,20 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px; margin-bottom: 25px;">
+                <div class="align-panel">
                     <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 25px;">CAPACITY RADAR <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(212,175,55,0.8); letter-spacing: 0; margin-left: 4px;">· 역량 분석망</span></div>
                     <div style="position: relative; height: 250px; width: 100%;"><canvas id="radarChart"></canvas></div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px; margin-bottom: 25px;">
+                <div class="align-panel">
                     <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 25px;">UPSELL PERFORMANCE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 기술 vs 점판</span></div>
                     <div style="position: relative; height: 120px; width: 100%;"><canvas id="barChart"></canvas></div>
                 </div>
 
-                <div style="background: rgba(28,28,30,0.6); border: 1px solid rgba(255,255,255,0.05); border-radius: 15px; padding: 20px; margin-bottom: 20px;">
+                <div class="align-panel">
                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
     <div style="font-size: 14px; font-weight: 700; color: #fff;">📊 ALIGN AI MENTOR</div>
-    <button onclick="loadRealData(); if(typeof app !== 'undefined') app.toast('AI가 데이터를 다시 분석합니다.');" 
+    <button onclick="loadRealData(); if(typeof app !== 'undefined') app.toast('AI가 데이터를 다시 분석합니다.');"
             style="background: transparent; border: 1px solid #444; color: #aaa; font-size: 10px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s;">
         RETRY
     </button>
@@ -1442,7 +1451,7 @@ input, textarea {
 
             <div id="mo-page-team" class="mo-page">
 
-<div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 20px; border-radius: 16px; margin-bottom: 20px;">
+                <div class="align-panel">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <div style="font-size: 14px; font-weight: 700; color: var(--accent-gold); display: flex; align-items: center; gap: 6px;">
                     <span style="font-size: 16px;">🏆</span> 베스트 서포터 모니터링
@@ -1454,21 +1463,22 @@ input, textarea {
             </div>
         </div>
 
-                <div style="background: rgba(255, 69, 58, 0.05); padding: 25px 20px; border-radius: 8px; border: 1px solid rgba(255, 69, 58, 0.2); margin-bottom: 20px;">
+                <div class="align-panel-red">
                     <div style="font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 15px;">👑 승급 심사 대기열</div>
                     <div id="mo-level-up-queue" style="display: flex; flex-direction: column; gap: 8px;">
                         <div style="color: #5C6370; font-size: 12px; text-align: center;">대기 중인 파트너가 없습니다.</div>
                     </div>
                 </div>
 
-                <div style="background: rgba(10, 132, 255, 0.05); padding: 25px 20px; border-radius: 8px; border: 1px solid rgba(10, 132, 255, 0.2); margin-bottom: 20px;">
+                <div class="align-panel-blue">
                     <div style="font-size: 14px; font-weight: 700; color: #0A84FF; margin-bottom: 15px;">📊 파트너 성장 레이더</div>
                     <div id="mo-partner-radar"></div>
                 </div>
 
-                <div style="background: rgba(212, 175, 55, 0.05); padding: 25px 20px; border-radius: 8px; border: 1px solid rgba(212, 175, 55, 0.2); margin-bottom: 20px;">
+                <div class="align-panel-gold">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="font-size: 14px; font-weight: 800; color: var(--accent-gold);">🏆 월간 퀘스트 랭킹보드</span>
+
                         <button onclick="mo_renderQuestRanking(); if(typeof app !== 'undefined') app.toast('랭킹이 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
                     </div>
                    <div class="mo-scroll-x" style="display: flex; gap: 8px; margin-bottom: 15px; -webkit-overflow-scrolling: touch;" id="mo-quest-ranking-tabs">
@@ -1478,7 +1488,7 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px;">
+                <div class="align-panel">
                     <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                         통합 인사 명부 제어판
@@ -1516,7 +1526,7 @@ input, textarea {
 
             <div id="mo-page-oper" class="mo-page">
                 
-                <div style="background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel-gold">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="font-size: 14px; font-weight: 700; color: var(--accent-gold);">재고 백과사전 (마스터 리스트) 등록</span>
                     </div>
@@ -1546,10 +1556,10 @@ input, textarea {
                             </div>
                         </div>
                         <button onclick="mo_addStockMaster()" style="background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(212,175,55,0.2);">+ 마스터 리스트에 추가</button>
-                    </div>
+                   </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel">
                     <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">현재 등록된 마스터 리스트</div>
                     
                     <div style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
@@ -1573,7 +1583,7 @@ input, textarea {
                     </div>
                 </div>
 
-<div style="background: rgba(50, 215, 75, 0.05); border: 1px solid rgba(50, 215, 75, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel-green">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="font-size: 14px; font-weight: 800; color: var(--daily-green);">📊 실시간 매장 재고 현황</span>
                         <button onclick="mo_renderStockStatus(); if(typeof app !== 'undefined') app.toast('재고 현황이 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(50, 215, 75, 0.5); color: var(--daily-green); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
@@ -1648,7 +1658,7 @@ input, textarea {
                     <div style="position: relative; height: 180px; width: 100%;"><canvas id="mo-fin-donut-chart"></canvas></div>
                 </div>
 
-                <div style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px;">
+                <div class="align-panel">
                     <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('mo-fin-payroll-panel'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
                         <span style="font-size: 15px; font-weight: 800; color: #fff;">💸 직원 페이롤 (인건비) 정산</span>
                         <span style="font-size: 12px; color: #8E8E93;">명단 펼치기 ▼</span>
@@ -1665,7 +1675,7 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px;">
+                <div class="align-panel">
                     <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('mo-fin-expense-panel'); d.style.display = d.style.display === 'none' ? 'flex' : 'none';">
                         <span style="font-size: 15px; font-weight: 800; color: #fff;">📉 매장 지출 (고정비/변동비) 입력</span>
                         <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
@@ -1692,7 +1702,7 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="width: 100%; box-sizing: border-box; background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px;">
+                <div class="align-panel-red">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; cursor: pointer;" onclick="const d = document.getElementById('mo-tax-guide-panel'); d.style.display = d.style.display === 'none' ? 'grid' : 'none';">
                         <span style="font-size: 14px; font-weight: 800; color: #fff;">🚨 TAX & SCHEDULE (세무 일정)</span>
                         <span style="font-size: 11px; font-weight: 600; color: var(--error); background: rgba(255, 69, 58, 0.1); padding: 4px 8px; border-radius: 4px;">가이드 보기 ▼</span>
@@ -1736,9 +1746,8 @@ input, textarea {
 
 <div id="mo-page-manual" class="mo-page">
                 
-                <div style="background: rgba(10, 132, 255, 0.05); border: 1px solid rgba(10, 132, 255, 0.2); padding: 25px 20px; border-radius: 12px; margin-bottom: 20px;">
-                    <div style="font-size: 14px; font-weight: 700; color: var(--edu-blue); margin-bottom: 15px;">📖 스마트 교육 계획서 배포</div>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="align-panel-blue">
+                    <div style="font-size: 14px; font-weight: 700; color: var(--edu-blue); margin-bottom: 15px;">📖 스마트 교육 계획서 배포</div>                    <div style="display: flex; flex-direction: column; gap: 10px;">
                         <select id="mo-edu-level" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
                             <option value="LV.1 (1~3개월)">🌱 LV.1 (1~3개월) CS 및 샴푸 테크닉</option>
                             <option value="LV.2 (4~6개월)">🌿 LV.2 (4~6개월) 기초 이론/약제</option>
@@ -1765,7 +1774,7 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel-gold">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="font-size: 14px; font-weight: 700; color: var(--accent-gold);">👑 교육 이수 승인 대기열</span>
                         <button onclick="mo_renderEduAll(); if(typeof app !== 'undefined') app.toast('교육 데이터가 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
@@ -1775,9 +1784,9 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px;">
+                <div class="align-panel">
                     <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">전체 커리큘럼 리스트</div>
-                    
+
                     <div style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
                         <button onclick="mo_setEduFilter('all')" class="mo-edu-filter-btn" data-level="all" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">전체</button>
                         <button onclick="mo_setEduFilter('LV.1')" class="mo-edu-filter-btn" data-level="LV.1" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">LV.1</button>
@@ -1788,11 +1797,12 @@ input, textarea {
                     </div>
 
                     <div id="mo-edu-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
+                </div>
+            
 
-<div style="background: rgba(50, 215, 75, 0.05); border: 1px solid rgba(50, 215, 75, 0.2); padding: 25px 20px; border-radius: 8px; margin-top: 20px;">
+<div class="align-panel-green">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 14px; font-weight: 800; color: var(--daily-green);">📈 직원별 교육 이수 현황표</span>
-                        <button onclick="mo_renderEduAll()" style="background: transparent; border: 1px solid rgba(50,215,75,0.5); color: var(--daily-green); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
+                        <span style="font-size: 14px; font-weight: 800; color: var(--daily-green);">📈 직원별 교육 이수 현황표</span>                        <button onclick="mo_renderEduAll()" style="background: transparent; border: 1px solid rgba(50,215,75,0.5); color: var(--daily-green); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
                     </div>
                     <div style="font-size: 11.5px; color: #8E8E93; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">파트너별로 지금까지 합격 처리된 교육 목록이 누적 표시됩니다. 다음 달 교육 계획에 참고하세요.</div>
                     
@@ -1810,9 +1820,9 @@ input, textarea {
                     <div id="mo-edu-status-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
                 </div> 
             </div> 
-        </div> <div id="mo-page-sys" class="mo-page">
+        <div id="mo-page-sys" class="mo-page">
                 
-                <div style="background: rgba(50, 215, 75, 0.05); border: 1px solid rgba(50, 215, 75, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel-green">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="font-size: 14px; font-weight: 700; color: var(--daily-green);">파트너 퀘스트 통합 관리소</span>
                     </div>
@@ -1832,7 +1842,7 @@ input, textarea {
                     <div id="admin-quest-list" style="display: none; flex-direction: column; gap: 8px; margin-top: 15px;"></div>
                 </div>
 
-                <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel-gold">
                     <div style="font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 10px;">🔥 디자이너 퀘스트 커스텀</div>
                     <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">라운지의 불꽃(🔥) 버튼 메뉴와 명예의 전당 타이틀을 실시간으로 변경합니다.</div>
                     
@@ -1869,7 +1879,7 @@ input, textarea {
                     <button onclick="sys_saveQuests()" style="width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 12px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: 0 4px 10px rgba(212,175,55,0.2);">미션 배포하기 🚀</button>
                 </div>
 
-                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel">
                     <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 10px;">✅ 데일리 루틴 체크리스트 커스텀</div>
                     <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">직원들이 퇴근 전 작성하는 데일리 로그의 3가지 핵심 점검 항목을 매장의 주간 목표에 맞게 변경하세요.</div>
                     
@@ -1881,14 +1891,14 @@ input, textarea {
                     <button onclick="sys_saveChecklist()" style="width: 100%; background: #333; color: #fff; border: 1px solid #555; padding: 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px;">체크리스트 적용하기</button>
                 </div>
 
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
+                <div class="align-panel">
                     <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">데이터 백업 및 열람</div>
                     <button onclick="m_showLastMonthHistory()" style="width: 100%; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #E8E8ED; padding: 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; letter-spacing: 1px;">
                         지난달 기록 보기 (월별 히스토리)
                     </button>
                 </div>
 
-                <div style="background: rgba(255, 69, 58, 0.05); border: 1px dashed rgba(255, 69, 58, 0.3); padding: 25px 20px; border-radius: 8px;">
+                <div class="align-panel-red" style="border-style: dashed; margin-bottom: 0;">
                     <div style="font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 10px;">⏱️ 스마트 월말 정산 및 마감 (Safe-Closing)</div>
                     <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">
                         특정 월(Month)의 데이터만 핀셋으로 뽑아내어 정산 엑셀 파일로 백업하고, 해당 월의 기록만 안전하게 금고에서 비웁니다. (새로운 달의 데이터는 섞이거나 삭제되지 않습니다.)
@@ -3593,6 +3603,26 @@ const app = {
         }
     };
 
+    // =========================================================
+    // 🌟 [0.6] ALIGN UI ENGINE (만능 UI 제어실) - 아키텍처 2단계
+    // =========================================================
+    const AlignUI = {
+        activateFilterBtn: function(btnClass, clickedBtn) {
+            // 1. 모든 버튼의 불을 끕니다.
+            document.querySelectorAll(btnClass).forEach(btn => {
+                btn.style.background = 'rgba(255,255,255,0.03)';
+                btn.style.color = '#8E8E93';
+                btn.style.borderColor = 'rgba(255,255,255,0.05)';
+            });
+            // 2. 클릭된 버튼만 하이엔드 글래스 불을 켭니다.
+            if (clickedBtn) {
+                clickedBtn.style.background = 'rgba(255,255,255,0.1)';
+                clickedBtn.style.color = '#fff';
+                clickedBtn.style.borderColor = 'rgba(255,255,255,0.2)';
+            }
+        }
+    };
+
 // ==========================================
         // 🔐 [복구] GATE & PIN PAD 출입 통제소 로직
         // ==========================================
@@ -4213,32 +4243,34 @@ function d_reset() {
             let manitoLimitKey = `alignManitoGiven_${currentUser}_${dateKey}`; // 💡 디자이너별 '오늘 지급 여부' 도장!
 
             // 🚨 오늘 이미 칭찬 보너스를 줬다면? (경험치 지급 및 알림 생략, 데일리로그 제출만 진행)
-            if (localStorage.getItem(manitoLimitKey)) {
+            if (db.get(manitoLimitKey)) {
                 if(typeof app !== 'undefined' && app.toast) app.toast("오늘의 칭찬 보너스는 이미 1회 지급되었습니다.");
             } else {
                // ✅ 오늘 처음 주는 거라면 정상적으로 도장 찍고 지급!
-                localStorage.setItem(manitoLimitKey, 'true');
+                db.set(manitoLimitKey, 'true');
 
+                // 🌟 [코드 다이어트] 최신 db 엔진 적용
                 const pKey = 'alignPartnerData_' + manitoName;
-                let pData = JSON.parse(localStorage.getItem(pKey)) || { exp: 0, level: 1, todayQuests: {}, lastDate: '' };
+                let pData = db.get(pKey, { exp: 0, level: 1, todayQuests: {}, lastDate: '' });
                 pData.exp += 10; 
                 
                 let notiList = pData.manitoNoti || [];
-                // 🌟 [팀장의 수술] 편지 봉투에 불필요한 문장 찌꺼기를 빼고, 깔끔하게 '키워드'만 담습니다!
                 notiList.push(manitoKeyword); 
                 pData.manitoNoti = notiList;
                 
-                localStorage.setItem(pKey, JSON.stringify(pData));
+                db.set(pKey, pData);
 
                 // 🌟 경영자 오피스 보고용 '마니또 비밀 장부' 기록 남기기
-                let manitoLog = JSON.parse(localStorage.getItem('alignManitoLog')) || [];
+                let manitoLog = db.get('alignManitoLog', []);
                 let dateStr = `${d.getMonth()+1}/${d.getDate()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
                 
                 manitoLog.unshift({ date: dateStr, from: currentUser, to: manitoName, keyword: manitoKeyword });
                 if(manitoLog.length > 30) manitoLog = manitoLog.slice(0, 30); 
-                localStorage.setItem('alignManitoLog', JSON.stringify(manitoLog));
+                db.set('alignManitoLog', manitoLog);
             }
-        }// 🌟 파트너 금고에 +10 EXP 입금 및 편지 남기기 (무한 복사 어뷰징 철통 방어 탑재!)
+        }
+
+// 🌟 파트너 금고에 +10 EXP 입금 및 편지 남기기 (무한 복사 어뷰징 철통 방어 탑재!)
         if (manitoName && manitoKeyword) {
             const currentUser = localStorage.getItem('alignCurrentUser') || '디자이너';
             let d = new Date();
@@ -5940,7 +5972,8 @@ function pr_setMode(mode) {
             document.getElementById('resDeduct').innerText = formatNumber(Math.round(totalDeductions)) + ' 원';
             document.getElementById('resNet').innerText = formatNumber(Math.round(net)) + ' 원';
 
-            let savedData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
+            // 🌟 [코드 다이어트] 최신 db 엔진 적용
+            let savedData = db.get('alignSalesData', []);
             
             let shopTotalSales = 0;
             let serviceRev = 0, premiumRev = 0, productRev = 0;
@@ -6008,7 +6041,8 @@ function pr_setMode(mode) {
                 savedData.push(newRecord); // 새로 추가
             }
             
-            localStorage.setItem('alignSalesData', JSON.stringify(savedData));
+            // 🌟 [코드 다이어트] 최신 db 엔진 적용
+            db.set('alignSalesData', savedData);
             
             const receipt = document.getElementById('payroll-receipt');
             receipt.style.display = 'block';
@@ -7512,8 +7546,8 @@ window.p_switchTab = function(tabId) {
             const currentUser = localStorage.getItem('alignCurrentUser') || '알 수 없음';
             if(!name) { alert("제품명을 입력해주세요!"); return; }
 
-            // 신고 데이터 생성
-            let reports = JSON.parse(localStorage.getItem('alignExpReports')) || [];
+            // 🌟 [코드 다이어트] db 엔진 적용
+            let reports = db.get('alignExpReports', []);
             reports.push({
                 id: Date.now(),
                 user: currentUser,
@@ -7521,7 +7555,7 @@ window.p_switchTab = function(tabId) {
                 status: 'pending', // 원장님 승인 대기 중
                 date: new Date().toLocaleString()
             });
-            localStorage.setItem('alignExpReports', JSON.stringify(reports));
+            db.set('alignExpReports', reports);
 
             // 💡 [실시간 핵심!] 데이터 저장 직후, 경영자 오피스의 결재 센터 화면도 즉시 강제 새로고침 시킵니다.
             if(typeof mo_renderExpReports === 'function') mo_renderExpReports();
@@ -7624,7 +7658,8 @@ window.p_switchTab = function(tabId) {
             const name = document.getElementById('p-order-name').value.trim();
             if(!name) { alert("품목명을 입력해주세요!"); return; }
 
-            let cart = JSON.parse(localStorage.getItem('alignOrderCart')) || [];
+            // 🌟 [코드 다이어트] db 엔진 적용
+            let cart = db.get('alignOrderCart', []);
             
             // 💡 [스마트 엔진] 이미 장바구니에 똑같은 제품이 있다면? 새로 추가하지 말고 수량만 +1 !
             let existingItem = cart.find(i => i.category === cat && i.name === name);
@@ -7634,7 +7669,7 @@ window.p_switchTab = function(tabId) {
                 cart.push({ id: Date.now(), category: cat, name: name, qty: 1 }); // 최초 담을 땐 1개
             }
             
-            localStorage.setItem('alignOrderCart', JSON.stringify(cart));
+            db.set('alignOrderCart', cart);
 
             document.getElementById('p-order-name').value = '';
             p_renderCart(); // 담자마자 리스트 새로고침
@@ -7643,12 +7678,13 @@ window.p_switchTab = function(tabId) {
 
         // 🌟 [신규] 장바구니 안에서 수량 조절하는 함수
         window.p_adjustCartQty = function(id, amount) {
-            let cart = JSON.parse(localStorage.getItem('alignOrderCart')) || [];
+            // 🌟 [코드 다이어트] db 엔진 적용
+            let cart = db.get('alignOrderCart', []);
             let item = cart.find(i => i.id === id);
             if(item) {
                 item.qty = (item.qty || 1) + amount;
                 if(item.qty < 1) item.qty = 1; // 최소 1개는 유지 (0개로 만들려면 삭제 버튼 사용)
-                localStorage.setItem('alignOrderCart', JSON.stringify(cart));
+                db.set('alignOrderCart', cart);
                 p_renderCart(); // 수량 변경 즉시 화면 새로고침
             }
         };
@@ -7747,51 +7783,18 @@ window.p_switchTab = function(tabId) {
         window.mo_currentMasterFilter = 'all'; // 마스터 리스트 전용 필터
         window.mo_currentStatusFilter = 'all'; // 재고 현황판 전용 필터
 
-       // 🌟 [개별 엔진 1] 마스터 리스트 전용 필터링 함수
+       // 🌟 [코드 다이어트 완료] 마스터 리스트 전용 필터링 (AlignUI 엔진 연동)
         window.mo_setMasterFilter = function(cat) {
             window.mo_currentMasterFilter = cat;
-            
-            // 마스터 리스트 쪽 버튼들만 색상 변경
-            const btns = document.querySelectorAll('.mo-master-filter-btn');
-            btns.forEach(btn => {
-                // 클릭 시 전달된 카테고리(cat)와 버튼의 텍스트가 일치하는지 확인하거나, 
-                // 간단하게 클릭된 버튼 자체를 강조하는 로직으로 변경합니다.
-                btn.style.background = 'rgba(255,255,255,0.03)';
-                btn.style.color = '#8E8E93';
-                btn.style.borderColor = 'rgba(255,255,255,0.05)';
-            });
-
-            // 현재 클릭된 버튼(target)에 불 켜기
-            if (event && event.currentTarget) {
-                const activeBtn = event.currentTarget;
-                activeBtn.style.background = 'rgba(255,255,255,0.1)';
-                activeBtn.style.color = '#fff';
-                activeBtn.style.borderColor = 'rgba(255,255,255,0.2)';
-            }
-
-            mo_renderStockMaster(); // 오직 마스터 리스트만 새로고침!
+            AlignUI.activateFilterBtn('.mo-master-filter-btn', event?.currentTarget);
+            mo_renderStockMaster();
         };
 
-        // 🌟 [개별 엔진 2] 실시간 재고 현황판 전용 필터링 함수
+        // 🌟 [코드 다이어트 완료] 실시간 재고 현황판 전용 필터링 (AlignUI 엔진 연동)
         window.mo_setStatusFilter = function(cat) {
             window.mo_currentStatusFilter = cat;
-            
-            // 현황판 쪽 버튼들만 색상 변경
-            const btns = document.querySelectorAll('.mo-status-filter-btn');
-            btns.forEach(btn => {
-                btn.style.background = 'rgba(255,255,255,0.03)';
-                btn.style.color = '#8E8E93';
-                btn.style.borderColor = 'rgba(255,255,255,0.05)';
-            });
-
-            if (event && event.currentTarget) {
-                const activeBtn = event.currentTarget;
-                activeBtn.style.background = 'rgba(255,255,255,0.1)';
-                activeBtn.style.color = '#fff';
-                activeBtn.style.borderColor = 'rgba(255,255,255,0.2)';
-            }
-
-            mo_renderStockStatus(); // 오직 현황판 리스트만 새로고침!
+            AlignUI.activateFilterBtn('.mo-status-filter-btn', event?.currentTarget);
+            mo_renderStockStatus();
         };
 
 // 2. 등록된 마스터 리스트 화면에 그리기 (검색 엔진 + 가격표 통합판!)
@@ -8253,23 +8256,11 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         // ==========================================
         window.p_currentStockFilter = 'all'; // 기본 필터: 전체
 
+        // 🌟 [코드 다이어트 완료] 파트너 재고 필터 (AlignUI 엔진 연동)
         window.p_setStockFilter = function(cat) {
             window.p_currentStockFilter = cat;
-            
-            // 필터 버튼 색상 전환
-            const btns = document.querySelectorAll('.p-stock-filter-btn');
-            btns.forEach(btn => {
-                if(btn.getAttribute('data-cat') === cat) {
-                    btn.style.background = 'rgba(255,255,255,0.1)';
-                    btn.style.color = '#fff';
-                    btn.style.borderColor = 'rgba(255,255,255,0.2)';
-                } else {
-                    btn.style.background = 'rgba(255,255,255,0.03)';
-                    btn.style.color = '#8E8E93';
-                    btn.style.borderColor = 'rgba(255,255,255,0.05)';
-                }
-            });
-            p_renderInventory(); // 리스트 즉시 새로고침
+            AlignUI.activateFilterBtn('.p-stock-filter-btn', event?.currentTarget);
+            p_renderInventory();
         };
 
         window.p_renderInventory = function() {
@@ -8517,21 +8508,10 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         
         window.mo_currentEduFilter = 'all';
 
+        // 🌟 [코드 다이어트 완료] 오피스 교육 필터 (AlignUI 엔진 연동)
         window.mo_setEduFilter = function(level) {
             window.mo_currentEduFilter = level;
-            
-            const btns = document.querySelectorAll('.mo-edu-filter-btn');
-            btns.forEach(btn => {
-                if(btn.getAttribute('data-level') === level) {
-                    btn.style.background = 'rgba(255,255,255,0.1)';
-                    btn.style.color = '#fff';
-                    btn.style.borderColor = 'rgba(255,255,255,0.2)';
-                } else {
-                    btn.style.background = 'rgba(255,255,255,0.03)';
-                    btn.style.color = '#8E8E93';
-                    btn.style.borderColor = 'rgba(255,255,255,0.05)';
-                }
-            });
+            AlignUI.activateFilterBtn('.mo-edu-filter-btn', event?.currentTarget);
             mo_renderEduAll();
         };
 
@@ -8921,23 +8901,11 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         // 🌟 [파트너 필터 상태 저장 변수]
         window.p_currentEduFilter = 'all';
 
-        // 🌟 파트너 라운지 필터 버튼 클릭 시 작동하는 엔진
+        // 🌟 [코드 다이어트 완료] 파트너 교육 필터 (AlignUI 엔진 연동)
         window.p_setEduFilter = function(level) {
             window.p_currentEduFilter = level;
-            
-            const btns = document.querySelectorAll('.p-edu-filter-btn');
-            btns.forEach(btn => {
-                if(btn.getAttribute('data-level') === level) {
-                    btn.style.background = 'rgba(255,255,255,0.1)';
-                    btn.style.color = '#fff';
-                    btn.style.borderColor = 'rgba(255,255,255,0.2)';
-                } else {
-                    btn.style.background = 'rgba(255,255,255,0.03)';
-                    btn.style.color = '#8E8E93';
-                    btn.style.borderColor = 'rgba(255,255,255,0.05)';
-                }
-            });
-            p_renderArchiveList(); // 리스트 즉시 새로고침
+            AlignUI.activateFilterBtn('.p-edu-filter-btn', event?.currentTarget);
+            p_renderArchiveList();
         };
 
         // 3. 파트너: 아카이브 리스트 그리기 & 승인 요청 (🌟 완료 내역 독립 렌더링 엔진)
@@ -10815,12 +10783,13 @@ window.v_resetData = async function() {
 };
 
 window.m_resetShopData = async function() {
-    if(await AlignModal.confirm("🚨 경고: 매장 전체의 이번 달 매출과 시술 기록을 0원으로 초기화하시겠습니까?\n(초기화 전, 이번 달 데이터가 엑셀 파일로 자동 다운로드되며 앱 내 '지난달 기록'에 영구 저장됩니다!)", "매장 전체 초기화")) {
-        try {
-            let salesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
-            let statsData = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
-            
-            if(salesData.length > 0 || statsData.length > 0) {
+            if(await AlignModal.confirm("🚨 경고: 매장 전체의 이번 달 매출과 시술 기록을 0원으로 초기화하시겠습니까?\n(초기화 전, 이번 달 데이터가 엑셀 파일로 자동 다운로드되며 앱 내 '지난달 기록'에 영구 저장됩니다!)", "매장 전체 초기화")) {
+                try {
+                    // 🌟 [코드 다이어트] 방탄 db 엔진으로 매출/통계 로드
+                    let salesData = db.get('alignSalesData', []);
+                    let statsData = db.get('alignMonthlyStats', []);
+                    
+                    if(salesData.length > 0 || statsData.length > 0) {
                 let csvContent = "\uFEFF=== [매출 결산] ===\n날짜,담당자,매출액,수익\n";
                 let totalGross = 0; let designerRank = {}; 
                 salesData.forEach(row => {
@@ -10853,14 +10822,19 @@ window.m_resetShopData = async function() {
                 let runnerUpDesigner = sortedRank[1] ? sortedRank[1][0] : "없음";
 
                 const currentMonthHistory = { month: dateStr.slice(0, 6), totalGross: totalGross, topDesigner: topDesigner, topGross: topGross, runnerUpDesigner: runnerUpDesigner };
-                let historyData = JSON.parse(localStorage.getItem('alignHistoryData') || '[]');
+                
+                // 🌟 [코드 다이어트] 히스토리 데이터 처리 및 안전 저장
+                let historyData = db.get('alignHistoryData', []);
                 let mIndex = historyData.findIndex(h => h.month === currentMonthHistory.month);
+                
                 if(mIndex !== -1) { historyData[mIndex] = currentMonthHistory; } 
                 else { historyData.push(currentMonthHistory); }
                 historyData.sort((a,b) => b.month - a.month); 
-                localStorage.setItem('alignHistoryData', JSON.stringify(historyData));
+                
+                db.set('alignHistoryData', historyData);
             }
 
+            // (이하 삭제 로직은 텍스트 기반이므로 기존 removeItem 유지)
             localStorage.removeItem('alignSalesData');
             localStorage.removeItem('alignMonthlyStats');
             localStorage.removeItem('vl_daily_records');
@@ -10900,15 +10874,16 @@ window.sys_smartMonthlyClose = async function() {
     }
 
     let confirmClose = await AlignModal.confirm(`🚨 [경고] 정말 [ ${targetMonth} ] 월의 데이터를 마감하시겠습니까?\n\n※ 해당 월의 모든 기록이 역사관(Snapshot)으로 이동하며 현재 장부는 비워집니다.`, "최종 확인");
-    if(!confirmClose) return;
+            if(!confirmClose) return;
 
-    let salesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
-    let monthlyStats = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
-    let historyData = JSON.parse(localStorage.getItem('alignHistoryData') || '[]');
-    let dailyRecords = JSON.parse(localStorage.getItem('vl_daily_records') || '[]');
-    let questData = JSON.parse(localStorage.getItem('vl_quests') || '[]');
+            // 🌟 [코드 다이어트] 방탄 db 엔진으로 5대 데이터 안전하게 로드
+            let salesData = db.get('alignSalesData', []);
+            let monthlyStats = db.get('alignMonthlyStats', []);
+            let historyData = db.get('alignHistoryData', []);
+            let dailyRecords = db.get('vl_daily_records', []);
+            let questData = db.get('vl_quests', []);
 
-    let salesToKeep = salesData.filter(s => !s.date.startsWith(targetMonth));
+            let salesToKeep = salesData.filter(s => !s.date.startsWith(targetMonth));
     let salesToBackup = salesData.filter(s => s.date.startsWith(targetMonth));
     let statsToKeep = monthlyStats.filter(s => !s.date.startsWith(targetMonth));
     let dailyToKeep = dailyRecords.filter(r => !r.date.startsWith(targetMonth));
@@ -10917,19 +10892,22 @@ window.sys_smartMonthlyClose = async function() {
     let monthTotalGross = salesToBackup.reduce((sum, s) => sum + (s.gross || 0), 0);
     let historyMonthKey = targetMonth.replace('-', '');
     let existHistory = historyData.find(h => h.month === historyMonthKey);
-    if(existHistory) { existHistory.totalGross = monthTotalGross; } 
-    else { historyData.push({ month: historyMonthKey, totalGross: monthTotalGross }); }
+            if(existHistory) { existHistory.totalGross = monthTotalGross; } 
+            else { historyData.push({ month: historyMonthKey, totalGross: monthTotalGross }); }
 
-    if(salesToBackup.length > 0) {
-        let snapshot = JSON.parse(localStorage.getItem('alignMonthlySnapshot')) || [];
-        let sIdx = snapshot.findIndex(s => s.month === targetMonth);
-        let currentMonthData = monthlyStats.filter(s => s.date.startsWith(targetMonth));
-        if(sIdx > -1) snapshot[sIdx] = { month: targetMonth, data: currentMonthData };
-        else snapshot.push({ month: targetMonth, data: currentMonthData });
-        localStorage.setItem('alignMonthlySnapshot', JSON.stringify(snapshot.slice(-12))); 
-    }
+            if(salesToBackup.length > 0) {
+                // 🌟 [코드 다이어트] 스냅샷 데이터도 db 엔진으로 안전하게 처리
+                let snapshot = db.get('alignMonthlySnapshot', []);
+                let sIdx = snapshot.findIndex(s => s.month === targetMonth);
+                let currentMonthData = monthlyStats.filter(s => s.date.startsWith(targetMonth));
+                
+                if(sIdx > -1) snapshot[sIdx] = { month: targetMonth, data: currentMonthData };
+                else snapshot.push({ month: targetMonth, data: currentMonthData });
+                
+                db.set('alignMonthlySnapshot', snapshot.slice(-12)); 
+            }
 
-    let dailyToBackup = dailyRecords.filter(r => r.date.startsWith(targetMonth));
+            let dailyToBackup = dailyRecords.filter(r => r.date.startsWith(targetMonth));
     let statsToBackup = monthlyStats.filter(s => s.date.startsWith(targetMonth)); 
 
     if(salesToBackup.length > 0 || dailyToBackup.length > 0 || statsToBackup.length > 0) {
@@ -10955,19 +10933,22 @@ window.sys_smartMonthlyClose = async function() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-    } else {
-        await AlignModal.alert(`[ ${targetMonth} ] 월에 해당하는 백업할 데이터가 없어 마감을 취소합니다.`, "마감 취소");
-        return; 
-    }
+            } else {
+                await AlignModal.alert(`[ ${targetMonth} ] 월에 해당하는 백업할 데이터가 없어 마감을 취소합니다.`, "마감 취소");
+                return; 
+            }
 
-    localStorage.setItem('alignHistoryData', JSON.stringify(historyData));
-    localStorage.setItem('alignSalesData', JSON.stringify(salesToKeep));
-    localStorage.setItem('alignMonthlyStats', JSON.stringify(statsToKeep));
-    localStorage.setItem('vl_daily_records', JSON.stringify(dailyToKeep));
-    localStorage.setItem('vl_quests', JSON.stringify(questsToKeep));
-    localStorage.removeItem('alignManitoLog');
+            // 🌟 [코드 다이어트] 남은 데이터들을 db 금고에 안전하게 덮어쓰기
+            db.set('alignHistoryData', historyData);
+            db.set('alignSalesData', salesToKeep);
+            db.set('alignMonthlyStats', statsToKeep);
+            db.set('vl_daily_records', dailyToKeep);
+            db.set('vl_quests', questsToKeep);
+            
+            // 단순 텍스트 삭제는 기존 removeItem 유지
+            localStorage.removeItem('alignManitoLog');
 
-    await AlignModal.alert(`✅ [ ${targetMonth} ] 마감이 완벽하게 처리되었습니다.\n엑셀 다운로드와 데이터 백업이 완료되었습니다.`, "마감 완료");
+            await AlignModal.alert(`✅ [ ${targetMonth} ] 마감이 완벽하게 처리되었습니다.\n엑셀 다운로드와 데이터 백업이 완료되었습니다.`, "마감 완료");
     
     if(typeof loadRealData === 'function') loadRealData();
     if(typeof window.renderManagerCharts === 'function') window.renderManagerCharts(); 
@@ -10989,20 +10970,21 @@ window.mo_resetStaffPassword = async function() {
 };
 
 window.mo_resetStaffData = async function() {
-    if(!await AlignModal.confirm(`🚨 ${window.currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제하시겠습니까?\n(이름표와 비밀번호는 유지됩니다.)`, "개인 실적 초기화")) return;
-    
-    const today = new Date();
-    const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+            if(!await AlignModal.confirm(`🚨 ${window.currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제하시겠습니까?\n(이름표와 비밀번호는 유지됩니다.)`, "개인 실적 초기화")) return;
+            
+            const today = new Date();
+            const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
 
-    ['alignSalesData', 'alignMonthlyStats', 'vl_daily_records', 'vl_quests'].forEach(key => {
-        let data = JSON.parse(localStorage.getItem(key) || '[]');
-        let filtered = data.filter(item => !(item.name === window.currentCtrlUser && item.date.startsWith(currentMonth)));
-        localStorage.setItem(key, JSON.stringify(filtered));
-    });
+            // 🌟 [코드 다이어트] db 엔진으로 4대 장부 동시 스캔 및 필터링
+            ['alignSalesData', 'alignMonthlyStats', 'vl_daily_records', 'vl_quests'].forEach(key => {
+                let data = db.get(key, []);
+                let filtered = data.filter(item => !(item.name === window.currentCtrlUser && item.date.startsWith(currentMonth)));
+                db.set(key, filtered);
+            });
 
-    await AlignModal.alert("✅ 해당 직원의 이번 달 데이터가 리셋되었습니다.", "리셋 완료");
-    mo_refreshCtrlStatus();
-};
+            await AlignModal.alert("✅ 해당 직원의 이번 달 데이터가 리셋되었습니다.", "리셋 완료");
+            mo_refreshCtrlStatus();
+        };
 
 window.mo_terminateStaff = async function() {
     if(!await AlignModal.confirm(`🚨 [영구 삭제] ${window.currentCtrlUser} 님을 퇴사 처리하시겠습니까?\n\n이름표, 비밀번호, 모든 실적이 영구 삭제되며 복구할 수 없습니다.`, "퇴사 처리")) return;
