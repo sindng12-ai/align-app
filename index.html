@@ -591,7 +591,7 @@
         .pw-dynamic-text { font-family: 'Pretendard', sans-serif; font-size: 12.5px; font-weight: 600; color: #fff; transition: 0.2s; letter-spacing: -0.3px; }
         .pw-track { display: flex; height: 10px; border-radius: 5px; overflow: hidden; background: rgba(0,0,0,0.6); box-shadow: inset 0 2px 5px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.05); }
         .pw-segment { height: 100%; transition: width 0.8s cubic-bezier(0.2, 1, 0.2, 1); cursor: pointer; }
-        .pw-segment:active { filter: brightness(1.5); }}
+        .pw-segment:active { filter: brightness(1.5); }
         
        /* 🟢 로스트 밸류 하이엔드 영수증 튜닝 */
         .lost-value-section { animation: fadeUp 0.8s 0.2s ease both; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03); border-radius: 16px; padding: 22px 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.2); } /* margin 제거, 다크 테마 적용 */
@@ -3983,17 +3983,51 @@ function d_reset() {
         if(document.getElementById('d-chk-study')) document.getElementById('d-chk-study').checked = false;
         if(document.getElementById('d-chk-clean')) document.getElementById('d-chk-clean').checked = false;
 
-        // 🌟 [팀장 긴급 픽스] 이전 접속자(디자이너)가 선택했던 마니또 이름/키워드 잔상 완벽 포맷!
         const mName = document.getElementById('d-manito-name');
         const mKeyword = document.getElementById('d-manito-keyword');
         if(mName) mName.value = '';
         if(mKeyword) mKeyword.value = '';
         const mNameDisp = document.getElementById('d-manito-name-display');
         const mKeywordDisp = document.getElementById('d-manito-keyword-display');
-        if(mNameDisp) { mNameDisp.innerHTML = `<span>선택 안 함 (오늘 서포트 없음)</span><span style="font-size: 10px; color: #8E8E93;">▼</span>`; mNameDisp.style.color = '#E8E8ED'; }
-        if(mKeywordDisp) { mKeywordDisp.innerHTML = `<span>칭찬 키워드 선택</span><span style="font-size: 10px; color: #8E8E93;">▼</span>`; mKeywordDisp.style.color = '#E8E8ED'; }
-        
-        // 🌟 [잔상 제거] 화면이 스르륵 바뀌는 애니메이션을 잠시 끕니다.
+
+        // 🌟 [팀장의 수술] 데일리 로그 진입 시, 로그인한 진짜 내 이름으로 오늘 칭찬했는지 락(Lock) 확인!
+        const currentUser = localStorage.getItem('alignCurrentUser') || '디자이너';
+        let d = new Date();
+        let dateKey = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+        let manitoLimitKey = `alignManitoGiven_${currentUser}_${dateKey}`;
+
+        if (localStorage.getItem(manitoLimitKey)) {
+            // 🔒 오늘 이미 칭찬했다면 ➔ 선택창을 자물쇠로 꽉 잠급니다!
+            if(mNameDisp) { 
+                mNameDisp.innerHTML = `<span style="color: #5C6370; font-weight: 700;">🔒 오늘 칭찬 완료 (내일 가능)</span>`; 
+                mNameDisp.style.pointerEvents = 'none';
+                mNameDisp.style.background = 'rgba(255,255,255,0.02)';
+                mNameDisp.style.borderColor = 'rgba(255,255,255,0.05)';
+            }
+            if(mKeywordDisp) { 
+                mKeywordDisp.innerHTML = `<span style="color: #5C6370; font-weight: 700;">🔒 선택 불가</span>`; 
+                mKeywordDisp.style.pointerEvents = 'none';
+                mKeywordDisp.style.background = 'rgba(255,255,255,0.02)';
+                mKeywordDisp.style.borderColor = 'rgba(255,255,255,0.05)';
+            }
+        } else {
+            // ✅ 아직 안 했다면 ➔ 정상 활성화
+            if(mNameDisp) { 
+                mNameDisp.innerHTML = `<span>선택 안 함 (오늘 서포트 없음)</span><span style="font-size: 10px; color: #8E8E93;">▼</span>`; 
+                mNameDisp.style.color = '#E8E8ED'; 
+                mNameDisp.style.pointerEvents = 'auto';
+                mNameDisp.style.background = 'rgba(0,0,0,0.3)';
+                mNameDisp.style.borderColor = 'rgba(255,255,255,0.1)';
+            }
+            if(mKeywordDisp) { 
+                mKeywordDisp.innerHTML = `<span>칭찬 키워드 선택</span><span style="font-size: 10px; color: #8E8E93;">▼</span>`; 
+                mKeywordDisp.style.color = '#E8E8ED'; 
+                mKeywordDisp.style.pointerEvents = 'auto';
+                mKeywordDisp.style.background = 'rgba(0,0,0,0.3)';
+                mKeywordDisp.style.borderColor = 'rgba(255,255,255,0.1)';
+            }
+        }
+
         const pgFill = document.getElementById('d-pg-fill');
         const dVal = document.getElementById('d-val');
         if(pgFill) pgFill.style.transition = 'none';
@@ -4001,12 +4035,13 @@ function d_reset() {
 
         d_updateUI();
 
-        // 🌟 화면이 1단계로 바뀐 직후, 다시 애니메이션을 부드럽게 켭니다.
         setTimeout(() => {
             if(pgFill) pgFill.style.transition = '0.6s cubic-bezier(0.2, 1, 0.2, 1)';
             if(dVal) dVal.style.transition = '0.2s';
         }, 50);
     }
+
+
     function d_press(n) { if (d_data[d_step].length >= 9 && d_step === 0) return; if (d_data[d_step].length >= 3 && d_step > 0) return; d_data[d_step] += n; d_updateUI(); }
     function d_del() { d_data[d_step] = d_data[d_step].slice(0, -1); d_updateUI(); }
     function d_goBack() { if(d_step > 0) { d_step--; d_updateUI(); } }
@@ -6050,33 +6085,32 @@ function pr_setMode(mode) {
         }
     }
 
-      // ==========================================
-        // 🌟 [추가] 동적 프로필 생성 시스템 (앱 내부에서 직원 추가)
-        // ==========================================
-        window.alignProfiles = JSON.parse(localStorage.getItem('alignProfiles')) || [
-            { name: '희웅', title: 'Director', color: 'linear-gradient(135deg, #D4AF37, #8a7123)', text: '#050507' },
-            { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED' },
-            { name: '지아', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED' }
-        ];
+      // 🌟 [추가] 동적 프로필 생성 시스템 (앱 내부에서 직원 추가)
+        const savedData = localStorage.getItem('alignProfiles');
+        if (savedData) {
+            window.alignProfiles = JSON.parse(savedData);
+        } else {
+            window.alignProfiles = [
+                { name: '희웅', title: 'Director', color: 'linear-gradient(135deg, #D4AF37, #8a7123)', text: '#050507' },
+                { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED' },
+                { name: '지아', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED' }
+            ];
+            localStorage.setItem('alignProfiles', JSON.stringify(window.alignProfiles));
+        }
 
         // 2. 화면에 프로필들을 쫙 그려주는 마법 (넷플릭스 스와이프 핏!)
-      window.renderProfiles = function() {
-    const container = document.getElementById('profile-list');
-    if(!container) return;
+        window.renderProfiles = function() {
+            // 🌟 [팀장의 수술] getElementById(1개만 찾기)를 querySelectorAll(전부 다 찾기)로 업그레이드!
+            const containers = document.querySelectorAll('#profile-list');
+            if(containers.length === 0) return;
 
-    // 🌟 [팀장 픽스] 금고(localStorage)를 무조건 최우선으로 열어봅니다!
-    const savedData = localStorage.getItem('alignProfiles');
-    let profiles = savedData ? JSON.parse(savedData) : window.alignProfiles;
+            // 금고에 있는 데이터만 무조건 믿도록 변경!
+            let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
 
-    // 만약 앱을 처음 켜서 금고가 비어있다면, 초기값을 세팅하고 바로 금고에 저장해버립니다.
-    if (!savedData) {
-        localStorage.setItem('alignProfiles', JSON.stringify(profiles));
-    }
-
-    let html = '';
-    // 빈 공간 패딩용 더미 투명 박스 (처음과 끝) - 스크롤 중앙 정렬 꿀팁
-    html += `<div style="min-width: calc(50vw - 70px); flex-shrink: 0;"></div>`;
-   
+            let html = '';
+            // 빈 공간 패딩용 더미 투명 박스 (처음과 끝) - 스크롤 중앙 정렬 꿀팁
+            html += `<div style="min-width: calc(50vw - 70px); flex-shrink: 0;"></div>`;
+           
             profiles.forEach(p => {
                 const initial = p.name.charAt(0).toUpperCase();
                 let ringColor, titleColor, boxBg;
@@ -6103,27 +6137,13 @@ function pr_setMode(mode) {
             });
             
             html += `<div style="min-width: calc(50vw - 70px); flex-shrink: 0;"></div>`;
-            container.innerHTML = html;
-        };
-
-
-    // 🟢 3. 로그인 시 발생하는 1초 깜빡임 완벽 제거 엔진
-        
-        // 🔐 [보안 전담] 대문에서 프로필을 직접 눌렀을 때만 비번을 물어보는 놈
-        window.attemptProfileLogin = function(name, position) {
-            const profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-            const user = profiles.find(p => p.name === name);
-            const savedPw = (user && user.personalPw) ? user.personalPw : '0000';
             
-            const inputPw = prompt(`[${name}] 님의 4자리 비밀번호를 입력하세요.\n(초기 비밀번호: 0000)`);
-            if (inputPw === null) return; 
-            if (inputPw !== savedPw && inputPw !== window.MASTER_PIN) {
-                alert("❌ 비밀번호가 일치하지 않습니다.");
-                return;
-            }
-            // 비밀번호 통과하면 진짜 입장 엔진(loginAs) 호출!
-            window.loginAs(name, position);
+            // 🌟 [팀장의 수술] 찾아낸 모든 화면(대문)에 동시에 명단을 그려버립니다!
+            containers.forEach(c => c.innerHTML = html);
         };
+
+
+   
 
         // 🚀 [입장 전담] 블랙아웃(암전) 대기 시간 없이 초고속 입장!
         const originalLoginAs2 = window.loginAs;
@@ -9148,34 +9168,34 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
 // 📋 [통합 인사 엔진 V2] 원터치 버튼 리스트 & 디자이너 EXP 버그 픽스
         let currentCtrlUser = '';
 
-        // 🌟 1. 직원 명단을 예쁜 버튼으로 화면에 뿌려주는 엔진
+       // 🌟 1. 직원 명단을 예쁜 버튼으로 화면에 뿌려주는 엔진
         window.mo_renderStaffGrid = function() {
-            const grid = document.getElementById('mo-staff-list-grid');
-            if(!grid) return;
+            // 🌟 [팀장 픽스] querySelectorAll 로 화면에 존재하는 모든 버튼 구역을 폭격!
+            const grids = document.querySelectorAll('#mo-staff-list-grid');
+            if(grids.length === 0) return;
             
             const profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
+            let html = '';
+
             if(profiles.length === 0) {
-                grid.innerHTML = '<div style="color:#8E8E93; font-size:12px;">등록된 직원이 없습니다.</div>';
-                return;
+                html = '<div style="color:#8E8E93; font-size:12px;">등록된 직원이 없습니다.</div>';
+            } else {
+                // 디자이너(골드)와 파트너(그린)를 구분해서 예쁜 버튼으로 생성!
+                html = profiles.map(p => {
+                    const isPartner = p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴');
+                    const btnColor = isPartner ? 'var(--daily-green)' : 'var(--accent-gold)';
+                    const btnBg = isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(212, 175, 55, 0.05)';
+                    const btnBorder = isPartner ? 'rgba(50, 215, 75, 0.3)' : 'rgba(212, 175, 55, 0.3)';
+                    
+                    return `<button onclick="mo_loadStaffControl('${p.name}')" style="background: ${btnBg}; border: 1px solid ${btnBorder}; color: ${btnColor}; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">${p.name} <span style="font-weight: 400; font-size: 11px;">${p.title}</span></button>`;
+                }).join('');
             }
 
-            // 디자이너(골드)와 파트너(그린)를 구분해서 예쁜 버튼으로 생성!
-            grid.innerHTML = profiles.map(p => {
-                const isPartner = p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴');
-                const btnColor = isPartner ? 'var(--daily-green)' : 'var(--accent-gold)';
-                const btnBg = isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(212, 175, 55, 0.05)';
-                const btnBorder = isPartner ? 'rgba(50, 215, 75, 0.3)' : 'rgba(212, 175, 55, 0.3)';
-                
-                return `<button onclick="mo_loadStaffControl('${p.name}')" style="background: ${btnBg}; border: 1px solid ${btnBorder}; color: ${btnColor}; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">${p.name} <span style="font-weight: 400; font-size: 11px;">${p.title}</span></button>`;
-            }).join('');
+            // 모든 화면에 새로고침 내용 동시 덮어쓰기!
+            grids.forEach(grid => grid.innerHTML = html);
         };
-
-       
-
-
-        
-        
-      
+          
+              
 
         // 🌟 [신규] 승급 심사 대기열 렌더링 엔진
         window.mo_renderLevelUpQueue = function() {
@@ -9340,7 +9360,7 @@ let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.align
         window.mo_modifyExp = function(isAdd) {
             const amount = parseInt(document.getElementById('mo-ctrl-exp-amount').value);
             if(isNaN(amount) || amount <= 0) return alert("정확한 수치를 입력하세요.");
-            const pKey = 'alignPartnerData_' + currentCtrlUser;
+            const pKey = 'alignPartnerData_' + window.currentCtrlUser; // 🌟 픽스
             let pData = JSON.parse(localStorage.getItem(pKey));
             
             if(isAdd) pData.exp += amount;
@@ -9352,11 +9372,11 @@ let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.align
         };
 
         window.mo_approveLevelUp = function() {
-            const pKey = 'alignPartnerData_' + currentCtrlUser;
+            const pKey = 'alignPartnerData_' + window.currentCtrlUser; // 🌟 픽스
             let pData = JSON.parse(localStorage.getItem(pKey));
             if(pData.level >= 5) return alert("이미 최고 레벨입니다.");
             
-pData.level += 1; // 누적 경험치는 깎지 않고 레벨만 올립니다
+            pData.level += 1; // 누적 경험치는 깎지 않고 레벨만 올립니다
             
             // 🎓 [수정] 레벨 5 달성 시, 파트너가 볼 수 있게 '수료증 대기' 꼬리표 달기
             if(pData.level === 5) {
@@ -9368,9 +9388,9 @@ pData.level += 1; // 누적 경험치는 깎지 않고 레벨만 올립니다
             
             // 원장님 화면에는 깔끔하게 처리 완료 알림만!
             if(pData.level === 5) {
-                if(typeof app !== 'undefined' && app.toast) app.toast(`👑 ${currentCtrlUser}님 승급 처리 완료! (파트너 접속 시 수료증 발급)`);
+                if(typeof app !== 'undefined' && app.toast) app.toast(`👑 ${window.currentCtrlUser}님 승급 처리 완료! (수료증 발급)`);
             } else {
-                if(typeof app !== 'undefined' && app.toast) app.toast(`👑 ${currentCtrlUser}님 LV.${pData.level}(으)로 승급 완료!`);
+                if(typeof app !== 'undefined' && app.toast) app.toast(`👑 ${window.currentCtrlUser}님 LV.${pData.level}(으)로 승급 완료!`);
             }
         };
 
@@ -10956,10 +10976,11 @@ window.sys_smartMonthlyClose = async function() {
 
 // 4. 👥 경영자 오피스 직원 제어 구역
 window.mo_resetStaffPassword = async function() {
-    if(!await AlignModal.confirm(`⚠️ ${currentCtrlUser} 님의 개인 비밀번호를 [0000]으로 초기화하시겠습니까?`, "비밀번호 강제 초기화")) return;
+    // 🌟 [팀장 픽스] 이름표를 절대 까먹지 않도록 window. 붙임!
+    if(!await AlignModal.confirm(`⚠️ ${window.currentCtrlUser} 님의 개인 비밀번호를 [0000]으로 초기화하시겠습니까?`, "비밀번호 강제 초기화")) return;
     
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles;
-    let idx = profiles.findIndex(p => p.name === currentCtrlUser);
+    let idx = profiles.findIndex(p => p.name === window.currentCtrlUser);
     if(idx !== -1) {
         profiles[idx].personalPw = '0000';
         localStorage.setItem('alignProfiles', JSON.stringify(profiles));
@@ -10968,14 +10989,14 @@ window.mo_resetStaffPassword = async function() {
 };
 
 window.mo_resetStaffData = async function() {
-    if(!await AlignModal.confirm(`🚨 ${currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제하시겠습니까?\n(이름표와 비밀번호는 유지됩니다.)`, "개인 실적 초기화")) return;
+    if(!await AlignModal.confirm(`🚨 ${window.currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제하시겠습니까?\n(이름표와 비밀번호는 유지됩니다.)`, "개인 실적 초기화")) return;
     
     const today = new Date();
     const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
 
     ['alignSalesData', 'alignMonthlyStats', 'vl_daily_records', 'vl_quests'].forEach(key => {
         let data = JSON.parse(localStorage.getItem(key) || '[]');
-        let filtered = data.filter(item => !(item.name === currentCtrlUser && item.date.startsWith(currentMonth)));
+        let filtered = data.filter(item => !(item.name === window.currentCtrlUser && item.date.startsWith(currentMonth)));
         localStorage.setItem(key, JSON.stringify(filtered));
     });
 
@@ -10984,9 +11005,9 @@ window.mo_resetStaffData = async function() {
 };
 
 window.mo_terminateStaff = async function() {
-    if(!await AlignModal.confirm(`🚨 [영구 삭제] ${currentCtrlUser} 님을 퇴사 처리하시겠습니까?\n\n이름표, 비밀번호, 모든 과거 실적이 영구 삭제되며 복구할 수 없습니다.`, "퇴사 처리")) return;
+    if(!await AlignModal.confirm(`🚨 [영구 삭제] ${window.currentCtrlUser} 님을 퇴사 처리하시겠습니까?\n\n이름표, 비밀번호, 모든 실적이 영구 삭제되며 복구할 수 없습니다.`, "퇴사 처리")) return;
 
-    const targetName = currentCtrlUser;
+    const targetName = window.currentCtrlUser;
 
     // 1. 명단에서 즉시 삭제
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
@@ -11003,25 +11024,30 @@ window.mo_terminateStaff = async function() {
         localStorage.setItem(key, JSON.stringify(data.filter(item => item.name !== targetName)));
     });
 
-    // 4. 🌟 마니또 당일 지급 도장 찌꺼기 완벽 파쇄
+    // 4. 마니또 당일 지급 도장 찌꺼기 완벽 파쇄
     Object.keys(localStorage).forEach(key => {
         if(key.startsWith(`alignManitoGiven_${targetName}_`)) localStorage.removeItem(key);
     });
 
     await AlignModal.alert(`✅ ${targetName} 님의 이름표와 모든 데이터가 소각되었습니다.`, "퇴사 처리 완료");
     
-    // 5. 🌟 [잔상 제거] 대문을 깨끗하게 새로고침
-    window.location.href = window.location.pathname + "?refresh=" + Date.now();
+    // 5. 🌟 [라이브 삭제 로직] 하단 제어판 싹 숨기고, 모든 화면을 새로 그립니다!
+    document.querySelectorAll('#mo-ctrl-panel').forEach(p => p.style.display = 'none');
+    if(typeof mo_renderStaffGrid === 'function') mo_renderStaffGrid(); 
+    if(typeof m_renderPartnerRadar === 'function') m_renderPartnerRadar(); 
+    if(typeof mo_renderLevelUpQueue === 'function') mo_renderLevelUpQueue(); 
+    if(typeof renderProfiles === 'function') renderProfiles(); 
 };
+
 window.mo_resetPartner = async function(type) {
     if (type === 'format') {
-        if(await AlignModal.confirm(`⚠️ [포맷 경고]\n정말 ${currentCtrlUser}님의 데이터를 LV.1로 초기화하시겠습니까?\n(경험치, 레벨, 이번 달 퀘스트 달성률이 모두 0으로 바뀝니다.)`, "데이터 클린 포맷")) {
-            const pKey = 'alignPartnerData_' + currentCtrlUser;
+        if(await AlignModal.confirm(`⚠️ [포맷 경고]\n정말 ${window.currentCtrlUser}님의 데이터를 LV.1로 초기화하시겠습니까?\n(경험치, 레벨, 이번 달 퀘스트 달성률이 모두 0으로 바뀝니다.)`, "데이터 클린 포맷")) {
+            const pKey = 'alignPartnerData_' + window.currentCtrlUser;
             const resetData = { exp: 0, level: 1, todayQuests: {}, lastDate: '' };
             localStorage.setItem(pKey, JSON.stringify(resetData));
             
             let allQuests = JSON.parse(localStorage.getItem('vl_quests') || '[]');
-            let filteredQuests = allQuests.filter(q => q.name !== currentCtrlUser);
+            let filteredQuests = allQuests.filter(q => q.name !== window.currentCtrlUser);
             localStorage.setItem('vl_quests', JSON.stringify(filteredQuests));
             
             mo_refreshCtrlStatus(); 
@@ -11030,34 +11056,36 @@ window.mo_resetPartner = async function(type) {
             await AlignModal.alert("🔄 모든 데이터가 0으로 클린 포맷되었습니다.", "포맷 완료");
         }
     } else if (type === 'delete') {
-        if(await AlignModal.confirm(`☠️ [경고]\n정말 ${currentCtrlUser}님을 완전히 삭제하시겠습니까? (퇴사 시 사용)`, "계정 영구 삭제")) {
-            localStorage.removeItem('alignPartnerData_' + currentCtrlUser);
+        if(await AlignModal.confirm(`☠️ [경고]\n정말 ${window.currentCtrlUser}님을 완전히 삭제하시겠습니까? (퇴사 시 사용)`, "계정 영구 삭제")) {
+            localStorage.removeItem('alignPartnerData_' + window.currentCtrlUser);
             let allEduReqs = JSON.parse(localStorage.getItem('alignEduRequests') || '[]');
-            let filteredEduReqs = allEduReqs.filter(r => r.userName !== currentCtrlUser);
+            let filteredEduReqs = allEduReqs.filter(r => r.userName !== window.currentCtrlUser);
             localStorage.setItem('alignEduRequests', JSON.stringify(filteredEduReqs));
             
             let allQuests = JSON.parse(localStorage.getItem('vl_quests') || '[]');
-            let filteredQuests = allQuests.filter(q => q.name !== currentCtrlUser);
+            let filteredQuests = allQuests.filter(q => q.name !== window.currentCtrlUser);
             localStorage.setItem('vl_quests', JSON.stringify(filteredQuests));
 
             let allSales = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
-            let filteredSales = allSales.filter(s => s.name !== currentCtrlUser);
+            let filteredSales = allSales.filter(s => s.name !== window.currentCtrlUser);
             localStorage.setItem('alignSalesData', JSON.stringify(filteredSales));
             
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-            let newProfiles = profiles.filter(p => p.name !== currentCtrlUser);
+            let newProfiles = profiles.filter(p => p.name !== window.currentCtrlUser);
             localStorage.setItem('alignProfiles', JSON.stringify(newProfiles));
             window.alignProfiles = newProfiles;
 
-            document.getElementById('mo-ctrl-panel').style.display = 'none';
-            document.getElementById('mo-ctrl-partner-name').value = '';
+            document.querySelectorAll('#mo-ctrl-panel').forEach(p => p.style.display = 'none');
             if(typeof m_renderPartnerRadar === 'function') m_renderPartnerRadar();
             if(typeof mo_renderQuestRanking === 'function') mo_renderQuestRanking();
+            if(typeof mo_renderStaffGrid === 'function') mo_renderStaffGrid(); 
+            if(typeof renderProfiles === 'function') renderProfiles();
             
-            await AlignModal.alert(`☠️ ${currentCtrlUser}님의 모든 데이터와 명부가 영구 삭제되었습니다.`, "삭제 완료");
+            await AlignModal.alert(`☠️ ${window.currentCtrlUser}님의 모든 데이터와 명부가 영구 삭제되었습니다.`, "삭제 완료");
         }
     }
 };
+
 
 // 5. 🛠️ 각종 설정 및 삭제 입력창 모달화
 window.mo_setStoreGoal = async function() {
