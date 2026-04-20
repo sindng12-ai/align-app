@@ -227,22 +227,22 @@
         /* 🌟 [스마트 핏 2.0 엔진] Flexbox를 활용한 절대 중앙 정렬 및 아이폰 하단 여백 완벽 흡수! */
         .bottom-nav { 
             position: fixed; 
-            bottom: 0; left: 0; right: 0; /* 좌우로 쭉 늘리고 */
-            margin: 0 auto; /* 완벽하게 중앙 정렬! */
+            bottom: 0; left: 0; right: 0;
+            margin: 0 auto;
             width: 100%; max-width: 414px; 
             background: rgba(15, 15, 18, 0.88); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            padding: 15px 20px calc(15px + env(safe-area-inset-bottom)); 
+            /* 🚨 핀셋 타점: 상하 쿠션을 15px -> 8px로 압축하여 바를 아래로 가라앉힙니다! */
+            padding: 8px 20px calc(8px + env(safe-area-inset-bottom)); 
             z-index: 9999; opacity: 0; 
-            /* transform(이동) 애니메이션은 상하(Y축)로만 움직이도록 고정! */
             transform: translateY(0); 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
         
         .bottom-nav.hide { 
-            transform: translateY(150px) !important; /* 아래로만 숨김 */
+            transform: translateY(150px) !important; 
             opacity: 0 !important; 
             pointer-events: none !important; 
         }
@@ -264,7 +264,7 @@
         }
 
 
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 6px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
         .nav-item.active { color: #fff; }
         .nav-item.active svg { color: var(--accent-gold); }
         .nav-text { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;}
