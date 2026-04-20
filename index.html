@@ -13,8 +13,8 @@
     <style>
 /* 🌟 [HOME & 커스텀 모달] 신규 UI 스타일 추가 */
         .home-top-bar { display: flex; justify-content: space-between; align-items: center; padding: 60px 25px 15px; z-index: 20; position: relative; background: linear-gradient(to bottom, var(--bg) 80%, transparent); flex-shrink: 0; }
-        .slim-quest-banner { background: linear-gradient(90deg, rgba(212,175,55,0.1), rgba(212,175,55,0.02)); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s;}
-.slim-quest-banner:active { transform: scale(0.98); }        
+        .slim-quest-banner { background: linear-gradient(90deg, rgba(212,175,55,0.1), rgba(212,175,55,0.02)); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: 0.2s;}
+.slim-quest-banner:active { transform: scale(0.98);
         .insight-ticker { font-size: 12px; color: var(--accent-gold); background: rgba(255,255,255,0.03); padding: 12px 15px; border-radius: 8px; margin-top: 15px; font-weight: 500; display: flex; align-items: center; gap: 8px; border-left: 2px solid var(--accent-gold); line-height: 1.5; word-break: keep-all;}
         .action-list-btn { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }        .action-list-btn:active { transform: scale(0.98); background: rgba(255,255,255,0.05); }
         .action-icon-box { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 15px; flex-shrink: 0; }
@@ -2217,7 +2217,7 @@ input, textarea {
 
         <div class="scroll-container" style="padding: 0 25px 160px;">
             
-            <div style="margin-top: 15px; margin-bottom: 30px; animation: fadeUp 0.4s ease forwards;">
+            <div style="margin-top: 15px; margin-bottom: 25px; animation: fadeUp 0.4s ease forwards;">
                 <div class="greeting" id="h-greeting" style="font-size: 24px; font-weight: 300; line-height: 1.4; margin-bottom: 12px;">안녕하세요,<br><strong>디자이너</strong>님!</div>
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <span class="h-tier-badge" id="h-tier" style="padding: 4px 10px; font-size: 11px;">TIER 로딩 중...</span>
@@ -2233,7 +2233,7 @@ input, textarea {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
             </div>
 
-            <div style="background: rgba(25, 25, 30, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 22px 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeUp 0.6s ease forwards;">
+            <div style="background: rgba(25, 25, 30, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 22px 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); animation: fadeUp 0.6s ease forwards;">
                 <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; color: #8B949E; letter-spacing: 1.5px; margin-bottom: 6px;">THIS MONTH REVENUE</div>
                 <div style="display: flex; align-items: baseline; gap: 5px; margin-bottom: 15px;">
                     <span id="h-rev" style="font-family: 'Montserrat', sans-serif; font-size: 32px; font-weight: 700; color: #fff; letter-spacing: -1px;">0</span>
