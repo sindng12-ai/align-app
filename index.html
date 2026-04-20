@@ -224,24 +224,25 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        * 🌟 [스마트 핏 엔진] 유리창은 화면 끝까지 늘리고, 콘텐츠만 안전 지대 위로 올림! */
+        /* 🌟 [스마트 핏 2.0 엔진] Flexbox를 활용한 절대 중앙 정렬 및 아이폰 하단 여백 완벽 흡수! */
         .bottom-nav { 
             position: fixed; 
-            bottom: 0; /* 🚨 0으로 바닥에 완전히 밀착시켜 검은 여백을 유리가 집어삼키게 합니다! */
-            left: 50%; transform: translateX(-50%);
+            bottom: 0; left: 0; right: 0; /* 좌우로 쭉 늘리고 */
+            margin: 0 auto; /* 완벽하게 중앙 정렬! */
             width: 100%; max-width: 414px; 
             background: rgba(15, 15, 18, 0.88); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            /* 🚨 콘텐츠 상단 여백 15px, 하단은 15px + 아이폰 하단바(홈 인디케이터) 높이만큼 들어올림 */
             padding: 15px 20px calc(15px + env(safe-area-inset-bottom)); 
             z-index: 9999; opacity: 0; 
+            /* transform(이동) 애니메이션은 상하(Y축)로만 움직이도록 고정! */
+            transform: translateY(0); 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
         
         .bottom-nav.hide { 
-            transform: translate(-50%, 150px) !important; /* 🌟 숨길 때도 중앙 정렬 핏 유지 */
+            transform: translateY(150px) !important; /* 아래로만 숨김 */
             opacity: 0 !important; 
             pointer-events: none !important; 
         }
