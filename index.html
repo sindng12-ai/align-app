@@ -489,13 +489,12 @@
       /* 🌟 [먼슬리 하단 버튼 스마트 핏] 기종에 맞춰 안전하고 예쁘게 밀착! */
         .m-bottom-action { 
             position: fixed; 
-            bottom: -1px; 
+            bottom: 0; /* 🚨 바닥 완벽 밀착 */
             left: 50%; transform: translateX(-50%); max-width: 414px; 
             width: 100%; padding: 15px 25px; 
             background: linear-gradient(0deg, rgba(5,5,7,1) 50%, rgba(5,5,7,0.8) 75%, rgba(5,5,7,0) 100%); 
             z-index: 9999; display: flex; gap: 10px; 
-            /* 🚨 [원장님 픽스] 기본 15px 여유 쿠션 + 폰 기종별 하단 안전영역 확보 */
-            padding-bottom: calc(15px + env(safe-area-inset-bottom)); 
+            padding-bottom: calc(15px + env(safe-area-inset-bottom)); /* 🚨 15px + 안전영역 */
         }
 
         .m-btn-primary { 
