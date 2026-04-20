@@ -228,15 +228,19 @@
         .bottom-nav { 
             position: fixed; 
             bottom: 0; left: 0; right: 0;
-            margin: 0 auto;
+            margin: 0 auto; 
             width: 100%; max-width: 414px; 
             background: rgba(15, 15, 18, 0.88); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            /* 🚨 핀셋 타점: 상하 쿠션을 15px -> 8px로 압축하여 바를 아래로 가라앉힙니다! */
-            padding: 8px 20px calc(8px + env(safe-area-inset-bottom)); 
-            z-index: 9999; opacity: 0; 
+            
+            /* 🚨 [집중 수술 2] 상하 쿠션을 15px -> 4px로 극단적 압축! (아이폰 홈 바는 그대로 보호) */
+            padding: 4px 20px calc(4px + env(safe-area-inset-bottom)); 
+            max-height: calc(52px + env(safe-area-inset-bottom)); /* 🚨 바 두께가 더 이상 커지지 않게 강제 잠금 */
+            
+            z-index: 9999; 
+            opacity: 1; /* 🚨 투명도 1 켜기 (정상 노출) */
             transform: translateY(0); 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
@@ -264,7 +268,7 @@
         }
 
 
-        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; color: #5C6370; cursor: pointer; transition: 0.2s; width: 60px;}
         .nav-item.active { color: #fff; }
         .nav-item.active svg { color: var(--accent-gold); }
         .nav-text { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;}
