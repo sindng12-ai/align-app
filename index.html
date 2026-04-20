@@ -224,18 +224,18 @@
         .nav-btn:active { transform: scale(0.9); }
         .nav-btn.hidden { opacity: 0; pointer-events: none; }
 
-        /* 🌟 [변태적 디테일 픽스] 사파리의 꿀렁임을 무시하고 홈 인디케이터(바닥 끝)까지 글래스로 완벽 밀착! */
+        /* 🌟 [네비게이션 다이어트] 둥둥 뜨지 않게 하단 패딩 최적화 */
         .bottom-nav { 
             position: fixed; 
-            bottom: -1px; /* 🌟 0이 아니라 -1px로 설정하여 물리적 액정 바깥까지 유리를 밀어버림 (틈새 원천 차단) */
+            bottom: -1px; 
             left: 50%; transform: translateX(-50%);
             width: 100%; max-width: 414px; 
             background: rgba(15, 15, 18, 0.88); 
             backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
             border-top: 1px solid rgba(255, 255, 255, 0.08); 
             display: flex; justify-content: center; gap: 80px; align-items: center; 
-            /* 🌟 위에서 1px 내렸으니, 쿠션(padding)을 15px -> 16px로 1px 늘려서 보정 */
-            padding: 15px 20px calc(16px + env(safe-area-inset-bottom)); 
+            /* 🚨 [픽스] 기본 쿠션을 16px -> 5px로 대폭 줄여 바닥에 착 붙임! */
+            padding: 15px 20px calc(5px + env(safe-area-inset-bottom)); 
             z-index: 9999; opacity: 0; 
             transition: transform 0.4s cubic-bezier(0.2, 1, 0.2, 1), opacity 0.4s ease; 
         }
@@ -486,15 +486,16 @@
     
         .m-auto-sum { background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.02) 100%); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 16px; padding: 15px 20px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
         
-       /* 🌟 [먼슬리 하단 버튼] 과도한 35px 방석을 제거하고 네이티브 핏(15px)으로 바닥 밀착! */
+       /* 🌟 [먼슬리 하단 버튼 다이어트] 둥둥 뜨지 않게 하단 패딩 최적화 */
         .m-bottom-action { 
             position: fixed; 
             bottom: -1px; 
             left: 50%; transform: translateX(-50%); max-width: 414px; 
-            width: 100%; padding: 15px 25px; /* 위아래 패딩도 살짝 압축 */
+            width: 100%; padding: 15px 25px; 
             background: linear-gradient(0deg, rgba(5,5,7,1) 50%, rgba(5,5,7,0.8) 75%, rgba(5,5,7,0) 100%); 
             z-index: 9999; display: flex; gap: 10px; 
-            padding-bottom: calc(15px + env(safe-area-inset-bottom)); /* 🌟 35px -> 15px로 다이어트! */
+            /* 🚨 [픽스] 기본 쿠션을 15px -> 5px로 대폭 줄여 바닥에 착 붙임! */
+            padding-bottom: calc(5px + env(safe-area-inset-bottom)); 
         }
         .m-btn-primary { 
             flex: 1; height: 56px; 
@@ -4176,23 +4177,8 @@ function d_reset() {
         document.getElementById(`d-manito-${type}-display`).innerHTML = `<span>${displayStr}</span><span style="font-size: 10px; color: #8E8E93;">▼</span>`;
         document.getElementById(`d-manito-${type}-display`).style.color = val ? 'var(--daily-green)' : '#E8E8ED'; // 선택하면 초록색으로 엣지있게!
         document.getElementById(`d-manito-${type}-list`).style.display = 'none'; // 창 닫기
-    };// 🌟 체크리스트 오픈 시, 파트너 명단을 '다크 팝업창' 형태에 맞춰 렌더링
-    function d_showChecklist() { 
-        document.getElementById('d-input-view').style.display = 'none'; 
-        document.getElementById('d-checklist-view').style.display = 'flex'; 
+    };// 
 
-        const nameList = document.getElementById('d-manito-name-list');
-        if(nameList) {
-            let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-            let partners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
-            
-            let html = `<div onclick="d_selectManito('name', '', '선택 안 함 (오늘 서포트 없음)')" style="padding: 12px 15px; font-size: 13px; color: #8E8E93; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">선택 안 함 (오늘 서포트 없음)</div>`;
-            partners.forEach(p => { 
-                html += `<div onclick="d_selectManito('name', '${p.name}', '${p.name} 파트너')" style="padding: 12px 15px; font-size: 13px; color: #E8E8ED; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">${p.name} 파트너</div>`; 
-            });
-            nameList.innerHTML = html;
-        }
-    }
 
     // 🌟 커스텀 팝업창 열기/닫기 모터
     window.d_toggleManitoDropdown = function(type) {
@@ -4592,12 +4578,14 @@ function m_nextStep() {
         
         // 시술 건수 합계는 접객 수보다 '크거나 같아야' 정상 (작으면 안됨)
         if (totalTechSum < totalCust) {
-            // 🌟 팀장의 수리: 가독성을 위해 문구를 압축하고, [대괄호]를 이용해 제목을 골드색으로 강조!
             alert(`🚨 [시술 내역 누락]\n입력하신 총 접객 수(${totalCust}명)보다\n체크된 시술 건수(${totalTechSum}건)가 더 적습니다.\n모든 고객의 시술을 정확히 입력해 주세요.`);
             return;
         }
 
+        // 🚨 [UI 픽스] 로딩 스크린이 뜨는 순간, 하단 '다음 단계' 버튼 박스를 완전히 숨김!
         document.getElementById('m-loading-screen').style.display = 'flex';
+        const mBottomAction = document.querySelector('.m-bottom-action');
+        if (mBottomAction) mBottomAction.style.display = 'none';
 
 // [MONTHLY PRO: 데이터에 이름표 붙여 금고에 저장]
         const currentUser = localStorage.getItem('alignCurrentUser') || '디자이너';
