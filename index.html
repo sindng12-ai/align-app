@@ -4150,7 +4150,8 @@ function d_reset() {
         const nameList = document.getElementById('d-manito-name-list');
         if(nameList) {
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-            let partners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
+            // 🚨 [보안 픽스] 숨김(퇴사) 처리된 파트너는 칭찬 명단에서 완벽히 제외!
+            let partners = profiles.filter(p => (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) && !p.isHidden);
             
             let html = `<div onclick="d_selectManito('name', '', '선택 안 함 (오늘 서포트 없음)')" style="padding: 12px 15px; font-size: 13px; color: #8E8E93; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer;">선택 안 함 (오늘 서포트 없음)</div>`;
             partners.forEach(p => { 
@@ -6745,8 +6746,9 @@ function pr_setMode(mode) {
             if(!container) return;
 
             // 💡 1. 금고 전체를 뒤지지 않고, '현재 프로필에 존재하는 진짜 파트너' 명단만 가져옵니다!
-            let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-            let activePartners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
+            let profiles = db.get('alignProfiles', window.alignProfiles || []);
+            // 🚨 [보안 픽스] 레이더망에도 숨김(isHidden) 처리된 유령 파트너 차단!
+            let activePartners = profiles.filter(p => (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) && !p.isHidden);
 
             if(activePartners.length === 0) {
                 container.innerHTML = `<div style="color: #8E8E93; font-size: 12px; text-align: center; padding: 10px;">등록된 파트너가 없습니다.</div>`;
@@ -8180,14 +8182,18 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                 let html = '';
                 profiles.forEach(p => {
                     let isPartner = p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴');
-                    let color = isPartner ? 'var(--daily-green)' : '#fff';
-                    let bg = isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(255, 255, 255, 0.02)';
-                    let border = isPartner ? 'rgba(50, 215, 75, 0.2)' : 'rgba(255, 255, 255, 0.05)';
+                    let isHidden = p.isHidden; // 🌟 꼬리표 확인
+                    
+                    // 🌟 페이롤 명단에도 숨김(퇴사) 처리된 직원은 미니멀한 회색 톤으로 변환!
+                    let color = isHidden ? '#8B949E' : (isPartner ? 'var(--daily-green)' : '#fff');
+                    let bg = isHidden ? 'rgba(255,255,255,0.02)' : (isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(255, 255, 255, 0.02)');
+                    let border = isHidden ? 'rgba(255,255,255,0.1)' : (isPartner ? 'rgba(50, 215, 75, 0.2)' : 'rgba(255, 255, 255, 0.05)');
+                    let statusTag = isHidden ? '<span style="color:var(--error); font-size:10px; margin-left:6px; font-weight:800;">[숨김]</span>' : '';
 
                     html += `
                     <div style="background: ${bg}; border: 1px solid ${border}; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <div style="font-size: 14px; font-weight: 700; color: ${color};">${p.name} <span style="font-size: 11px; color: #8E8E93; font-weight: 400; margin-left: 6px;">${p.title}</span></div>
+                            <div style="font-size: 14px; font-weight: 700; color: ${color};">${p.name} <span style="font-size: 11px; color: #8E8E93; font-weight: 400; margin-left: 6px;">${p.title}</span>${statusTag}</div>
                         </div>
                         <button onclick="mo_openPayrollFor('${p.name}', '${p.title}')" style="background: rgba(0,0,0,0.3); border: 1px solid ${color}; color: ${color}; padding: 8px 14px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">정산 열기 💰</button>
                     </div>`;
@@ -8564,7 +8570,8 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             // 🌟 [신규 장착] 다이내믹 포커스 및 투트랙 진도율 엔진
             window.mo_updateEduProgress = function(targetName = 'ALL') {
                 let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-                let activePartners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
+                // 🚨 [보안 픽스] 전체 달성률 계산 시 퇴사자 제외
+                let activePartners = profiles.filter(p => (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) && !p.isHidden);
                 let allManuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
                 let requests = JSON.parse(localStorage.getItem('alignEduRequests')) || [];
                 let approvedReqs = requests.filter(r => r.status === 'approved');
@@ -8614,7 +8621,8 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             const statusContainer = document.getElementById('mo-edu-status-list');
             if(statusContainer) {
                 let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-                let activePartners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
+                // 🚨 [보안 픽스] 현황판 리스트 렌더링 시 퇴사자 제외
+                let activePartners = profiles.filter(p => (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) && !p.isHidden);
                 let requests = JSON.parse(localStorage.getItem('alignEduRequests')) || [];
                 let approvedReqs = requests.filter(r => r.status === 'approved');
                 
@@ -9180,9 +9188,9 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
             const queueEl = document.getElementById('mo-level-up-queue');
             if(!queueEl) return;
 
-            let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-            // 파트너(인턴) 직급만 필터링
-            let activePartners = profiles.filter(p => p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴'));
+            let profiles = db.get('alignProfiles', window.alignProfiles || []);
+            // 🚨 [보안 픽스] 파트너이면서, '숨김(퇴사)' 처리되지 않은 현직자만 필터링!
+            let activePartners = profiles.filter(p => (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) && !p.isHidden);
             
             const levelMax = [3000, 6000, 12000, 18000, 99999]; // 24개월 밸런스 패치 기준
             let queueHtml = '';
@@ -9949,6 +9957,8 @@ window.mo_showGraduation = function(partnerName) {
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
             let designerCount = 0; let partnerCount = 0;
             profiles.forEach(p => {
+                if (p.isHidden) return; // 🚨 [보안 픽스] AI 분석 전송 시 퇴사자는 인원수 카운트에서 완벽히 배제!
+                
                 if(p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) partnerCount++;
                 else if(!p.title.includes('원장') && !p.title.includes('대표')) designerCount++;
             });
@@ -10116,6 +10126,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const isCeo = (idInput === settings.ceoName); 
 
             if (!user && !isCeo) { alert("등록되지 않은 이름(아이디)입니다.\n프로필을 먼저 생성해 주세요."); return; }
+            
+            // 🚨 [최종 보안 픽스] 숨김(퇴사) 처리된 직원이 수동 타자로 강제 로그인하는 것 원천 차단!
+            if (user && user.isHidden) { alert("퇴사 처리된 계정입니다. 접속 권한이 없습니다."); return; }
 
             // 🚨 [보안 픽스] 원장님은 마스터 비번으로, 직원은 본인 비번으로 철저히 분리 검증!
             let isPwCorrect = false;
@@ -10220,10 +10233,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // 기존에 띄워둔 복구 버튼이 있다면 삭제 (중복 렌더링 방지)
             const oldRestoreBtn = document.getElementById('mo-restore-btn');
             if (oldRestoreBtn) oldRestoreBtn.remove();
+            const oldHardDeleteBtn = document.getElementById('mo-hard-delete-btn');
+            if (oldHardDeleteBtn) oldHardDeleteBtn.remove();
             
             if (isHidden) {
-                // 🔒 조작 금지 및 복구 버튼 생성 (직관적인 🤝 이모티콘으로 교체!)
-                document.getElementById('mo-ctrl-status').insertAdjacentHTML('beforeend', `<br><button id="mo-restore-btn" onclick="mo_restoreStaff('${window.currentCtrlUser}')" style="margin-top:12px; background: rgba(50, 215, 75, 0.1); color: var(--daily-green); border: 1px solid rgba(50, 215, 75, 0.3); padding: 8px 16px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer;">🤝 계정 복구 (재입사 승인)</button>`);
+                // 🔒 조작 금지 및 복구 & 완전 폐기 버튼 생성
+                let actionBtns = `
+                    <div style="display:flex; justify-content:center; gap:8px; margin-top:12px;">
+                        <button id="mo-restore-btn" onclick="mo_restoreStaff('${window.currentCtrlUser}')" style="background: rgba(50, 215, 75, 0.1); color: var(--daily-green); border: 1px solid rgba(50, 215, 75, 0.3); padding: 8px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; transition:0.2s;">🤝 계정 복구</button>
+                        <button id="mo-hard-delete-btn" onclick="mo_hardDeleteStaff('${window.currentCtrlUser}')" style="background: rgba(255, 69, 58, 0.1); color: var(--error); border: 1px solid rgba(255, 69, 58, 0.3); padding: 8px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; transition:0.2s;">☠️ 완전 폐기</button>
+                    </div>
+                `;
+                document.getElementById('mo-ctrl-status').insertAdjacentHTML('beforeend', actionBtns);
                 
                 if(partnerCtrl) { partnerCtrl.style.pointerEvents = 'none'; partnerCtrl.style.opacity = '0.3'; }
                 
@@ -11069,6 +11090,32 @@ window.mo_resetStaffData = async function() {
             if(typeof app !== 'undefined' && app.toast) app.toast(`✅ ${targetName} 님이 안전하게 퇴사(숨김) 처리되었습니다.`);
         };
 
+// 🌟 [스마트 파쇄기] 매장 매출 통계는 남기고 개인 명부/비번만 찢어버리는 완전 폐기 엔진
+        window.mo_hardDeleteStaff = async function(targetName) {
+            if(!await AlignModal.confirm(`☠️ [최종 경고] ${targetName} 님의 계정을 완전히 폐기하시겠습니까?\n\n이름표, 비밀번호, 개인 설정이 영구 삭제되며 복구할 수 없습니다.\n(※ 단, 이미 매장 총매출에 합산된 과거 실적 데이터는 회계 보존을 위해 빵꾸나지 않게 유지됩니다.)`, "완전 폐기")) return;
+
+            // 1. 프로필 명단에서 완벽하게 도려내기
+            let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
+            profiles = profiles.filter(p => p.name !== targetName);
+            localStorage.setItem('alignProfiles', JSON.stringify(profiles));
+            window.alignProfiles = profiles;
+
+            // 2. 개인 설정 금고 완전 파쇄
+            localStorage.removeItem('alignPartnerData_' + targetName);
+            localStorage.removeItem('vl_user_settings_' + targetName);
+            
+            // 마니또 도장 찌꺼기 파쇄
+            Object.keys(localStorage).forEach(key => {
+                if(key.startsWith(`alignManitoGiven_${targetName}_`)) localStorage.removeItem(key);
+            });
+
+            // 3. UI 리셋
+            document.querySelectorAll('#mo-ctrl-panel').forEach(p => p.style.display = 'none');
+            mo_renderStaffGrid();
+            renderProfiles(); // 대문 새로고침
+            
+            if(typeof app !== 'undefined' && app.toast) app.toast(`☠️ ${targetName} 님의 계정이 영구 폐기되었습니다.`);
+        };
 
 window.mo_resetPartner = async function(type) {
     if (type === 'format') {
