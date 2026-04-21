@@ -1513,7 +1513,11 @@ input, textarea {
 
                     <div id="ana-view-upsell" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; z-index: 1;">
                         <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px;">업셀링 실적 (기술 vs 점판)</div>
-                        <div style="position: relative; height: 220px; width: 100%;"><canvas id="barChart"></canvas></div>
+                        <div style="width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 5px;">
+                            <div id="barChartWrapper" style="position: relative; height: 215px; width: 100%;">
+                                <canvas id="barChart"></canvas>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -7383,6 +7387,13 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 let gradProd = ctx4.createLinearGradient(0, 0, 0, 250);
                 gradProd.addColorStop(0, '#F1C40F'); 
                 gradProd.addColorStop(1, '#B8860B'); 
+
+                // 🌟 [팀장 픽스] 디자이너가 늘어날수록 가로로 무한 팽창하는 스와이프 모터!
+                const wrapper4 = document.getElementById('barChartWrapper');
+                if (wrapper4) {
+                    let minW = sLabels.length * 75; // 무조건 1명당 75px의 쾌적한 여백 보장
+                    wrapper4.style.minWidth = minW > 300 ? minW + 'px' : '100%';
+                }
 
                 // 🌟 업셀링 바 차트 (간격 및 막대 두께 교정 완결판)
                 window.myStackedChart = new Chart(ctx4, {
