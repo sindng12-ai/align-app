@@ -836,11 +836,11 @@
         .pulse { animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
-    /* [추가] PIN 비밀번호 키패드 디자인 */
-        .pin-dot { width: 15px; height: 15px; border-radius: 50%; background: #2C2C2E; transition: 0.2s ease; }
-        .pin-dot.active { background: var(--accent-gold); box-shadow: 0 0 12px rgba(212, 175, 55, 0.6); }
-        .pin-btn { width: 75px; height: 75px; border-radius: 50%; background: rgba(255,255,255,0.05); border: none; color: #fff; font-size: 30px; font-weight: 500; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: 0.1s; }
-        .pin-btn:active { background: rgba(212,175,55,0.2); }
+    /* 🌟 [팀장 픽스] PIN 비밀번호 키패드 하이엔드 글래스모피즘 튜닝 */
+        .pin-dot { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,0.1); transition: 0.2s ease; border: 1px solid rgba(255,255,255,0.05); }
+        .pin-dot.active { background: var(--accent-gold); box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); border-color: var(--accent-gold); }
+        .pin-btn { width: 75px; height: 75px; border-radius: 50%; background: transparent; border: 1px solid rgba(255,255,255,0.05); color: #fff; font-size: 32px; font-weight: 300; font-family: 'Montserrat', sans-serif; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: all 0.2s cubic-bezier(0.2, 1, 0.2, 1); }
+        .pin-btn:active { background: rgba(212,175,55,0.15); border-color: var(--accent-gold); transform: scale(0.9); }
 
 /* 🌟 플로팅 버튼 & 바텀 시트 디자인 */
         .floating-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 42px; height: 42px; border-radius: 21px; background: linear-gradient(135deg, #D4AF37, #AA8721); color: #050507; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 12px rgba(212,175,55,0.3); cursor: pointer; z-index: 10; transition: 0.2s; }
@@ -1250,15 +1250,15 @@ input, textarea {
 
         <div style="width: 100%; max-width: 320px; z-index: 1; display: flex; flex-direction: column; gap: 12px; padding: 0 20px;">
             <div style="position: relative;">
-                <input type="text" id="login-company-code" placeholder="매장 코드" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid transparent; color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; letter-spacing: 1px; outline: none; transition: 0.3s; font-family: 'Pretendard', sans-serif; text-align: center;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.background='rgba(255,255,255,0.06)';" onblur="this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.04)';">
+                <input type="text" id="login-company-code" placeholder="매장 코드" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid transparent; color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; letter-spacing: 1px; outline: none; transition: all 0.4s ease; font-family: 'Pretendard', sans-serif; text-align: center;" onfocus="this.style.borderColor='rgba(212,175,55,0.6)'; this.style.background='rgba(212,175,55,0.05)'; this.style.boxShadow='0 0 15px rgba(212,175,55,0.15)';" onblur="this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.04)'; this.style.boxShadow='none';">
             </div>
             
             <div style="position: relative;">
-                <input type="text" id="login-user-id" placeholder="디자이너 아이디" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid transparent; color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; letter-spacing: 1px; outline: none; transition: 0.3s; font-family: 'Pretendard', sans-serif; text-align: center;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.background='rgba(255,255,255,0.06)';" onblur="this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.04)';">
+                <input type="text" id="login-user-id" placeholder="디자이너 아이디" style="width: 100%; background: rgba(255,255,255,0.04); border: 1px solid transparent; color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; letter-spacing: 1px; outline: none; transition: all 0.4s ease; font-family: 'Pretendard', sans-serif; text-align: center;" onfocus="this.style.borderColor='rgba(212,175,55,0.6)'; this.style.background='rgba(212,175,55,0.05)'; this.style.boxShadow='0 0 15px rgba(212,175,55,0.15)';" onblur="this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.04)'; this.style.boxShadow='none';">
             </div>
 
             <div style="position: relative;">
-                <input type="text" id="login-user-pw" placeholder="비밀번호 (PIN)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="-webkit-text-security: disc; width: 100%; background: rgba(255,255,255,0.04); border: 1px solid transparent; color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; letter-spacing: 2px; outline: none; transition: 0.3s; font-family: 'Pretendard', sans-serif; text-align: center;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.background='rgba(255,255,255,0.06)';" onblur="this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.04)';">
+                <input type="text" id="login-user-pw" placeholder="비밀번호 (PIN)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="-webkit-text-security: disc; width: 100%; background: rgba(255,255,255,0.04); border: 1px solid transparent; color: #fff; padding: 18px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; letter-spacing: 2px; outline: none; transition: all 0.4s ease; font-family: 'Pretendard', sans-serif; text-align: center;" onfocus="this.style.borderColor='rgba(212,175,55,0.6)'; this.style.background='rgba(212,175,55,0.05)'; this.style.boxShadow='0 0 15px rgba(212,175,55,0.15)';" onblur="this.style.borderColor='transparent'; this.style.background='rgba(255,255,255,0.04)'; this.style.boxShadow='none';">
             </div>
 
             <button onclick="checkB2BLogin()" style="width: 100%; background: linear-gradient(135deg, #D4AF37 0%, #AA8721 100%); color: #050507; border: none; border-radius: 12px; padding: 18px 0; font-size: 14px; font-weight: 800; letter-spacing: 1px; font-family: 'Pretendard', sans-serif; cursor: pointer; transition: 0.2s; box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3); margin-top: 10px;" onmousedown="this.style.transform='scale(0.96)'" onmouseup="this.style.transform='scale(1)'">로그인</button>
@@ -1282,16 +1282,22 @@ input, textarea {
         
         <div style="width: 100%; max-width: 320px; z-index: 1; display: flex; flex-direction: column; gap: 16px;">
             
-            <button class="btn-glass" onclick="setTimeout(() => enterDesignerMode(), 150)">
-                <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: #8E8E93; letter-spacing: 5px; font-weight: 600; margin-bottom: 8px; margin-left: 5px;">STAFF ONLY</div>
-                <div style="font-size: 18px; color: #E8E8ED; letter-spacing: 1px; font-weight: 400;">스태프 워크스페이스</div>
+            <button class="btn-glass" onclick="setTimeout(() => enterDesignerMode(), 150)" style="padding: 25px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;">
+                    <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: #8E8E93; letter-spacing: 5px; font-weight: 600; margin-bottom: 8px; margin-left: 2px;">STAFF ONLY</div>
+                    <div style="font-size: 18px; color: #E8E8ED; letter-spacing: 1px; font-weight: 400;">스태프 워크스페이스</div>
+                </div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
             
-            <button class="btn-glass-gold" onclick="setTimeout(() => openPinPad(), 150)">
-                <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--accent-gold); letter-spacing: 5px; font-weight: 700; margin-bottom: 8px; margin-left: 5px;">VIP ACCESS</div>
-                <div style="font-size: 18px; color: var(--accent-gold); letter-spacing: 1px; font-weight: 400;">경영자 오피스</div>
+            <button class="btn-glass-gold" onclick="setTimeout(() => openPinPad(), 150)" style="padding: 25px 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div style="text-align: left;">
+                    <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--accent-gold); letter-spacing: 5px; font-weight: 700; margin-bottom: 8px; margin-left: 2px;">VIP ACCESS</div>
+                    <div style="font-size: 18px; color: var(--accent-gold); letter-spacing: 1px; font-weight: 400;">경영자 오피스</div>
+                </div>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
-            </div>
+        </div>
         
         <div style="position: absolute; bottom: 40px; font-size: 9px; color: rgba(255,255,255,0.2); letter-spacing: 6px; font-weight: 500; font-family: 'Montserrat', sans-serif; margin-left: 6px;">DESIGNED BY HEIUNG</div>
     </div>
@@ -3757,28 +3763,7 @@ const app = {
             }
         };
 
-        // 🌟 [비상구 2] 문자 마스터키 (제목 5번 클릭 시 초기화)
-        let backdoorClickCount = 0;
-        window.triggerTextBackdoor = function() {
-            backdoorClickCount++;
-            if(backdoorClickCount >= 5) {
-                const secretKey = prompt("🚨 SYSTEM EMERGENCY RESET\n마스터키를 입력하세요.");
-                if(secretKey === 'HEIUNG0513') {
-                    // 비밀번호를 0000으로 강제 리셋
-                    const settings = JSON.parse(localStorage.getItem('alignSystemSettings')) || {};
-                    settings.adminPassword = '0000';
-                    localStorage.setItem('alignSystemSettings', JSON.stringify(settings));
-                    
-                    alert("✅ 비밀번호가 [0000]으로 초기화되었습니다.\n이제 오피스에 진입합니다.");
-                    window.currentPin = '0000';
-                    checkPin();
-                } else if(secretKey !== null) {
-                    alert("잘못된 키입니다.");
-                }
-                backdoorClickCount = 0;
-            }
-        };
-        
+               
         // 8. 경영자 오피스에서 로그아웃
         window.logoutManager = function() {
             document.getElementById('manager-room').style.display = 'none';
@@ -10835,7 +10820,8 @@ window.triggerTextBackdoor = async function() {
     backdoorCount++;
     window.backdoorClickCount = backdoorCount;
     if(backdoorCount >= 5) {
-        const secretKey = await AlignModal.prompt("🚨 SYSTEM EMERGENCY RESET\n마스터 마스터키를 입력하세요.", "복구 키 입력", "시스템 복구");
+        // 🌟 [팀장 픽스] 오타 교정 및 불필요한 이모지 제거
+        const secretKey = await AlignModal.prompt("SYSTEM EMERGENCY RESET\n마스터키를 입력하세요.", "복구 키 입력", "시스템 복구");
         if(secretKey === 'HEIUNG0513') {
             const settings = JSON.parse(localStorage.getItem('alignSystemSettings')) || {};
             settings.adminPassword = '0000';
