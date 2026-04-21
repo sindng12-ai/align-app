@@ -1200,6 +1200,14 @@ input, textarea {
             transform: scale(0.92); /* 터치하는 순간 쫀득하게 눌림 */
         }
 
+/* 🌟 [스와이프 제스처 엔진] OPERATION 결재 전용 스타일 */
+        .swipe-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.5); }
+        .swipe-bg { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; z-index: 1; }
+        .swipe-bg-left { background: rgba(50, 215, 75, 0.2); color: var(--daily-green); height: 100%; display: flex; align-items: center; padding-left: 25px; font-weight: 800; font-size: 13px; width: 50%; justify-content: flex-start; }
+        .swipe-bg-right { background: rgba(255, 69, 58, 0.2); color: var(--error); height: 100%; display: flex; align-items: center; padding-right: 25px; font-weight: 800; font-size: 13px; width: 50%; justify-content: flex-end; }
+        .swipe-front { position: relative; background: #1C1C1E; width: 100%; z-index: 2; transition: transform 0.3s cubic-bezier(0.2, 1, 0.2, 1); padding: 18px; border-radius: 16px; box-sizing: border-box; }
+        .swipe-front.swiping { transition: none; }
+
 </style>
 </head><body>
 
@@ -1305,7 +1313,7 @@ input, textarea {
         <div class="mo-header-wrap">
             <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div>
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); font-weight: 500; letter-spacing: 5px; margin-bottom: 8px;">EXECUTIVE DASHBOARD</div>
+                    <div onclick="triggerQAData()" style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); font-weight: 500; letter-spacing: 5px; margin-bottom: 8px; cursor: pointer;">EXECUTIVE DASHBOARD</div>
                     <div style="font-size: 26px; color: #ffffff; font-weight: 300; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0;">경영자 오피스</div>
                 </div>
                 
@@ -1339,10 +1347,10 @@ input, textarea {
             
             <div class="mo-tab-menu">
                 <button class="mo-tab-btn active" id="mo-tab-dash" onclick="switchMoTab('dash')">DASHBOARD</button>
-                <button class="mo-tab-btn" id="mo-tab-team" onclick="switchMoTab('team')">TEAM</button>
+                <button class="mo-tab-btn" id="mo-tab-analytics" onclick="switchMoTab('analytics')">ANALYTICS</button>
+                <button class="mo-tab-btn" id="mo-tab-hr" onclick="switchMoTab('hr')">HR (인사/교육)</button>
                 <button class="mo-tab-btn" id="mo-tab-oper" onclick="switchMoTab('oper')">OPERATION</button>
                 <button class="mo-tab-btn" id="mo-tab-fin" onclick="switchMoTab('fin')">FINANCE</button>
-                <button class="mo-tab-btn" id="mo-tab-manual" onclick="switchMoTab('manual')">MANUAL</button>
                 <button class="mo-tab-btn" id="mo-tab-sys" onclick="switchMoTab('sys')">SYSTEM</button>
             </div>
         </div>
@@ -1402,18 +1410,23 @@ input, textarea {
                         <div style="text-align: right;"><span id="dash-care" style="font-size: 26px; color: #ffffff; font-weight: 300; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #8E8E93; margin-left: 2px;">%</span></div>
                     </div>
                 </div>
-
+                
                 <div class="align-panel">
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 25px;">REVENUE TREND <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 매출 추이</span></div>
-                    <div style="position: relative; height: 200px; width: 100%;"><canvas id="salesChart"></canvas></div>
+                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+    <div style="font-size: 14px; font-weight: 700; color: #fff;">📊 ALIGN AI MENTOR</div>
+    <button onclick="loadRealData(); if(typeof app !== 'undefined') app.toast('AI가 데이터를 다시 분석합니다.');"
+            style="background: transparent; border: 1px solid #444; color: #aaa; font-size: 10px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s;">
+        RETRY
+    </button>
+</div>
+                    <div id="m-ai-report" style="color: #E8E8ED; font-size: 13px; line-height: 1.6; min-height: 100px;">
+                        데이터를 분석 중입니다...
+                    </div>
                 </div>
 
-                <div class="align-panel">
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 25px;">SERVICE SHARE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 시술 비중</span></div>
-                    <div style="position: relative; height: 200px; width: 100%;"><canvas id="menuChart"></canvas></div>
-                </div>
+            </div> 
 
-                <!-- 🌟 [대시보드 복구] 명예의 전당, 레이더, AI 멘토 등을 대시보드 안으로! -->
+<div id="mo-page-analytics" class="mo-page">
                 <div style="background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(28,28,30,0.5) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 25px; margin-bottom: 25px;">
                     <div style="display: flex; align-items: center; margin-bottom: 20px;">
                         <span style="color: var(--accent-gold); font-size: 14px; font-weight: 700; letter-spacing: 1px;">🏆 명예의 전당</span>
@@ -1429,101 +1442,184 @@ input, textarea {
                     </div>
                 </div>
 
-                <div class="align-panel">
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 25px;">CAPACITY RADAR <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(212,175,55,0.8); letter-spacing: 0; margin-left: 4px;">· 역량 분석망</span></div>
-                    <div style="position: relative; height: 250px; width: 100%;"><canvas id="radarChart"></canvas></div>
+                <div style="background: rgba(255,255,255,0.02); padding: 4px; border-radius: 12px; display: flex; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                    <button id="btn-ana-sales" onclick="mo_switchAnalytics('sales')" style="flex: 1; padding: 10px 0; background: rgba(255,255,255,0.1); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; transition: 0.3s; cursor: pointer;">매출 추이</button>
+                    <button id="btn-ana-menu" onclick="mo_switchAnalytics('menu')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">시술 비중</button>
+                    <button id="btn-ana-radar" onclick="mo_switchAnalytics('radar')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">역량 분석</button>
+                    <button id="btn-ana-upsell" onclick="mo_switchAnalytics('upsell')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">업셀링</button>
                 </div>
 
-                <div class="align-panel">
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 25px;">UPSELL PERFORMANCE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 기술 vs 점판</span></div>
-                    <div style="position: relative; height: 120px; width: 100%;"><canvas id="barChart"></canvas></div>
-                </div>
+                <div style="position: relative; min-height: 280px;">
+                    <div id="ana-view-sales" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 1; z-index: 2;">
+                        <div style="font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 20px;">REVENUE TREND <span style="font-size: 10px; color: rgba(142,142,147,0.8); margin-left: 4px;">· 월별 총매출 흐름</span></div>
+                        <div style="position: relative; height: 200px; width: 100%;"><canvas id="salesChart"></canvas></div>
+                    </div>
 
-                <div class="align-panel">
-                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-    <div style="font-size: 14px; font-weight: 700; color: #fff;">📊 ALIGN AI MENTOR</div>
-    <button onclick="loadRealData(); if(typeof app !== 'undefined') app.toast('AI가 데이터를 다시 분석합니다.');"
-            style="background: transparent; border: 1px solid #444; color: #aaa; font-size: 10px; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: 0.2s;">
-        RETRY
-    </button>
-</div>
-                    <div id="m-ai-report" style="color: #E8E8ED; font-size: 13px; line-height: 1.6; min-height: 100px;">
-                        데이터를 분석 중입니다...
+                    <div id="ana-view-menu" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; z-index: 1;">
+                        <div style="font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 20px;">SERVICE SHARE <span style="font-size: 10px; color: rgba(142,142,147,0.8); margin-left: 4px;">· 메뉴별 시술 비중</span></div>
+                        <div style="position: relative; height: 200px; width: 100%;"><canvas id="menuChart"></canvas></div>
+                    </div>
+
+                    <div id="ana-view-radar" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; z-index: 1;">
+                        <div style="font-size: 11px; color: var(--accent-gold); letter-spacing: 2px; margin-bottom: 20px;">CAPACITY RADAR <span style="font-size: 10px; color: rgba(212,175,55,0.8); margin-left: 4px;">· 디자이너 역량 비교</span></div>
+                        <div style="position: relative; height: 250px; width: 100%;"><canvas id="radarChart"></canvas></div>
+                    </div>
+
+                    <div id="ana-view-upsell" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; z-index: 1;">
+                        <div style="font-size: 11px; color: #8E8E93; letter-spacing: 2px; margin-bottom: 20px;">UPSELL PERFORMANCE <span style="font-size: 10px; color: rgba(142,142,147,0.8); margin-left: 4px;">· 기술 vs 점판 실적</span></div>
+                        <div style="position: relative; height: 120px; width: 100%;"><canvas id="barChart"></canvas></div>
                     </div>
                 </div>
-
-            </div> <!-- 👈 대시보드(mo-page-dash)를 여기서 확실히 닫습니다! -->
-
-            <div id="mo-page-team" class="mo-page">
-
-                <div class="align-panel">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <div style="font-size: 14px; font-weight: 700; color: var(--accent-gold); display: flex; align-items: center; gap: 6px;">
-                    <span style="font-size: 16px;">🏆</span> 베스트 서포터 모니터링
-                </div>
-                <button onclick="mo_renderManitoLog(); if(typeof app !== 'undefined') app.toast('모니터링 장부가 최신화되었습니다 🏆');" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #8E8E93; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.15s cubic-bezier(0.2, 1, 0.2, 1);" onmousedown="this.style.transform='scale(0.9)'; this.style.background='rgba(255,255,255,0.05)';" onmouseup="this.style.transform='scale(1)'; this.style.background='transparent';" onmouseleave="this.style.transform='scale(1)'; this.style.background='transparent';">새로고침</button>
-            </div>
-            <div id="mo-manito-log-list" style="display: flex; flex-direction: column; gap: 8px;">
-                <div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">아직 기록된 칭찬 내역이 없습니다.</div>
-            </div>
-        </div>
-
-                <div class="align-panel-red">
-                    <div style="font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 15px;">👑 승급 심사 대기열</div>
-                    <div id="mo-level-up-queue" style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="color: #5C6370; font-size: 12px; text-align: center;">대기 중인 파트너가 없습니다.</div>
+            </div> <div id="mo-page-hr" class="mo-page">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div class="align-panel-red" style="margin-bottom: 0;">
+                        <div style="font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 15px;">👑 승급 심사 대기열</div>
+                        <div id="mo-level-up-queue" style="display: flex; flex-direction: column; gap: 8px;"></div>
                     </div>
-                </div>
-
-                <div class="align-panel-blue">
-                    <div style="font-size: 14px; font-weight: 700; color: #0A84FF; margin-bottom: 15px;">📊 파트너 성장 레이더</div>
-                    <div id="mo-partner-radar"></div>
-                </div>
-
-                <div class="align-panel-gold">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 14px; font-weight: 800; color: var(--accent-gold);">🏆 월간 퀘스트 랭킹보드</span>
-
-                        <button onclick="mo_renderQuestRanking(); if(typeof app !== 'undefined') app.toast('랭킹이 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
-                    </div>
-                   <div class="mo-scroll-x" style="display: flex; gap: 8px; margin-bottom: 15px; -webkit-overflow-scrolling: touch;" id="mo-quest-ranking-tabs">
+                    <div class="align-panel-gold" style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <span style="font-size: 14px; font-weight: 700; color: var(--accent-gold);">👑 교육 이수 승인 대기열</span>
+                            <button onclick="mo_renderEduAll(); if(typeof app !== 'undefined') app.toast('교육 데이터가 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer;">새로고침</button>
                         </div>
-                    <div id="mo-quest-ranking-list" style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="color: #5C6370; font-size: 12px; text-align: center;">집계된 퀘스트 데이터가 없습니다.</div>
+                        <div id="mo-edu-approval-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
                     </div>
                 </div>
 
                 <div class="align-panel">
-                    <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        통합 인사 명부 제어판
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('hr-panel-1'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">📊 직원 성과 및 교육 현황</span>
+                        <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
                     </div>
-
-                    <div id="mo-staff-list-grid" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; padding-bottom: 5px;">
-    <div style="color: #8E8E93; font-size: 12px;">직원 명단을 불러오는 중입니다...</div>
-</div>
-                    
-                    <div id="mo-ctrl-panel" style="display: none; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
-                        <div id="mo-ctrl-status" style="color: #fff; font-size: 13px; font-weight: 700; text-align: center; margin-bottom: 5px;"></div>
-                        
-                        <div style="padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(212,175,55,0.2);">
-                            <div style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; font-weight: 700;">SECURITY SETTINGS</div>
-                            <button onclick="mo_resetStaffPassword()" style="width: 100%; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">비밀번호 0000으로 강제 초기화</button>
+                    <div id="hr-panel-1" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
+                        <div class="align-panel-blue">
+                            <div style="font-size: 14px; font-weight: 700; color: #0A84FF; margin-bottom: 15px;">📊 파트너 성장 레이더</div>
+                            <div id="mo-partner-radar"></div>
                         </div>
-
-                        <div id="mo-ctrl-partner-only" style="display: none; flex-direction: column; gap: 8px;">
-                            <div style="font-size: 11px; color: var(--daily-green); margin: 10px 0 5px; font-weight: 700;">PARTNER EXP CONTROL</div>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="number" id="mo-ctrl-exp-amount" placeholder="EXP 수치" style="width: 100px; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
-                                <button onclick="mo_modifyExp(true)" style="flex: 1; background: rgba(50, 215, 75, 0.1); color: var(--daily-green); border: 1px solid var(--daily-green); padding: 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">+ 지급</button>
-                                <button onclick="mo_modifyExp(false)" style="flex: 1; background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">- 차감</button>
+                        <div class="align-panel-green" style="margin-bottom: 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <span style="font-size: 14px; font-weight: 800; color: var(--daily-green);">📈 직원별 교육 이수 현황표</span>
+                                <button onclick="mo_renderEduAll()" style="background: transparent; border: 1px solid rgba(50,215,75,0.5); color: var(--daily-green); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer;">새로고침</button>
                             </div>
-                            <button onclick="mo_approveLevelUp()" style="background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(0,0,0,0.5) 100%); color: var(--accent-gold); border: 1px solid rgba(212,175,55,0.3); padding: 14px; border-radius: 8px; font-weight: 800; font-size: 12px; margin-top: 5px;">👑 승급 심사 합격 (레벨업)</button>
+                            <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                    <span style="font-size: 11px; color: #8E8E93; font-weight: 600; letter-spacing: 1px;">TOTAL PROGRESS</span>
+                                    <span id="mo-edu-total-percent" style="font-size: 16px; font-weight: 800; color: var(--daily-green); font-family: 'Montserrat', sans-serif;">0%</span>
+                                </div>
+                                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
+                                    <div id="mo-edu-total-bar" style="width: 0%; height: 100%; background: var(--daily-green); transition: 1s cubic-bezier(0.2, 1, 0.2, 1); box-shadow: 0 0 10px rgba(50, 215, 75, 0.4);"></div>
+                                </div>
+                                <div id="mo-edu-total-text" style="font-size: 10px; color: #5C6370; margin-top: 8px; text-align: right;">전체 교육 0개 중 0개 완료</div>
+                            </div>
+                            <div id="mo-edu-status-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
                         </div>
-                        
-                        <div style="display: flex; gap: 8px; margin-top: 15px;">
-                            <button onclick="mo_resetStaffData()" style="flex: 1; background: rgba(255, 159, 10, 0.05); border: 1px solid rgba(255, 159, 10, 0.2); color: #FF9F0A; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 11px;">🔄 데이터 리셋</button>
-                            <button onclick="mo_terminateStaff()" style="flex: 1; background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 10px; border-radius: 8px; font-weight: 600; font-size: 11px;">☠️ 퇴사 처리</button>
+                    </div>
+                </div>
+
+                <div class="align-panel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('hr-panel-2'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">🏆 퀘스트 랭킹 및 베스트 파트너</span>
+                        <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
+                    </div>
+                    <div id="hr-panel-2" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
+                        <div class="align-panel-gold">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <span style="font-size: 14px; font-weight: 800; color: var(--accent-gold);">🏆 월간 퀘스트 통합 랭킹</span>
+                                <button onclick="mo_renderQuestRanking();" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(212,175,55,0.3); color: var(--accent-gold); padding: 6px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">새로고침</button>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px;">
+                                <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                    <span style="background: rgba(212, 175, 55, 0.2); padding: 4px 6px; border-radius: 4px; font-size: 10px;">👑</span> 디자이너 리그 (업셀링/리뷰)
+                                </div>
+                                <div id="mo-quest-ranking-designer" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                            </div>
+
+                            <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
+                                <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                    <span style="background: rgba(50, 215, 75, 0.2); padding: 4px 6px; border-radius: 4px; font-size: 10px;">🌱</span> 파트너 리그 (실천/연습)
+                                </div>
+                                <div id="mo-quest-ranking-partner" style="display: flex; flex-direction: column; gap: 6px;"></div>
+                            </div>
+                        </div>
+                        <div class="align-panel" style="margin-bottom: 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <div style="font-size: 14px; font-weight: 700; color: var(--accent-gold);"><span style="font-size: 16px;">🏆</span> 베스트 서포터 모니터링</div>
+                                <button onclick="mo_renderManitoLog();" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #8E8E93; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer;">새로고침</button>
+                            </div>
+                            <div id="mo-manito-log-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="align-panel" style="margin-bottom: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('hr-panel-3'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">⚙️ 통합 인사 & 커리큘럼 제어판</span>
+                        <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
+                    </div>
+                    <div id="hr-panel-3" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
+                        <div class="align-panel">
+                            <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                통합 인사 명부 제어판
+                            </div>
+                            <div id="mo-staff-list-grid" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; padding-bottom: 5px;"></div>
+                            <div id="mo-ctrl-panel" style="display: none; flex-direction: column; gap: 12px; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                                <div id="mo-ctrl-status" style="color: #fff; font-size: 13px; font-weight: 700; text-align: center; margin-bottom: 5px;"></div>
+                                <div style="padding: 15px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px solid rgba(212,175,55,0.2);">
+                                    <div style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; font-weight: 700;">SECURITY SETTINGS</div>
+                                    <button onclick="mo_resetStaffPassword()" style="width: 100%; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">비밀번호 0000으로 강제 초기화</button>
+                                </div>
+                                <div id="mo-ctrl-partner-only" style="display: none; flex-direction: column; gap: 8px;">
+                                    <div style="font-size: 11px; color: var(--daily-green); margin: 10px 0 5px; font-weight: 700;">PARTNER EXP CONTROL</div>
+                                    <div style="display: flex; gap: 8px;">
+                                        <input type="number" id="mo-ctrl-exp-amount" placeholder="EXP 수치" style="width: 100px; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                                        <button onclick="mo_modifyExp(true)" style="flex: 1; background: rgba(50, 215, 75, 0.1); color: var(--daily-green); border: 1px solid var(--daily-green); padding: 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">+ 지급</button>
+                                        <button onclick="mo_modifyExp(false)" style="flex: 1; background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.1); padding: 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">- 차감</button>
+                                    </div>
+                                    <button onclick="mo_approveLevelUp()" style="background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(0,0,0,0.5) 100%); color: var(--accent-gold); border: 1px solid rgba(212,175,55,0.3); padding: 14px; border-radius: 8px; font-weight: 800; font-size: 12px; margin-top: 5px;">👑 승급 심사 합격 (레벨업)</button>
+                                </div>
+                                <div style="display: flex; gap: 8px; margin-top: 15px;">
+                                    <button onclick="mo_resetStaffData()" style="flex: 1; background: rgba(255, 159, 10, 0.05); border: 1px solid rgba(255, 159, 10, 0.2); color: #FF9F0A; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 11px;">🔄 데이터 리셋</button>
+                                    <button onclick="mo_terminateStaff()" style="flex: 1; background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 10px; border-radius: 8px; font-weight: 600; font-size: 11px;">☠️ 퇴사 처리</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="align-panel-blue">
+                            <div style="font-size: 14px; font-weight: 700; color: var(--edu-blue); margin-bottom: 15px;">📖 스마트 교육 계획서 배포</div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <select id="mo-edu-level" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
+                                    <option value="LV.1 (1~3개월)">🌱 LV.1 (1~3개월) CS 및 샴푸 테크닉</option>
+                                    <option value="LV.2 (4~6개월)">🌿 LV.2 (4~6개월) 기초 이론/약제</option>
+                                    <option value="LV.3 (7~12개월)">🌳 LV.3 (7~12개월) 열펌/드라이</option>
+                                    <option value="LV.4 (13~18개월)">🌸 LV.4 (13~18개월) 기초 커트</option>
+                                    <option value="LV.5 (19~24개월)">🍒 LV.5 (19~24개월) 트렌드 디자인</option>
+                                </select>
+                                <input type="text" id="mo-edu-title" placeholder="교육 세션 제목 (예: 숏 레이어드 기초)" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
+                                <div style="margin-top: 10px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03);">
+                                    <div style="font-size: 11px; color: #8E8E93; margin-bottom: 10px; letter-spacing: 1px; font-weight: 600;">EVALUATION POINTS (평가 지표)</div>
+                                    <div id="mo-edu-points-container">
+                                        <div class="edu-check-input-group">
+                                            <input type="text" class="mo-edu-point-input" placeholder="평가 항목 1" style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center; margin-top: 10px;">
+                                        <button class="btn-add-point" onclick="mo_addEduPointRow()">+ 평가 지표 항목 추가</button>
+                                    </div>
+                                </div>
+                                <button onclick="mo_addEduManual()" style="background: var(--edu-blue); color: #fff; border: none; padding: 16px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; margin-top: 5px;">커리큘럼 및 평가 양식 배포</button>
+                            </div>
+                        </div>
+                        <div class="align-panel" style="margin-bottom: 0;">
+                            <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">전체 커리큘럼 리스트</div>
+                            <div style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
+                                <button onclick="mo_setEduFilter('all')" class="mo-edu-filter-btn" data-level="all" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">전체</button>
+                                <button onclick="mo_setEduFilter('LV.1')" class="mo-edu-filter-btn" data-level="LV.1" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.1</button>
+                                <button onclick="mo_setEduFilter('LV.2')" class="mo-edu-filter-btn" data-level="LV.2" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.2</button>
+                                <button onclick="mo_setEduFilter('LV.3')" class="mo-edu-filter-btn" data-level="LV.3" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.3</button>
+                                <button onclick="mo_setEduFilter('LV.4')" class="mo-edu-filter-btn" data-level="LV.4" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.4</button>
+                                <button onclick="mo_setEduFilter('LV.5')" class="mo-edu-filter-btn" data-level="LV.5" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.5</button>
+                            </div>
+                            <div id="mo-edu-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
                         </div>
                     </div>
                 </div>
@@ -1531,127 +1627,76 @@ input, textarea {
 
             <div id="mo-page-oper" class="mo-page">
                 
-                <div class="align-panel-gold">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 14px; font-weight: 700; color: var(--accent-gold);">재고 백과사전 (마스터 리스트) 등록</span>
-                    </div>
-                    <div style="font-size: 12px; color: #8E8E93; line-height: 1.5; margin-bottom: 20px; word-break: keep-all;">
-                        이곳에 제품을 등록하면, 파트너 라운지의 [매장관리] 탭에 체크리스트 형태로 실시간 연동됩니다.
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-                        <select id="mo-stock-cat" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; appearance: none;">
-                            <option value="retail">점판 제품 (에센스, 왁스 등)</option>
-                            <option value="chemical">시술 약제 (펌제, 염모제 등)</option> 
-                            <option value="supply">소모품 (장갑, 넥셔터 등)</option>
-                            <option value="service">서비스 (원두, 녹차 등)</option>
-                        </select>
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                            <input type="text" id="mo-stock-name" placeholder="제품명 (예: 아윤채 샴푸)" style="grid-column: span 2; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
-                            
-                            <div style="position: relative;">
-                                <input type="text" id="mo-stock-cost" placeholder="입고가(원가)" oninput="mo_formatMoney(this)" style="width: 100%; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #ff453a; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
-                                <span style="position: absolute; right: 12px; top: 14px; font-size: 11px; color: #5C6370;">원</span>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;">
+                    <div class="align-panel-red" style="margin-bottom: 0;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <span style="font-size: 14px; font-weight: 800; color: var(--error);">🚨 통합 미결재 서류함</span>
+                            <button onclick="mo_renderPendingOrders(); mo_renderExpReports();" style="background: transparent; border: 1px solid rgba(255,69,58,0.5); color: var(--error); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">새로고침</button>
+                        </div>
+                        
+                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">📦 파트너 비품 발주 요청</div>
+                        <div id="mo-pending-orders-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;"></div>
+                        
+                        <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-bottom: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('mo-completed-orders-wrap'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                                <span style="font-size: 12px; font-weight: 700; color: #8E8E93;">✅ 최근 발주 승인 내역 (최대 5건)</span>
+                                <span style="font-size: 10px; color: #5C6370;">펼치기 ▼</span>
                             </div>
-                            
-                            <div style="position: relative;">
-                                <input type="text" id="mo-stock-price" placeholder="판매가" oninput="mo_formatMoney(this)" style="width: 100%; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #32d74b; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
-                                <span style="position: absolute; right: 12px; top: 14px; font-size: 11px; color: #5C6370;">원</span>
+                            <div id="mo-completed-orders-wrap" style="display: none; margin-top: 10px; animation: fadeUp 0.3s ease;">
+                                <div id="mo-completed-orders-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
                             </div>
                         </div>
-                        <button onclick="mo_addStockMaster()" style="background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(212,175,55,0.2);">+ 마스터 리스트에 추가</button>
-                   </div>
+
+                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">⚠️ 유통기한 임박 신고 센터</div>
+                        <div id="mo-exp-report-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                    </div>
                 </div>
 
                 <div class="align-panel">
-                    <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">현재 등록된 마스터 리스트</div>
-                    
-                    <div style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
-    <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('all')" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">전체</button>
-    <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('chemical')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">약제</button>
-    <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('retail')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">점판</button>
-    <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('supply')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">소모품</button>
-    <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('service')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">서비스</button>
-</div>
-
-<div style="margin-bottom: 12px; position: relative;">
-    <input type="text" id="mo-master-search" placeholder="등록된 제품 이름 검색..." 
-           oninput="mo_renderStockMaster()"
-           style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 40px 10px 16px; border-radius: 20px; font-size: 13px; outline: none;">
-    <svg style="position: absolute; right: 16px; top: 11px; opacity: 0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-</div>
-
-
-                    <div id="mo-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 5px;">
-                        <div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">등록된 제품이 없습니다.</div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('oper-panel-1'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">📊 실시간 매장 재고 현황</span>
+                        <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
+                    </div>
+                    <div id="oper-panel-1" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
+                        <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 5px; -webkit-overflow-scrolling: touch;">
+                            <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('all')" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">전체</button>
+                            <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('chemical')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">약제</button>
+                            <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('retail')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">점판</button>
+                            <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('supply')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">소모품</button>
+                            <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('service')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">서비스</button>
+                        </div>
+                        <div style="margin-bottom: 12px; position: relative;">
+                            <input type="text" id="mo-status-search" placeholder="현황판 제품 빠른 검색..." oninput="mo_renderStockStatus()" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 40px 10px 16px; border-radius: 20px; font-size: 13px; outline: none;">
+                            <svg style="position: absolute; right: 16px; top: 11px; opacity: 0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                        <div id="mo-stock-status-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; padding-right: 5px;"></div>
                     </div>
                 </div>
 
-                <div class="align-panel-green">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 14px; font-weight: 800; color: var(--daily-green);">📊 실시간 매장 재고 현황</span>
-                        <button onclick="mo_renderStockStatus(); if(typeof app !== 'undefined') app.toast('재고 현황이 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(50, 215, 75, 0.5); color: var(--daily-green); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
+                <div class="align-panel" style="margin-bottom: 0;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('oper-panel-2'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">📖 마스터 백과사전 리스트</span>
+                        <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
                     </div>
-                    <div style="font-size: 11px; color: #8E8E93; margin-bottom: 15px;">파트너 라운지에서 입력한 수량이 실시간으로 표시됩니다.</div>
-
-                    <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 5px; -webkit-overflow-scrolling: touch;">
-    <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('all')" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">전체</button>
-    <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('chemical')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">약제</button>
-    <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('retail')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">점판</button>
-    <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('supply')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">소모품</button>
-    <button class="mo-status-filter-btn" onclick="mo_setStatusFilter('service')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">서비스</button>
-</div>
-
-<div style="margin-bottom: 12px; position: relative;">
-    <input type="text" id="mo-status-search" placeholder="현황판 제품 빠른 검색..." 
-           oninput="mo_renderStockStatus()"
-           style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 40px 10px 16px; border-radius: 20px; font-size: 13px; outline: none;">
-    <svg style="position: absolute; right: 16px; top: 11px; opacity: 0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-</div>
-
-                    <div id="mo-stock-status-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 5px;">
-                        <div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">재고 데이터가 없습니다.</div>
+                    <div id="oper-panel-2" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
+                        <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
+                            <button onclick="document.getElementById('mo-master-add-modal').style.display='flex'" style="background: var(--accent-gold); color: #000; border: none; padding: 8px 14px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(212,175,55,0.3); transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">+ 새 제품 등록하기</button>
+                        </div>
+                        <div style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
+                            <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('all')" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">전체</button>
+                            <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('chemical')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">약제</button>
+                            <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('retail')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">점판</button>
+                            <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('supply')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">소모품</button>
+                            <button class="mo-master-filter-btn" onclick="mo_setMasterFilter('service')" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 8px 15px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap;">서비스</button>
+                        </div>
+                        <div style="margin-bottom: 12px; position: relative;">
+                            <input type="text" id="mo-master-search" placeholder="등록된 제품 이름 검색..." oninput="mo_renderStockMaster()" style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 40px 10px 16px; border-radius: 20px; font-size: 13px; outline: none;">
+                            <svg style="position: absolute; right: 16px; top: 11px; opacity: 0.4;" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </div>
+                        <div id="mo-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 400px; overflow-y: auto; padding-right: 5px;"></div>
                     </div>
                 </div>
 
-<div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 20px; border-radius: 20px; margin-bottom: 25px;">
-    
-    <div class="header-section" style="margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between;">
-        <div class="m-main-title" style="font-size: 15px; display: flex; align-items: center; gap: 6px;">
-            <span style="color: #fff; opacity: 0.9; letter-spacing: -0.02em;">파트너 비품 발주 <strong>요청 내역</strong></span>
-            
-            <button onclick="mo_refreshPendingOrders(this)" style="background: transparent; border: none; cursor: pointer; display: flex; align-items: center; padding: 4px; transition: 0.2s;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" style="opacity: 0.5;"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-            </button>
-        </div>
-        
-        <div style="color: #5C6370; font-size: 10px; letter-spacing: 0.08em; font-family: 'Montserrat'; font-weight: 500;">PENDING ORDERS</div>
-    </div>
-
-    <div id="mo-pending-orders-list" style="display: flex; flex-direction: column; gap: 10px;">
-                <div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0; background: rgba(255,255,255,0.02); border-radius: 8px;">
-                    들어온 발주 요청이 없습니다.
-                </div>
-            </div>
-            
-            <div style="margin-top: 20px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
-                <div style="font-size: 12px; font-weight: 700; color: #8E8E93; margin-bottom: 12px; letter-spacing: 0.5px;">📦 최근 승인 완료 내역 <span style="font-weight:400; font-size:11px;">(최대 5건 보관)</span></div>
-                <div id="mo-completed-orders-list" style="display: flex; flex-direction: column; gap: 8px;">
-                    <div style="color: #5C6370; font-size: 11px; text-align: center; padding: 10px;">최근 승인된 내역이 없습니다.</div>
-                </div>
-            </div>
-
-</div><div style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); padding: 25px 20px; border-radius: 8px; margin-bottom: 20px;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <span style="font-size: 14px; font-weight: 800; color: var(--error);">🚨 유통기한 신고 결재 센터</span>
-    </div>
-    <div style="font-size: 11px; color: #8E8E93; margin-bottom: 15px;">파트너들이 올린 신고를 확인하고 승인(EXP 지급) 해주세요.</div>
-    
-    <div id="mo-exp-report-list" style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">대기 중인 신고 내역이 없습니다.</div>
-    </div>
-</div>
             </div>
 
             <div id="mo-page-fin" class="mo-page">
@@ -1663,20 +1708,15 @@ input, textarea {
                     <div style="position: relative; height: 180px; width: 100%;"><canvas id="mo-fin-donut-chart"></canvas></div>
                 </div>
 
-                <div class="align-panel">
-                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('mo-fin-payroll-panel'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                <div class="align-panel" style="padding-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <span style="font-size: 15px; font-weight: 800; color: #fff;">💸 직원 페이롤 (인건비) 정산</span>
-                        <span style="font-size: 12px; color: #8E8E93;">명단 펼치기 ▼</span>
+                        <button onclick="mo_renderFinanceList();" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #E8E8ED; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">명단 동기화</button>
                     </div>
+                    <div style="font-size: 11px; color: #8E8E93; margin-bottom: 20px;">정산할 직원을 선택하세요. (기본급/인센티브 자동 합산)</div>
                     
-                    <div id="mo-fin-payroll-panel" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <span style="font-size: 11px; color: #8E8E93;">직원을 선택하여 급여를 정산하세요. (자동 합산)</span>
-                            <button onclick="mo_renderFinanceList(); if(typeof app !== 'undefined') app.toast('명단이 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer; transition: 0.1s;">명단 새로고침</button>
-                        </div>
-                        <div id="mo-finance-list" style="display: flex; flex-direction: column; gap: 8px;">
-                            <div style="color: #8E8E93; font-size: 12px; text-align: center; padding: 20px;">데이터를 불러오는 중입니다...</div>
-                        </div>
+                    <div id="mo-finance-list" style="display: flex; gap: 16px; overflow-x: auto; padding-bottom: 5px; -webkit-overflow-scrolling: touch;">
+                        <div style="color: #8E8E93; font-size: 12px; text-align: center; width: 100%;">데이터를 불러오는 중입니다...</div>
                     </div>
                 </div>
 
@@ -1749,82 +1789,6 @@ input, textarea {
 
             </div>
 
-<div id="mo-page-manual" class="mo-page">
-                
-                <div class="align-panel-blue">
-                    <div style="font-size: 14px; font-weight: 700; color: var(--edu-blue); margin-bottom: 15px;">📖 스마트 교육 계획서 배포</div>                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <select id="mo-edu-level" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
-                            <option value="LV.1 (1~3개월)">🌱 LV.1 (1~3개월) CS 및 샴푸 테크닉</option>
-                            <option value="LV.2 (4~6개월)">🌿 LV.2 (4~6개월) 기초 이론/약제</option>
-                            <option value="LV.3 (7~12개월)">🌳 LV.3 (7~12개월) 열펌/드라이</option>
-                            <option value="LV.4 (13~18개월)">🌸 LV.4 (13~18개월) 기초 커트</option>
-                            <option value="LV.5 (19~24개월)">🍒 LV.5 (19~24개월) 트렌드 디자인</option>
-                        </select>
-                        
-                        <input type="text" id="mo-edu-title" placeholder="교육 세션 제목 (예: 숏 레이어드 기초)" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
-                        
-                        <div style="margin-top: 10px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03);">
-                            <div style="font-size: 11px; color: #8E8E93; margin-bottom: 10px; letter-spacing: 1px; font-weight: 600;">EVALUATION POINTS (평가 지표)</div>
-                            <div id="mo-edu-points-container">
-                                <div class="edu-check-input-group">
-                                    <input type="text" class="mo-edu-point-input" placeholder="평가 항목 1 (예: 섹션의 정교함)" style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
-                                </div>
-                            </div>
-                            <div style="text-align: center; margin-top: 10px;">
-                                <button class="btn-add-point" onclick="mo_addEduPointRow()">+ 평가 지표 항목 추가</button>
-                            </div>
-                        </div>
-
-                        <button onclick="mo_addEduManual()" style="background: var(--edu-blue); color: #fff; border: none; padding: 16px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; margin-top: 5px;">커리큘럼 및 평가 양식 배포</button>
-                    </div>
-                </div>
-
-                <div class="align-panel-gold">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 14px; font-weight: 700; color: var(--accent-gold);">👑 교육 이수 승인 대기열</span>
-                        <button onclick="mo_renderEduAll(); if(typeof app !== 'undefined') app.toast('교육 데이터가 최신화되었습니다');" style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
-                    </div>
-                    <div id="mo-edu-approval-list" style="display: flex; flex-direction: column; gap: 8px;">
-                        <div style="color: #5C6370; font-size: 12px; text-align: center;">대기 중인 승인 요청이 없습니다.</div>
-                    </div>
-                </div>
-
-                <div class="align-panel">
-                    <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">전체 커리큘럼 리스트</div>
-
-                    <div style="display: flex; gap: 8px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px;">
-                        <button onclick="mo_setEduFilter('all')" class="mo-edu-filter-btn" data-level="all" style="background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">전체</button>
-                        <button onclick="mo_setEduFilter('LV.1')" class="mo-edu-filter-btn" data-level="LV.1" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">LV.1</button>
-                        <button onclick="mo_setEduFilter('LV.2')" class="mo-edu-filter-btn" data-level="LV.2" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">LV.2</button>
-                        <button onclick="mo_setEduFilter('LV.3')" class="mo-edu-filter-btn" data-level="LV.3" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">LV.3</button>
-                        <button onclick="mo_setEduFilter('LV.4')" class="mo-edu-filter-btn" data-level="LV.4" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">LV.4</button>
-                        <button onclick="mo_setEduFilter('LV.5')" class="mo-edu-filter-btn" data-level="LV.5" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap;">LV.5</button>
-                    </div>
-
-                    <div id="mo-edu-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
-                </div>
-            
-
-<div class="align-panel-green">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 14px; font-weight: 800; color: var(--daily-green);">📈 직원별 교육 이수 현황표</span>                        <button onclick="mo_renderEduAll()" style="background: transparent; border: 1px solid rgba(50,215,75,0.5); color: var(--daily-green); padding: 6px 12px; border-radius: 6px; font-size: 11px; cursor: pointer; transition: 0.1s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
-                    </div>
-                    <div style="font-size: 11.5px; color: #8E8E93; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">파트너별로 지금까지 합격 처리된 교육 목록이 누적 표시됩니다. 다음 달 교육 계획에 참고하세요.</div>
-                    
-                    <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.05);">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                            <span style="font-size: 11px; color: #8E8E93; font-weight: 600; letter-spacing: 1px;">TOTAL PROGRESS</span>
-                            <span id="mo-edu-total-percent" style="font-size: 16px; font-weight: 800; color: var(--daily-green); font-family: 'Montserrat', sans-serif;">0%</span>
-                        </div>
-                        <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden;">
-                            <div id="mo-edu-total-bar" style="width: 0%; height: 100%; background: var(--daily-green); transition: 1s cubic-bezier(0.2, 1, 0.2, 1); box-shadow: 0 0 10px rgba(50, 215, 75, 0.4);"></div>
-                        </div>
-                        <div id="mo-edu-total-text" style="font-size: 10px; color: #5C6370; margin-top: 8px; text-align: right;">전체 교육 0개 중 0개 완료</div>
-                    </div>
-
-                    <div id="mo-edu-status-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
-                </div> 
-            </div> 
             
             <div id="mo-page-sys" class="mo-page">
                 
@@ -1911,7 +1875,46 @@ input, textarea {
                     </div>
                     <button onclick="sys_smartMonthlyClose()" style="width: 100%; background: rgba(255,69,58,0.1); color: var(--error); border: 1px solid rgba(255,69,58,0.3); padding: 14px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s;">특정 월(Month) 안전 마감하기</button>
                 </div>
-            </div> </div> </div> <div id="mo-sys-settings-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,7,0.85); backdrop-filter: blur(15px); z-index: 99999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+            </div> </div> </div> 
+
+<div id="mo-master-add-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,7,0.85); backdrop-filter: blur(15px); z-index: 99999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+        <div style="width: 100%; max-width: 400px; background: rgba(28, 28, 30, 0.98); border: 1px solid rgba(212, 175, 55, 0.3); padding: 30px 25px; border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: fadeUp 0.3s ease;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
+                <div>
+                    <div style="font-size: 16px; color: #fff; font-weight: 800; margin-bottom: 6px;">재고 백과사전 신규 등록</div>
+                    <div style="font-size: 11px; color: #8B949E;">입력한 제품이 파트너 장바구니에 동기화됩니다.</div>
+                </div>
+                <button onclick="document.getElementById('mo-master-add-modal').style.display='none'" style="background: transparent; border: none; color: #8E8E93; font-size: 20px; cursor: pointer; padding: 0;">×</button>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                <select id="mo-stock-cat" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; appearance: none; outline: none;">
+                    <option value="retail">점판 제품 (에센스, 왁스 등)</option>
+                    <option value="chemical">시술 약제 (펌제, 염모제 등)</option> 
+                    <option value="supply">소모품 (장갑, 넥셔터 등)</option>
+                    <option value="service">서비스 (원두, 녹차 등)</option>
+                </select>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                    <input type="text" id="mo-stock-name" placeholder="제품명 (예: 아윤채 샴푸)" style="grid-column: span 2; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
+                    
+                    <div style="position: relative;">
+                        <input type="text" id="mo-stock-cost" placeholder="입고가(원가)" oninput="mo_formatMoney(this)" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #ff453a; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
+                        <span style="position: absolute; right: 12px; top: 14px; font-size: 11px; color: #5C6370;">원</span>
+                    </div>
+                    
+                    <div style="position: relative;">
+                        <input type="text" id="mo-stock-price" placeholder="판매가" oninput="mo_formatMoney(this)" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #32d74b; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
+                        <span style="position: absolute; right: 12px; top: 14px; font-size: 11px; color: #5C6370;">원</span>
+                    </div>
+                </div>
+            </div>
+            <button onclick="mo_addStockMaster(); document.getElementById('mo-master-add-modal').style.display='none';" style="width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(212,175,55,0.2);" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">+ 마스터 리스트에 추가</button>
+        </div>
+    </div>
+
+
+<div id="mo-sys-settings-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,7,0.85); backdrop-filter: blur(15px); z-index: 99999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
             
             <div style="width: 100%; max-width: 500px; background: rgba(28, 28, 30, 0.98); border: 1px solid rgba(212, 175, 55, 0.3); padding: 30px 25px; border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: fadeUp 0.3s ease;">
                 
@@ -6633,7 +6636,74 @@ function pr_setMode(mode) {
         };
 
 
-// 🌟 [신규] 경영자 오피스 5-TAB 전환 스크립트
+// 🌟 [미니멀 스위칭 엔진] ANALYTICS 탭 내 차트 전환 로직
+window.mo_switchAnalytics = function(target) {
+    const views = ['sales', 'menu', 'radar', 'upsell'];
+    views.forEach(v => {
+        const btn = document.getElementById('btn-ana-' + v);
+        if(btn) {
+            btn.style.background = (v === target) ? 'rgba(255,255,255,0.1)' : 'transparent';
+            btn.style.color = (v === target) ? '#fff' : '#8E8E93';
+            btn.style.fontWeight = (v === target) ? '700' : '600';
+        }
+        const view = document.getElementById('ana-view-' + v);
+        if(view) {
+            if(v === target) {
+                view.style.opacity = '1'; view.style.pointerEvents = 'auto'; view.style.zIndex = '2';
+            } else {
+                view.style.opacity = '0'; view.style.pointerEvents = 'none'; view.style.zIndex = '1';
+            }
+        }
+    });
+};
+
+// 🚨 [Danger Zone 이중 잠금 엔진] 개인 데이터 초기화 타이핑 방어
+window.mo_resetStaffData = async function() {
+    const confirmText = await AlignModal.prompt(`🚨 [락다운 이중 보안]\n${window.currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제합니다.\n\n동의하시면 아래 빈칸에 <b>[${window.currentCtrlUser} 초기화]</b> 라고 정확히 입력해 주세요.`, `예: ${window.currentCtrlUser} 초기화`, "개인 실적 초기화");
+    
+    if (confirmText !== `${window.currentCtrlUser} 초기화`) {
+        AlignModal.alert("입력 문구가 일치하지 않아 초기화를 취소합니다.", "인증 실패");
+        return;
+    }
+    
+    const today = new Date();
+    const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+    ['alignSalesData', 'alignMonthlyStats', 'vl_daily_records', 'vl_quests'].forEach(key => {
+        let data = db.get(key, []);
+        let filtered = data.filter(item => !(item.name === window.currentCtrlUser && item.date.startsWith(currentMonth)));
+        db.set(key, filtered);
+    });
+    await AlignModal.alert("✅ 해당 직원의 이번 달 데이터가 리셋되었습니다.", "리셋 완료");
+    mo_refreshCtrlStatus();
+};
+
+// ☠️ [Danger Zone 이중 잠금 엔진] 직원 완전 폐기 타이핑 방어
+window.mo_hardDeleteStaff = async function(targetName) {
+    const confirmText = await AlignModal.prompt(`☠️ [최종 경고 락다운]\n${targetName} 님의 계정을 완전히 폐기합니다.\n이름표, 비밀번호, 설정이 영구 삭제되며 복구할 수 없습니다.\n\n동의하시면 아래에 <b>[${targetName} 삭제]</b> 라고 정확히 입력해 주세요.`, `예: ${targetName} 삭제`, "완전 폐기");
+    
+    if (confirmText !== `${targetName} 삭제`) {
+        AlignModal.alert("입력 문구가 일치하지 않아 폐기를 취소합니다.", "인증 실패");
+        return;
+    }
+    
+    let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
+    profiles = profiles.filter(p => p.name !== targetName);
+    localStorage.setItem('alignProfiles', JSON.stringify(profiles));
+    window.alignProfiles = profiles;
+
+    localStorage.removeItem('alignPartnerData_' + targetName);
+    localStorage.removeItem('vl_user_settings_' + targetName);
+    Object.keys(localStorage).forEach(key => {
+        if(key.startsWith(`alignManitoGiven_${targetName}_`)) localStorage.removeItem(key);
+    });
+
+    document.querySelectorAll('#mo-ctrl-panel').forEach(p => p.style.display = 'none');
+    mo_renderStaffGrid();
+    renderProfiles(); 
+    if(typeof app !== 'undefined' && app.toast) app.toast(`☠️ ${targetName} 님의 계정이 영구 폐기되었습니다.`);
+};
+
+// 🌟 [신규] 경영자 오피스 5-TAB 전환 스크립트 (ANALYTICS 탭 추가 완료!)
         window.switchMoTab = function(tabId) {
             document.querySelectorAll('.mo-tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.mo-page').forEach(page => page.classList.remove('active'));
@@ -6641,29 +6711,34 @@ function pr_setMode(mode) {
             document.getElementById('mo-tab-' + tabId).classList.add('active');
             document.getElementById('mo-page-' + tabId).classList.add('active');
 
-            if(tabId === 'dash') {
+            // 🚨 대시보드와 통계 탭 모두 실시간 데이터 연동!
+            if(tabId === 'dash' || tabId === 'analytics') {
                 if(typeof window.loadRealData === 'function') window.loadRealData();
             }
 
-            if(tabId === 'dash' || tabId === 'team') {
+            // 🚨 통계 탭을 누를 때 차트를 그려내도록 지능 업데이트!
+            if(tabId === 'dash' || tabId === 'analytics' || tabId === 'team') {
                 if(typeof window.renderManagerCharts === 'function') {
                     setTimeout(() => { window.renderManagerCharts(); }, 50);
                 }
             }
+
             
-            if(tabId === 'team') {
+           // 🚨 HR 탭으로 통합된 모든 렌더링 함수들을 한 방에 호출!
+            if(tabId === 'hr') {
                 if(typeof m_renderPartnerRadar === 'function') m_renderPartnerRadar(); 
                 if(typeof mo_renderLevelUpQueue === 'function') mo_renderLevelUpQueue();
                 if(typeof mo_renderQuestRanking === 'function') mo_renderQuestRanking();
-                if(typeof mo_renderStaffGrid === 'function') mo_renderStaffGrid(); // 🌟 [핵심 추가] 탭 열 때마다 직원 버튼 쫙 깔아주기!
-                if(typeof mo_renderManitoLog === 'function') mo_renderManitoLog(); // 🌟 [추가됨] TEAM 탭이 열릴 때 '마니또 비밀 장부' 자동 갱신!
+                if(typeof mo_renderStaffGrid === 'function') mo_renderStaffGrid(); 
+                if(typeof mo_renderManitoLog === 'function') mo_renderManitoLog(); 
+                if(typeof mo_renderEduAll === 'function') mo_renderEduAll(); // 🚀 교육 관련 렌더링도 흡수 완료!
             }
             
             if(tabId === 'oper') {
                 if(typeof mo_renderStockStatus === 'function') mo_renderStockStatus();
                 if(typeof mo_renderExpReports === 'function') mo_renderExpReports();
             }
-            if(tabId === 'manual') mo_renderEduAll();
+ 
             if(tabId === 'fin' && typeof mo_renderFinanceList === 'function') mo_renderFinanceList();
         };
        
@@ -7958,15 +8033,24 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                             return `<div style="display: flex; justify-content: space-between; align-items: center; padding: 4px 0;"><div style="display: flex; align-items: center; gap: 6px;"><span style="font-size: 10px; color: #8E8E93; opacity: 0.6;">[${catName}]</span><span style="color: #fff; font-weight: 700; font-size: 14px;">${i.name}</span></div><span style="color: var(--daily-green); font-weight: 800; font-size: 14px;">× ${i.qty || 1}</span></div>`;
                         }).join('<div style="height:1px; background: rgba(255,255,255,0.03); margin: 6px 0;"></div>');
                         
+                        // 🌟 [미니멀 스와이프] 발주 대기열 렌더링
                         html += `
-                        <div style="background: rgba(255,255,255,0.03); padding: 18px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 12px;">
-                            <div style="margin-bottom: 18px;">${itemList}</div>
-                            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.12);">
-                                <div style="display: flex; flex-direction: column; gap: 4px;">
-                                    <div style="display: flex; align-items: center; gap: 6px;"><span style="font-size: 10px; color: #8E8E93; opacity: 0.4;">FROM</span><span style="font-weight: 600; color: #8E8E93; font-size: 12px;">${order.user}</span></div>
-                                    <div style="font-size: 10px; color: #5C6370; opacity: 0.8;">${order.date}</div>
+                        <div class="swipe-wrapper">
+                            <div class="swipe-bg">
+                                <div class="swipe-bg-left">✓ 승인 (발주 완료)</div>
+                                <div class="swipe-bg-right">✕ 반려 (취소)</div>
+                            </div>
+                            <div class="swipe-front" data-order-id="${order.id}">
+                                <div style="margin-bottom: 18px;">${itemList}</div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.12);">
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <div style="display: flex; align-items: center; gap: 6px;"><span style="font-size: 10px; color: #8E8E93; opacity: 0.4;">FROM</span><span style="font-weight: 600; color: #8E8E93; font-size: 12px;">${order.user}</span></div>
+                                        <div style="font-size: 10px; color: #5C6370; opacity: 0.8;">${order.date}</div>
+                                    </div>
+                                    <div style="font-size: 11px; font-weight: 700; color: #8E8E93; letter-spacing: -0.3px; display: flex; align-items: center; gap: 4px;">
+                                        좌우로 스와이프 <span style="font-size: 14px; animation: pulse 1.5s infinite;">👉</span>
+                                    </div>
                                 </div>
-                                <button onclick="mo_completeOrder('${order.id}')" style="background: rgba(50, 215, 75, 0.05); color: #32d74b; border: 1px solid rgba(50, 215, 75, 0.3); padding: 6px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; transition: 0.2s;">발주 확인</button>
                             </div>
                         </div>`;
                     });
@@ -8079,15 +8163,23 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             pendingReports.forEach(item => {
                 const rewardExp = 30; // 지급 경험치
 
+                // 🌟 [미니멀 스와이프] 유통기한 신고 렌더링
                 html += `
-                <div style="background: rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 13px; color: #fff;">
-                        <div style="font-weight: 700; color: var(--error); margin-bottom: 4px;">${item.item}</div>
-                        <div style="font-size: 11px; color: #8E8E93;">신고자: <span style="color:var(--daily-green);">${item.user}</span> | ${item.date}</div>
+                <div class="swipe-wrapper" style="margin-bottom: 8px;">
+                    <div class="swipe-bg">
+                        <div class="swipe-bg-left" style="font-size: 11px;">✓ 승인 (+${rewardExp} EXP)</div>
+                        <div class="swipe-bg-right" style="font-size: 11px;">✕ 반려</div>
                     </div>
-                    <div style="display: flex; gap: 6px;">
-                        <button onclick="mo_rejectExpReport(${item.id})" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #8E8E93; padding: 8px 10px; border-radius: 6px; font-weight: 700; font-size: 11px; cursor: pointer;">취소</button>
-                        <button onclick="mo_approveExpReport(${item.id}, '${item.user}', ${rewardExp})" style="background: var(--error); color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(255,69,58,0.2);">승인 (+${rewardExp})</button>
+                    <div class="swipe-front" data-report-id="${item.id}" style="padding: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-size: 13px; color: #fff;">
+                                <div style="font-weight: 700; color: var(--error); margin-bottom: 4px;">${item.item}</div>
+                                <div style="font-size: 11px; color: #8E8E93;">신고자: <span style="color:var(--daily-green); font-weight:600;">${item.user}</span> | ${item.date.split(' ')[0]}</div>
+                            </div>
+                            <div style="font-size: 11px; font-weight: 700; color: #8E8E93; letter-spacing: -0.3px; display: flex; align-items: center; gap: 4px;">
+                                스와이프 <span style="font-size: 14px; animation: pulse 1.5s infinite;">👉</span>
+                            </div>
+                        </div>
                     </div>
                 </div>`;
             });
@@ -8124,6 +8216,96 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             if(typeof app !== 'undefined' && app.toast) app.toast(`${userName}님에게 ${rewardExp} EXP가 지급되었습니다!`);
         };
 
+// =========================================================
+        // 👆 [SWIPE GESTURE ENGINE] 스와이프 결재 네이티브 물리 엔진
+        // =========================================================
+        window.mo_rejectOrder = function(orderId) {
+            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            let orderIndex = orders.findIndex(o => o.id === orderId);
+            if(orderIndex !== -1) {
+                orders[orderIndex].status = 'rejected';
+                localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
+            }
+            mo_renderPendingOrders();
+            if(typeof app !== 'undefined' && app.toast) app.toast("해당 발주 건이 반려되었습니다. 🚫");
+        };
+
+        (function initSwipeEngine() {
+            let startX = 0, currentX = 0;
+            let activeItem = null;
+            let isSwiping = false;
+
+            const handleTouchStart = (e) => {
+                // 터치 이벤트(touches)가 있는 모바일 환경에서만 작동하도록 방어
+                if(!e.touches || e.touches.length === 0) return;
+                
+                const swipeFront = e.target.closest('.swipe-front');
+                if (!swipeFront) return;
+                
+                activeItem = swipeFront;
+                startX = e.touches[0].clientX;
+                activeItem.classList.add('swiping');
+                isSwiping = true;
+            };
+
+            const handleTouchMove = (e) => {
+                if (!activeItem || !isSwiping || !e.touches) return;
+                currentX = e.touches[0].clientX;
+                let diffX = currentX - startX;
+                
+                // 당기는 느낌을 주기 위해 이동 거리 제한 (텐션 조절)
+                if (diffX > 120) diffX = 120 + (diffX - 120) * 0.2;
+                if (diffX < -120) diffX = -120 + (diffX + 120) * 0.2;
+
+                activeItem.style.transform = `translateX(${diffX}px)`;
+            };
+
+            const handleTouchEnd = (e) => {
+                if (!activeItem || !isSwiping) return;
+                isSwiping = false;
+                activeItem.classList.remove('swiping');
+                
+                let diffX = currentX - startX;
+                const orderId = activeItem.dataset.orderId;
+                const reportId = activeItem.dataset.reportId;
+                const type = orderId ? 'order' : 'report';
+                const id = orderId || reportId;
+
+                // 🌟 역치(Threshold): 80px 이상 당기면 결재 발동!
+                if (diffX > 80) {
+                    // 오른쪽으로 당김 -> 승인 (초록색 쾌감)
+                    activeItem.style.transform = `translateX(120%)`;
+                    setTimeout(() => {
+                        if (type === 'order') mo_completeOrder(id);
+                        else {
+                            let reports = JSON.parse(localStorage.getItem('alignExpReports')) || [];
+                            let r = reports.find(x => String(x.id) === String(id));
+                            if(r) mo_approveExpReport(r.id, r.user, 30);
+                        }
+                    }, 250);
+                } else if (diffX < -80) {
+                    // 왼쪽으로 당김 -> 반려 (빨간색)
+                    activeItem.style.transform = `translateX(-120%)`;
+                    setTimeout(() => {
+                        if (type === 'order') mo_rejectOrder(id);
+                        else mo_rejectExpReport(Number(id));
+                    }, 250);
+                } else {
+                    // 살짝 밀다 말았으면 제자리로 팅! 고무줄 복귀
+                    activeItem.style.transform = `translateX(0px)`;
+                }
+                activeItem = null;
+            };
+
+            // 모바일 터치 이벤트 리스너 등록
+            document.addEventListener('touchstart', handleTouchStart, {passive: true});
+            document.addEventListener('touchmove', handleTouchMove, {passive: true});
+            document.addEventListener('touchend', handleTouchEnd);
+        })();
+
+
+
+
        // 오피스: 백과사전 삭제
             window.mo_deleteStockMaster = function(id) {
                 let master = JSON.parse(localStorage.getItem('alignStockMaster')) || [];
@@ -8132,35 +8314,35 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                 mo_renderStockMaster();
             };
 
-            // 🌟 [신규] 오피스: 이번 달 페이롤 명단 그리기 엔진
+            // 🌟 [미니멀 페이롤 엔진] 오피스: 가로 스크롤 아바타 명단 렌더링
             window.mo_renderFinanceList = function() {
                 const listEl = document.getElementById('mo-finance-list');
                 if(!listEl) return;
 
                 let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
+                // 🚨 퇴사자(숨김 처리된 사람)는 정산 명단에서 완전히 빼버립니다.
+                let activeProfiles = profiles.filter(p => !p.isHidden);
                 
-                if(profiles.length === 0) {
-                    listEl.innerHTML = '<div style="color: #8E8E93; font-size: 12px; text-align: center; padding: 20px;">등록된 직원이 없습니다.</div>';
+                if(activeProfiles.length === 0) {
+                    listEl.innerHTML = '<div style="color: #8E8E93; font-size: 12px; text-align: center; width: 100%;">정산 가능한 직원이 없습니다.</div>';
                     return;
                 }
 
                 let html = '';
-                profiles.forEach(p => {
+                activeProfiles.forEach(p => {
                     let isPartner = p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴');
-                    let isHidden = p.isHidden; // 🌟 꼬리표 확인
-                    
-                    // 🌟 페이롤 명단에도 숨김(퇴사) 처리된 직원은 미니멀한 회색 톤으로 변환!
-                    let color = isHidden ? '#8B949E' : (isPartner ? 'var(--daily-green)' : '#fff');
-                    let bg = isHidden ? 'rgba(255,255,255,0.02)' : (isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(255, 255, 255, 0.02)');
-                    let border = isHidden ? 'rgba(255,255,255,0.1)' : (isPartner ? 'rgba(50, 215, 75, 0.2)' : 'rgba(255, 255, 255, 0.05)');
-                    let statusTag = isHidden ? '<span style="color:var(--error); font-size:10px; margin-left:6px; font-weight:800;">[숨김]</span>' : '';
+                    let ringColor = isPartner ? 'rgba(50, 215, 75, 0.4)' : 'rgba(212, 175, 55, 0.4)';
+                    let bgGradient = isPartner ? 'linear-gradient(135deg, rgba(50, 215, 75, 0.1), rgba(0,0,0,0.8))' : 'linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0,0,0,0.8))';
+                    let titleColor = isPartner ? '#8B949E' : 'var(--accent-gold)';
+                    let initial = p.name.charAt(0).toUpperCase();
 
                     html += `
-                    <div style="background: ${bg}; border: 1px solid ${border}; padding: 15px 20px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
-                            <div style="font-size: 14px; font-weight: 700; color: ${color};">${p.name} <span style="font-size: 11px; color: #8E8E93; font-weight: 400; margin-left: 6px;">${p.title}</span>${statusTag}</div>
+                    <div onclick="mo_openPayrollFor('${p.name}', '${p.title}')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; flex-shrink: 0; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">
+                        <div style="width: 60px; height: 60px; border-radius: 20px; background: ${bgGradient}; border: 1px solid ${ringColor}; display: flex; justify-content: center; align-items: center; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                            <span style="color: #fff; font-size: 22px; font-weight: 300;">${initial}</span>
                         </div>
-                        <button onclick="mo_openPayrollFor('${p.name}', '${p.title}')" style="background: rgba(0,0,0,0.3); border: 1px solid ${color}; color: ${color}; padding: 8px 14px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">정산 열기 💰</button>
+                        <div style="font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; letter-spacing: -0.5px;">${p.name}</div>
+                        <div style="font-size: 9px; color: ${titleColor}; font-family: 'Montserrat'; font-weight: 700; letter-spacing: 0.5px;">${p.title.toUpperCase()}</div>
                     </div>`;
                 });
                 listEl.innerHTML = html;
@@ -9188,125 +9370,78 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
         };
 
         
-// 🌟 [신규] 월간 퀘스트 통합 랭킹보드 엔진 (디자이너 + 파트너 완벽 분리판)
-        window.mo_currentQuestRankTab = 'total_d';
+// 🌟 [미니멀 랭킹 엔진] 디자이너와 파트너 랭킹을 위아래로 완벽 분리하여 동시 렌더링
+window.mo_renderQuestRanking = function() {
+    const dListEl = document.getElementById('mo-quest-ranking-designer');
+    const pListEl = document.getElementById('mo-quest-ranking-partner');
+    if(!dListEl || !pListEl) return;
 
-        window.mo_renderQuestRanking = function(tabId) {
-            if(tabId) window.mo_currentQuestRankTab = tabId;
+    let questData = JSON.parse(localStorage.getItem('vl_quests') || '[]');
+    const dMonth = new Date();
+    let currentMonth = `${dMonth.getFullYear()}-${String(dMonth.getMonth() + 1).padStart(2, '0')}`;
+    
+    let dMap = {}; // 👑 디자이너 점수통
+    let pMap = {}; // 🌱 파트너 점수통
+
+    // 1. 모든 퀘스트 데이터를 스캔하여 디자이너용과 파트너용으로 점수를 나눠 담습니다.
+    questData.forEach(item => {
+        if(!item.name || !item.date.startsWith(currentMonth)) return;
+        
+        // 디자이너 미션 (q1~q4) 합산
+        let dScore = (item.q1||0) + (item.q2||0) + (item.q3||0) + (item.q4||0);
+        if(dScore > 0) dMap[item.name] = (dMap[item.name] || 0) + dScore;
+
+        // 파트너 퀘스트 (pq로 시작하는 것들) 합산
+        let pScore = 0;
+        Object.keys(item).forEach(k => { if(k.startsWith('pq')) pScore += (item[k] || 0); });
+        if(pScore > 0) pMap[item.name] = (pMap[item.name] || 0) + pScore;
+    });
+
+    let profiles = db.get('alignProfiles', window.alignProfiles || []);
+    
+    // 2. 랭킹 UI를 찍어내는 미니 공장 (렌더링 헬퍼 함수)
+    const buildHtml = (mapData, isPartner) => {
+        let arr = Object.keys(mapData).map(name => {
+            let pInfo = profiles.find(p => p.name === name);
+            if(!pInfo || pInfo.isHidden) return null; // 🚨 퇴사자 필터링
             
-            const tabsEl = document.getElementById('mo-quest-ranking-tabs');
-            const listEl = document.getElementById('mo-quest-ranking-list');
-            if(!tabsEl || !listEl) return;
-
-            let customQuests = JSON.parse(localStorage.getItem('alignCustomQuests')) || [
-                { id: 'q1', emoji: '💳', title: 'N페이 결제' }, { id: 'q2', emoji: '💬', title: '리뷰 / 답글' },
-                { id: 'q3', emoji: '📸', title: 'B/A 촬영' }, { id: 'q4', emoji: '🗓️', title: '다음예약 픽스' }
-            ];
+            let isP = pInfo.title.toUpperCase().includes('PARTNER') || pInfo.title.includes('파트너') || pInfo.title.includes('인턴');
+            if(isPartner !== isP) return null; // 🚨 직군 엇갈리면 컷! (디자이너 탭엔 디자이너만)
             
-            // 파트너 퀘스트 불러오기 (pq 식별자)
-            let partnerQuests = [];
-            if(typeof getQuests === 'function') {
-                partnerQuests = getQuests().map(q => ({ id: q.id, emoji: '🌱', title: q.title }));
-            }
+            return { name: name, title: pInfo.title, count: mapData[name] };
+        }).filter(r => r !== null);
+
+        // 점수 높은 순으로 1열 종대!
+        arr.sort((a, b) => b.count - a.count);
+
+        if(arr.length === 0) {
+            return '<div style="color: #5C6370; font-size: 11px; text-align: center; padding: 15px 0; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px dashed rgba(255,255,255,0.05);">이번 달 달성 기록이 없습니다.</div>';
+        }
+
+        return arr.map((r, idx) => {
+            let rankTrophy = idx === 0 ? '🥇 1위' : (idx === 1 ? '🥈 2위' : (idx === 2 ? '🥉 3위' : `${idx+1}위`));
+            let themeColor = isPartner ? 'var(--daily-green)' : 'var(--accent-gold)';
+            let themeBg = isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(212, 175, 55, 0.05)';
+            let themeBorder = isPartner ? 'rgba(50, 215, 75, 0.2)' : 'rgba(212, 175, 55, 0.2)';
             
-            // 💡 [핵심] 디자이너 탭과 파트너 탭을 완벽하게 분리해서 일렬로 배치
-            let allTabs = [
-                { id: 'total_d', emoji: '👑', title: '디자이너 미션 랭킹' }, ...customQuests,
-                { id: 'total_p', emoji: '🌱', title: '파트너 퀘스트 랭킹' }, ...partnerQuests
-            ];
+            // 1등만 영광의 후광(테마 컬러 박스) 부여
+            let boxStyle = idx === 0 ? `background: ${themeBg}; border: 1px solid ${themeBorder};` : 'background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);';
 
-            let tabsHtml = '';
-            allTabs.forEach((q) => {
-                let isActive = window.mo_currentQuestRankTab === q.id;
-                let bg = isActive ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)';
-                let color = isActive ? 'var(--accent-gold)' : '#8E8E93';
-                let border = isActive ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.05)';
-                
-                // 파트너 탭일 경우 초록색 테마로 체인지
-                if(q.id.startsWith('pq') || q.id === 'total_p') {
-                    bg = isActive ? 'rgba(50, 215, 75, 0.1)' : 'rgba(255,255,255,0.03)';
-                    color = isActive ? 'var(--daily-green)' : '#8E8E93';
-                    border = isActive ? 'rgba(50, 215, 75, 0.3)' : 'rgba(255,255,255,0.05)';
-                }
+            return `
+            <div style="${boxStyle} padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="font-size: 13px; font-weight: 800; color: ${idx === 0 ? themeColor : '#8E8E93'}; width: 45px;">${rankTrophy}</div>
+                    <div style="font-size: 13px; font-weight: 600; color: #fff;">${r.name} <span style="font-size: 10px; color: #8E8E93; font-weight: 400; margin-left: 4px;">${r.title}</span></div>
+                </div>
+                <div style="font-size: 15px; font-weight: 800; color: ${idx === 0 ? themeColor : '#E8E8ED'};">${r.count} <span style="font-size: 10px; font-weight: 400; color: #5C6370;">건</span></div>
+            </div>`;
+        }).join('');
+    };
 
-                tabsHtml += `<button onclick="mo_renderQuestRanking('${q.id}')" style="background: ${bg}; color: ${color}; border: 1px solid ${border}; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s;">${q.emoji} ${q.title}</button>`;
-            });
-            tabsEl.innerHTML = tabsHtml;
-
-            let questData = JSON.parse(localStorage.getItem('vl_quests') || '[]');
-            const dMonth = new Date();
-            let currentMonth = `${dMonth.getFullYear()}-${String(dMonth.getMonth() + 1).padStart(2, '0')}`;
-            
-            let qMap = {};
-            questData.forEach(item => {
-                if(!item.name || !item.date.startsWith(currentMonth)) return;
-                if(!qMap[item.name]) qMap[item.name] = 0;
-                
-                if(window.mo_currentQuestRankTab === 'total_d') {
-                    Object.keys(item).forEach(k => { if(k.startsWith('q') && !k.startsWith('pq')) qMap[item.name] += (item[k] || 0); });
-                } else if(window.mo_currentQuestRankTab === 'total_p') {
-                    Object.keys(item).forEach(k => { if(k.startsWith('pq')) qMap[item.name] += (item[k] || 0); });
-                } else {
-                    qMap[item.name] += (item[window.mo_currentQuestRankTab] || 0);
-                }
-            });
-
-            let profiles = db.get('alignProfiles', window.alignProfiles || []);
-            
-            let rankArr = Object.keys(qMap).map(name => {
-                // 1. 현재 대문 명단(profiles)에 이 이름이 존재하는지 교차 검증
-                let pInfo = profiles.find(p => p.name === name);
-                
-                // 🚨 [보안 픽스] 명단에 아예 없거나, '숨김(isHidden)' 꼬리표가 붙은 퇴사자면 즉시 null 반환!
-                if(!pInfo || pInfo.isHidden) return null; 
-
-                let isPartner = pInfo.title.toUpperCase().includes('PARTNER') || pInfo.title.includes('파트너') || pInfo.title.includes('인턴');
-                return { name: name, title: pInfo.title, count: qMap[name], isPartner: isPartner };
-            }).filter(r => {
-                // 🚨 [스마트 필터 1단계] 숨김/퇴사 처리된 유령(null) 완벽 차단!
-                if(!r) return false;
-
-                // 🚨 [스마트 필터 2단계] 디자이너 탭엔 파트너 출입 금지, 파트너 탭엔 디자이너 출입 금지!
-                let tab = window.mo_currentQuestRankTab;
-                if(tab === 'total_d' || (tab.startsWith('q') && !tab.startsWith('pq'))) return !r.isPartner;
-                if(tab === 'total_p' || tab.startsWith('pq')) return r.isPartner;
-                return true;
-            });
-
-            rankArr.sort((a, b) => b.count - a.count);
-
-            if(rankArr.length === 0 || rankArr[0].count === 0) {
-                listEl.innerHTML = '<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 10px;">이번 달 집계된 퀘스트 데이터가 없습니다.</div>';
-                return;
-            }
-
-            let listHtml = '';
-            rankArr.forEach((r, idx) => {
-                if(r.count === 0) return; 
-                let rankTrophy = '';
-                
-                let themeColor = r.isPartner ? 'var(--daily-green)' : 'var(--accent-gold)';
-                let themeBg = r.isPartner ? 'rgba(50, 215, 75, 0.1)' : 'rgba(212, 175, 55, 0.1)';
-                let themeBorder = r.isPartner ? 'rgba(50, 215, 75, 0.3)' : 'rgba(212, 175, 55, 0.3)';
-
-                let boxStyle = 'background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);';
-                
-                if(idx === 0) { rankTrophy = '🥇 1위'; boxStyle = `background: ${themeBg}; border: 1px solid ${themeBorder};`; }
-                else if(idx === 1) { rankTrophy = '🥈 2위'; }
-                else if(idx === 2) { rankTrophy = '🥉 3위'; }
-                else { rankTrophy = `${idx + 1}위`; }
-
-                listHtml += `
-                <div style="${boxStyle} padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="font-size: 14px; font-weight: 800; color: ${idx === 0 ? themeColor : '#E8E8ED'}; width: 45px;">${rankTrophy}</div>
-                        <div style="font-size: 14px; font-weight: 600; color: #fff;">${r.name} <span style="font-size: 11px; color: #8E8E93; font-weight: 400;">${r.title}</span></div>
-                    </div>
-                    <div style="font-size: 16px; font-weight: 800; color: ${idx === 0 ? themeColor : '#32D74B'};">${r.count} <span style="font-size: 11px; font-weight: 400; color: #8E8E93;">건 달성</span></div>
-                </div>`;
-            });
-            listEl.innerHTML = listHtml;
-        };
+    // 3. 각각의 구역에 렌더링 결과물 투척!
+    dListEl.innerHTML = buildHtml(dMap, false); // 디자이너 렌더링
+    pListEl.innerHTML = buildHtml(pMap, true);  // 파트너 렌더링
+};
 
         window.mo_modifyExp = function(isAdd) {
             const amount = parseInt(document.getElementById('mo-ctrl-exp-amount').value);
@@ -9577,7 +9712,7 @@ function mo_clickNotification(e) {
         if (status.total > 0) {
             if (status.orders > 0) html += `<div class="noti-item" onclick="switchMoTab('oper')"><div class="noti-title">📦 비품 발주 대기</div><div class="noti-desc">${status.orders}건의 발주 승인이 대기 중입니다.</div></div>`;
             if (status.reports > 0) html += `<div class="noti-item" onclick="switchMoTab('oper')"><div class="noti-title">⚠️ 유통기한 신고</div><div class="noti-desc">${status.reports}건의 리포트가 접수되었습니다.</div></div>`;
-            if (status.edu > 0) html += `<div class="noti-item" onclick="switchMoTab('manual')"><div class="noti-title">🎓 교육 이수 승인</div><div class="noti-desc">${status.edu}건의 교육 승인 요청이 있습니다.</div></div>`;
+            if (status.edu > 0) html += `<div class="noti-item" onclick="switchMoTab('hr')"><div class="noti-title">🎓 교육 이수 승인</div><div class="noti-desc">${status.edu}건의 교육 승인 요청이 있습니다.</div></div>`;
         }
 
         container.innerHTML = html || '<div class="noti-empty">새로운 알림이 없습니다.</div>';
@@ -11311,6 +11446,58 @@ window.mo_deleteEduRecord = async function(reqId) {
             });
             listContainer.innerHTML = html;
         };
+
+// 💉 [모바일 전용] 경영자 오피스 하드코어 QA 데이터 수혈 백도어
+let qaClickCount = 0;
+window.triggerQAData = async function() {
+    qaClickCount++;
+    if (qaClickCount >= 5) {
+        qaClickCount = 0; // 카운트 초기화
+        
+        if (!await AlignModal.confirm("🚨 [모바일 QA 테스트 모드]\n가상의 한 달 치 풀-로드(Full-load) 데이터를 앱에 수혈하시겠습니까?\n(현재 화면의 데이터는 덮어씌워집니다.)", "QA 수혈기 가동")) return;
+
+        const d = new Date();
+        const cm = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+        const cd = `${cm}-${String(d.getDate()).padStart(2, '0')}`;
+
+        // 1. 가상 직원 프로필
+        const profiles = [
+            { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false },
+            { name: '지훈', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false }
+        ];
+        localStorage.setItem('alignProfiles', JSON.stringify(profiles));
+
+        // 2. 극단적 매출 & 통계
+        const sales = [{ date: cd, name: '민수', gross: 15000000, profit: 5000000 }];
+        localStorage.setItem('alignSalesData', JSON.stringify(sales));
+        const stats = [{ date: cd, name: '민수', totalRev: 15000000, membershipRev: 3000000, productRev: 1000000, totalCust: 150, pureCust: 120, fanCust: 80, newCust: 20, totalRsv: 160, cut: 50, permM: 30, permF: 20, color: 30, clinic: 20, dry: 10, as: 2, productCount: 15, workDays: 24 }];
+        localStorage.setItem('alignMonthlyStats', JSON.stringify(stats));
+
+        // 3. 랭킹 & 알림 폭주
+        const quests = [
+            { date: cd, name: '민수', q1: 15, q2: 8, q3: 12, q4: 20 },
+            { date: cd, name: '지훈', pq1: 5, pq2: 10, pq3: 8 }
+        ];
+        localStorage.setItem('vl_quests', JSON.stringify(quests));
+        const partnerData = { exp: 2850, level: 3, todayQuests: {}, lastDate: cd };
+        localStorage.setItem('alignPartnerData_지훈', JSON.stringify(partnerData));
+        const manito = [{ date: `${d.getMonth()+1}/${d.getDate()} 14:00`, from: '민수', to: '지훈', keyword: '🧴 빛보다 빠른 샴푸' }];
+        localStorage.setItem('alignManitoLog', JSON.stringify(manito));
+
+        // 4. 결재 스와이프 테스트용
+        const orders = [
+            { id: 'ORD_1', user: '지훈', status: 'pending', date: cd + ' 12:00', items: [{category: 'chemical', name: '아베다 펌제', qty: 2}] },
+            { id: 'ORD_2', user: '지훈', status: 'pending', date: cd + ' 14:00', items: [{category: 'supply', name: '넥셔터', qty: 5}] }
+        ];
+        localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
+        const expReports = [{ id: 1, user: '지훈', item: '로레알 산화제 6%', status: 'pending', date: cd + ' 15:00' }];
+        localStorage.setItem('alignExpReports', JSON.stringify(expReports));
+
+        await AlignModal.alert("💉 모바일 QA 데이터 수혈이 완료되었습니다!\n확인을 누르면 화면이 새로고침됩니다.", "수혈 성공");
+        location.reload();
+    }
+};
+
 </script>
 
 <style>
