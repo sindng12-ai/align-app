@@ -869,6 +869,10 @@
         .mo-page { display: none; animation: fadeUp 0.4s ease; flex-direction: column; flex-shrink: 0; height: max-content; }
         .mo-page.active { display: flex; }
 
+/* 🌟 [경영자 오피스] AI 리트라이 버튼 미니멀 터치 액션 (모바일 100% 대응) */
+            .dash-retry-icon { background: transparent; border: none; color: #8E8E93; cursor: pointer; transition: all 0.2s ease; padding: 4px; display: flex; align-items: center; justify-content: center; outline: none; }
+            .dash-retry-icon:active { color: var(--accent-gold); transform: scale(0.8); }
+
 /* 🌟 PC 가로 스크롤바 오토-하이드 & 슬림 핏 (UX/렌더링 개선판) */
         #mo-quest-ranking-tabs { 
             overflow-x: auto !important; /* [핵심] 가로 스크롤 강제 활성화 */
@@ -1450,9 +1454,7 @@ input, textarea {
                 <div class="align-panel">
                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                         <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: #fff; letter-spacing: 0.5px;">ALIGN AI MENTOR</div>
-                        <button onclick="loadRealData(); if(typeof app !== 'undefined') app.toast('AI가 데이터를 다시 분석합니다.');"
-                                style="background: transparent; border: none; color: #8E8E93; cursor: pointer; transition: 0.2s; display: flex; align-items: center; justify-content: center; padding: 4px;"
-                                onmousedown="this.style.transform='scale(0.8)'" onmouseup="this.style.transform='scale(1)'">
+                        <button class="dash-retry-icon" onclick="loadRealData(); if(typeof app !== 'undefined') app.toast('AI가 데이터를 다시 분석합니다.');">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="23 4 23 10 17 10"></polyline>
                                 <polyline points="1 20 1 14 7 14"></polyline>
