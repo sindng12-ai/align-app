@@ -1336,47 +1336,46 @@ input, textarea {
 <div id="manager-room" style="display: none; position: fixed; inset: 0; background: #050507; z-index: 9999; box-sizing: border-box; font-family: 'Pretendard', sans-serif;">
         
         <div class="mo-header-wrap">
-            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
-                <div>
-                    <div onclick="triggerQAData()" style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); font-weight: 500; letter-spacing: 5px; padding: 10px 0; margin-bottom: 0px; cursor: pointer;">EXECUTIVE DASHBOARD</div>
-                    <div style="font-size: 26px; color: #ffffff; font-weight: 300; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; margin-top: -5px;">경영자 오피스</div>
-                </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 5px;">
+                <div onclick="triggerQAData()" style="font-size: 26px; color: #ffffff; font-weight: 300; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; cursor: pointer;">경영자 오피스</div>
                 
                 <div style="display: flex; align-items: center; gap: 8px;">
-    <div id="mo-noti-bell" onclick="mo_clickNotification(event)" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8E8ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-        <div id="mo-noti-badge" style="display: none; position: absolute; top: -4px; right: -4px; background: var(--error); color: #fff; font-size: 10px; font-weight: 800; width: 18px; height: 18px; border-radius: 50%; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">0</div>
-    </div>
-
-    <div id="mo-noti-dropdown" class="notification-dropdown">
-        <div class="noti-header">
-            <h3>NOTIFICATIONS</h3>
-            <span style="font-size: 10px; color: #D4AF37; cursor: pointer; font-weight: 600;" onclick="mo_clearAllNoti()">모두 읽음</span>
-        </div>
-        <div id="noti-list-container">
-            <div class="noti-empty">새로운 알림이 없습니다.</div>
-        </div>
-    </div>
-
-    <div onclick="toggleCalendarSheet()" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8E8ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-    </div>
-
-    <div id="mo-settings-gear" onclick="document.getElementById('mo-sys-settings-modal').style.display='flex'" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8E8ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    <div id="mo-noti-bell" onclick="mo_clickNotification(event)" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8E8ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                        <div id="mo-noti-badge" style="display: none; position: absolute; top: -4px; right: -4px; background: var(--error); color: #fff; font-size: 9px; font-weight: 800; width: 16px; height: 16px; border-radius: 50%; align-items: center; justify-content: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">0</div>
                     </div>
 
-    <button onclick="logoutManager()" style="background: transparent; border: 1px solid rgba(255,255,255,0.2); color: #8E8E93; padding: 10px 14px; border-radius: 4px; font-weight: 400; font-size: 11px; letter-spacing: 2px; cursor: pointer;">LOGOUT</button>
-</div>
+                    <div id="mo-noti-dropdown" class="notification-dropdown">
+                        <div class="noti-header">
+                            <h3>NOTIFICATIONS</h3>
+                            <span style="font-size: 10px; color: #D4AF37; cursor: pointer; font-weight: 600;" onclick="mo_clearAllNoti()">모두 읽음</span>
+                        </div>
+                        <div id="noti-list-container">
+                            <div class="noti-empty">새로운 알림이 없습니다.</div>
+                        </div>
+                    </div>
+
+                    <div onclick="toggleCalendarSheet()" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E8E8ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    </div>
+
+                    <div id="mo-settings-gear" onclick="document.getElementById('mo-sys-settings-modal').style.display='flex'" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8E8ED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    </div>
+
+                    <div onclick="logoutManager()" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    </div>
+                </div>
             </div>
             
             <div class="mo-tab-menu">
-                <button class="mo-tab-btn active" id="mo-tab-dash" onclick="switchMoTab('dash')">DASHBOARD</button>
-                <button class="mo-tab-btn" id="mo-tab-analytics" onclick="switchMoTab('analytics')">ANALYTICS</button>
-                <button class="mo-tab-btn" id="mo-tab-hr" onclick="switchMoTab('hr')">HR (인사/교육)</button>
-                <button class="mo-tab-btn" id="mo-tab-oper" onclick="switchMoTab('oper')">OPERATION</button>
-                <button class="mo-tab-btn" id="mo-tab-fin" onclick="switchMoTab('fin')">FINANCE</button>
-                <button class="mo-tab-btn" id="mo-tab-sys" onclick="switchMoTab('sys')">SYSTEM</button>
+                <button class="mo-tab-btn active" id="mo-tab-dash" onclick="switchMoTab('dash')">대시보드</button>
+                <button class="mo-tab-btn" id="mo-tab-analytics" onclick="switchMoTab('analytics')">통합 통계</button>
+                <button class="mo-tab-btn" id="mo-tab-hr" onclick="switchMoTab('hr')">인사·교육</button>
+                <button class="mo-tab-btn" id="mo-tab-oper" onclick="switchMoTab('oper')">운영·결재</button>
+                <button class="mo-tab-btn" id="mo-tab-fin" onclick="switchMoTab('fin')">재무·정산</button>
+                <button class="mo-tab-btn" id="mo-tab-sys" onclick="switchMoTab('sys')">시스템</button>
             </div>
         </div>
 
@@ -1386,7 +1385,7 @@ input, textarea {
                 
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--accent-gold); border-radius: 12px; padding: 15px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; box-shadow: 0 0 15px rgba(212,175,55,0.1);">
                     <div style="font-size: 20px;">📣</div>
-                    <input type="text" id="mo-daily-focus-input" placeholder="오늘 매장의 최우선 목표 1줄을 전 직원에게 띄웁니다!" style="flex: 1; background: transparent; border: none; color: #fff; font-size: 13px; outline: none;">
+                    <input type="text" id="mo-daily-focus-input" placeholder="오늘의 매장 목표 한 줄 입력" style="flex: 1; background: transparent; border: none; color: #fff; font-size: 13px; outline: none;">
                     <button onclick="mo_saveDailyFocus()" style="background: var(--accent-gold); color: #000; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 800; font-size: 11px; cursor: pointer; white-space: nowrap;">전파하기</button>
                 </div>
 
@@ -1408,10 +1407,10 @@ input, textarea {
                         <div id="mo-dash-goal-bar" style="width: 0%; height: 100%; background: var(--accent-gold); transition: 1.5s cubic-bezier(0.2, 1, 0.2, 1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.6);"></div>
                     </div>
 
-                    <div style="border-top: 1px dashed rgba(255,69,58,0.3); padding-top: 20px;">
-                        <div style="font-size: 13px; font-weight: 700; color: var(--error); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                            <span>🚨 매장 전체 기회 손실액 (누수)</span>
-                            <span id="mo-dash-lost-total" style="font-family: 'Montserrat', sans-serif; font-size: 18px; letter-spacing: -0.5px;">- 0 원</span>
+                    <div style="border-top: 1px solid rgba(255,69,58,0.2); padding-top: 20px;">
+                        <div style="font-size: 14px; font-weight: 700; color: var(--error); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <span>매장 전체 기회 손실액</span>
+                            <span id="mo-dash-lost-total" style="font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 800; letter-spacing: -0.5px;">- 0 원</span>
                         </div>
                         <div id="mo-dash-lost-desc" style="font-size: 11.5px; color: #A0AAB5; line-height: 1.5; word-break: keep-all;">직원들의 데이터가 모이면 가장 시급한 출혈 지점과 원인을 진단합니다.</div>
                     </div>
@@ -10769,7 +10768,7 @@ window.addNewProfile = async function() {
 
 window.hideProfile = async function() {
     // 🚨 \n을 <br>로 완벽 교체하고 위아래 여백을 주어 가독성 극대화!
-    const name = await AlignModal.prompt("대문에서 숨김(퇴사) 처리할 직원의 이름을 입력하세요.<br><br><span style='font-size:11.5px; color:#8B949E; line-height:1.5; display:inline-block; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;'>※ 주의: 과거의 실적 및 통계 데이터는<br>매장 자산으로 영구 보존됩니다.</span>", "이름 입력", "직원 숨김 처리");
+    const name = await AlignModal.prompt("대문에서 숨김(퇴사) 처리할 직원의 이름을 입력하세요.<br><br><span style='font-size:11.5px; color:#8B949E; line-height:1.5; display:inline-block; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;'>※ 과거의 실적 및 통계 데이터는<br>매장 자산으로 영구 보존됩니다.</span>", "이름 입력", "직원 숨김 처리");
     if(!name) return;
     
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles;
