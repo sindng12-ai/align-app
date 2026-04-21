@@ -7099,7 +7099,11 @@ window.mo_hardDeleteStaff = async function(targetName) {
             
             // 1. 월말 마감해둔 히스토리 금고를 엽니다.
             let historyData = JSON.parse(localStorage.getItem('alignHistoryData') || '[]');
-            // 최신 기록이 앞에 있으므로, 차트에 그릴 땐 과거부터 오도록 6개만 잘라서 뒤집습니다.
+            
+            // 🌟 [팀장 픽스] 시뮬레이터나 마감 로직이 엉켜있어도 무조건 '최신순'으로 강제 정렬합니다! (숫자가 클수록 최신)
+            historyData.sort((a, b) => Number(b.month) - Number(a.month));
+            
+            // 그 후 가장 최신 데이터 6개를 자른 뒤, 차트용(과거->현재)으로 뒤집어줍니다.
             let recentHistory = historyData.slice(0, 6).reverse(); 
 
             recentHistory.forEach(h => {
@@ -7324,11 +7328,12 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 const chipContainer = document.getElementById('radar-chip-container');
                 if (chipContainer && window.moRadarStaffData.length > 0) {
                     let chipHtml = window.moRadarStaffData.map((d, i) => `
-                        <button class="radar-chip-btn" onclick="mo_selectRadarStaff(${i})" style="background: ${i===0 ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)'}; color: ${i===0 ? '#000' : '#8E8E93'}; border: 1px solid ${i===0 ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)'}; padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s;">${d.name}</button>
+                        <button class="radar-chip-btn" onclick="mo_selectRadarStaff(${i})" style="background: rgba(255,255,255,0.05); color: #8E8E93; border: 1px solid rgba(255,255,255,0.1); padding: 6px 14px; border-radius: 20px; font-size: 12.5px; font-weight: 700; white-space: nowrap; cursor: pointer; transition: 0.2s;">${d.name}</button>
                     `).join('');
                     chipContainer.innerHTML = chipHtml;
 
-                    // 최초 렌더링 시 1등(인덱스 0) 직원 자동 선택
+                    // 최초 렌더링 시 전역 배열 초기화 및 1등(인덱스 0) 자동 선택
+                    window.moSelectedRadarStaff = []; // 🔥 멀티 선택 엔진 리셋!
                     if(typeof mo_selectRadarStaff === 'function') mo_selectRadarStaff(0);
                 }
             }
@@ -7414,45 +7419,97 @@ window.mo_hardDeleteStaff = async function(targetName) {
             }
         }; // <-- 🚨 renderManagerCharts 함수가 최종적으로 끝나는 지점!
 
-// 🌟 [신규 엔진] 레이더 차트 1:1 심층 비교 클릭 이벤트 (칩 스위치 모터)
-        window.mo_selectRadarStaff = function(index) {
-            if(!window.moRadarStaffData || !window.myRadarChart) return;
+// 🌟 [전역 변수] 레이더 차트 다중 선택 기억 장치 (최대 2명)
+window.moSelectedRadarStaff = [];
 
-            document.querySelectorAll('.radar-chip-btn').forEach((btn, i) => {
-                btn.style.background = i === index ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)';
-                btn.style.color = i === index ? '#000' : '#8E8E93';
-                btn.style.borderColor = i === index ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)';
-            });
+// 🌟 [신규 엔진] 레이더 차트 1:2 심층 비교 클릭 이벤트 (멀티 스위치 모터)
+window.mo_selectRadarStaff = function(index) {
+    if(!window.moRadarStaffData || !window.myRadarChart) return;
 
-            let target = window.moRadarStaffData[index];
-            let avg = window.moRadarAvgData;
+    // 이미 선택된 사람이면 배열에서 제거
+    const existingIdx = window.moSelectedRadarStaff.indexOf(index);
+    if (existingIdx > -1) {
+        // 단, 차트가 비어버리는 것을 막기 위해 최소 1명은 무조건 남겨둡니다.
+        if (window.moSelectedRadarStaff.length <= 1) {
+            if(typeof app !== 'undefined' && app.toast) app.toast('비교를 위해 최소 1명은 선택되어야 합니다.');
+            return;
+        }
+        window.moSelectedRadarStaff.splice(existingIdx, 1);
+    } else {
+        // 선택 안 된 사람이면 배열에 추가 (2명이 넘으면 가장 옛날 거 밀어냄 FIFO)
+        if (window.moSelectedRadarStaff.length >= 2) {
+            window.moSelectedRadarStaff.shift(); 
+        }
+        window.moSelectedRadarStaff.push(index);
+    }
 
-            // 🌟 [팀장 픽스] 매장 평균은 투명한 흰색/실버로, 내 차트는 밝은 골드로 명도 극대화!
-            window.myRadarChart.data.datasets = [
-                {
-                    label: '매장 평균',
-                    data: [avg.scoreGross, avg.scoreCust, avg.scoreTicket, avg.scoreChem, avg.scoreUpsell],
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)', 
-                    borderColor: 'rgba(255, 255, 255, 0.3)',
-                    pointBackgroundColor: 'rgba(255, 255, 255, 0.5)',
-                    borderWidth: 1.5, borderDash: [4, 4], pointRadius: 2
-                },
-                {
-                    label: target.name,
-                    data: [target.scoreGross, target.scoreCust, target.scoreTicket, target.scoreChem, target.scoreUpsell],
-                    backgroundColor: 'rgba(212, 175, 55, 0.4)', // 투명도 0.2 -> 0.4로 올려서 탁한 색 방지!
-                    borderColor: '#E5C05C', // 칙칙한 골드 대신 밝고 영롱한 라이트 골드로 테두리 강조!
-                    pointBackgroundColor: '#E5C05C',
-                    borderWidth: 2.5, pointRadius: 4
-                }
-            ];
-            window.myRadarChart.update();
+    // 1. 칩 버튼 색상 듀얼 업데이트 (1번째 선택=골드, 2번째 선택=블루)
+    document.querySelectorAll('.radar-chip-btn').forEach((btn, i) => {
+        const selIdx = window.moSelectedRadarStaff.indexOf(i);
+        if (selIdx === 0) {
+            btn.style.background = 'rgba(212, 175, 55, 0.2)';
+            btn.style.color = 'var(--accent-gold)';
+            btn.style.borderColor = 'var(--accent-gold)';
+        } else if (selIdx === 1) {
+            btn.style.background = 'rgba(10, 132, 255, 0.15)';
+            btn.style.color = '#5AC8FA';
+            btn.style.borderColor = '#5AC8FA';
+        } else {
+            btn.style.background = 'rgba(255,255,255,0.05)';
+            btn.style.color = '#8E8E93';
+            btn.style.borderColor = 'rgba(255,255,255,0.1)';
+        }
+    });
 
-            const summary = document.getElementById('radar-summary');
-            if (summary) {
-                summary.innerHTML = `<span style="color:var(--accent-gold); font-weight:800; font-size:14px;">${target.name}</span> 님의 분석 ➔ 이번 달 총매출: <b style="color:#fff;">${target.gross.toLocaleString()}원</b> (객단가: <b style="color:#fff;">${target.ticket.toLocaleString()}원</b>)`;
-            }
-        };
+    let avg = window.moRadarAvgData;
+
+    // 2. 차트 데이터 듀얼 교체 (평균선 + 선택된 최대 2명)
+    let newDatasets = [{
+        label: '매장 평균',
+        data: [avg.scoreGross, avg.scoreCust, avg.scoreTicket, avg.scoreChem, avg.scoreUpsell],
+        backgroundColor: 'transparent',
+        borderColor: 'rgba(255, 255, 255, 0.3)',
+        pointBackgroundColor: 'rgba(255, 255, 255, 0.5)',
+        borderWidth: 1.5, borderDash: [4, 4], pointRadius: 2
+    }];
+
+    const themeColors = [
+        { bg: 'rgba(212, 175, 55, 0.35)', border: '#E5C05C' }, // 1st: Light Gold
+        { bg: 'rgba(10, 132, 255, 0.25)', border: '#5AC8FA' }  // 2nd: Neon Blue
+    ];
+
+    window.moSelectedRadarStaff.forEach((staffIdx, arrIdx) => {
+        let target = window.moRadarStaffData[staffIdx];
+        let c = themeColors[arrIdx];
+        newDatasets.push({
+            label: target.name,
+            data: [target.scoreGross, target.scoreCust, target.scoreTicket, target.scoreChem, target.scoreUpsell],
+            backgroundColor: c.bg,
+            borderColor: c.border,
+            pointBackgroundColor: c.border,
+            borderWidth: 2.5, pointRadius: 4
+        });
+    });
+
+    window.myRadarChart.data.datasets = newDatasets;
+    window.myRadarChart.update();
+
+    // 3. 하단 요약 텍스트 멀티 스택 렌더링
+    const summary = document.getElementById('radar-summary');
+    if (summary) {
+        let summaryHtml = window.moSelectedRadarStaff.map((staffIdx, arrIdx) => {
+            let target = window.moRadarStaffData[staffIdx];
+            let color = arrIdx === 0 ? 'var(--accent-gold)' : '#5AC8FA';
+            let margin = (arrIdx === 0 && window.moSelectedRadarStaff.length > 1) ? 'margin-bottom: 6px;' : '';
+            return `<div style="${margin}">
+                <span style="color:${color}; font-weight:800; font-size:13.5px;">${target.name}</span> 님의 총매출: <b style="color:#fff;">${target.gross.toLocaleString()}원</b> (객단가: <b style="color:#fff;">${target.ticket.toLocaleString()}원</b>)
+            </div>`;
+        }).join('');
+        summary.innerHTML = summaryHtml;
+    }
+};
+
+
 // ==========================================
         // 🌟 [신규 엔진] 도파민 퀘스트 위젯 & 랭킹 연동 (커스텀 신형 두뇌)
         // ==========================================
