@@ -854,11 +854,9 @@
 /* =========================================================
    [7] MANAGER OFFICE (5-TAB PRO) STYLES
    ========================================================= */
-#manager-room { padding: 0 !important; display: flex; flex-direction: column; }
-        #manager-room { padding: 0 !important; display: flex; flex-direction: column; }
-        .mo-header-wrap { position: sticky; top: 0; background: rgba(5,5,7,0.95); backdrop-filter: blur(20px); z-index: 50; padding: 60px 25px 0; flex-shrink: 0; border-bottom: 1px solid var(--dark-line); }
-        .mo-tab-menu { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 0px; margin-top: 20px; -webkit-overflow-scrolling: touch; }
-        .mo-tab-menu::-webkit-scrollbar { display: none; }       
+        #manager-room { padding: 0 !important; display: flex; flex-direction: column; }  
+        .mo-header-wrap { position: sticky; top: 0; background: rgba(5,5,7,0.95); backdrop-filter: blur(20px); z-index: 50; padding: 85px 25px 0; flex-shrink: 0; border-bottom: 1px solid var(--dark-line); }   
+        .mo-tab-menu { display: flex; overflow-x: auto; gap: 20px; padding-bottom: 0px; margin-top: 12px; -webkit-overflow-scrolling: touch; }        .mo-tab-menu::-webkit-scrollbar { display: none; }
         .mo-tab-btn { background: none; border: none; color: #5C6370; font-family: 'Pretendard', sans-serif; font-size: 12.5px; font-weight: 700; padding: 15px 5px; cursor: pointer; position: relative; white-space: nowrap; transition: 0.3s; letter-spacing: 0.5px;}
         .mo-tab-btn.active { color: var(--accent-gold); }
         .mo-tab-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background: var(--accent-gold); transition: 0.3s; }
@@ -1341,7 +1339,7 @@ input, textarea {
         
         <div class="mo-header-wrap">
             <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 5px;">
-                <div onclick="triggerQAData()" style="font-size: 26px; color: #ffffff; font-weight: 300; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; cursor: pointer;">경영자 오피스</div>
+                <div onclick="triggerQAData()" style="font-size: 26px; color: #ffffff; font-weight: 800; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; cursor: pointer;">경영자 오피스</div>
                 
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <div id="mo-noti-bell" onclick="mo_clickNotification(event)" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
@@ -1470,18 +1468,22 @@ input, textarea {
             </div> 
 
 <div id="mo-page-analytics" class="mo-page">
-                <div style="background: linear-gradient(135deg, rgba(212,175,55,0.1) 0%, rgba(28,28,30,0.5) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 25px; margin-bottom: 25px;">
-                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                        <span style="color: var(--accent-gold); font-size: 14px; font-weight: 700; letter-spacing: 1px;">🏆 명예의 전당</span>
+                <div style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(28,28,30,0.8) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 16px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                    <div style="display: flex; align-items: center; margin-bottom: 25px;">
+                        <span style="color: var(--accent-gold); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 3px;">HALL OF FAME</span>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div style="color: #E8E8ED; font-size: 14px; font-weight: 300;">매출 TOP</div><div style="color: #ffffff; font-size: 15px; font-weight: 500;" id="rank-sales">-</div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">매출 TOP</div>
+                        <div id="rank-sales"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                        <div style="color: #E8E8ED; font-size: 14px; font-weight: 300;">객수 TOP</div><div style="color: #ffffff; font-size: 15px; font-weight: 500;" id="rank-ticket">-</div>
+                    <div style="margin-bottom: 20px;">
+                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">객수 TOP</div>
+                        <div id="rank-ticket"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <div style="color: #E8E8ED; font-size: 14px; font-weight: 300;">업셀링 TOP</div><div style="color: #ffffff; font-size: 15px; font-weight: 500;" id="rank-upsell">-</div>
+                    <div>
+                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">업셀링 TOP</div>
+                        <div id="rank-upsell"></div>
                     </div>
                 </div>
 
@@ -6948,18 +6950,25 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 };
             });
 
-            //  4. 명예의 전당 (타이포그래피 리디자인!)
+            //  4. 명예의 전당 (타이포그래피 리디자인 완결판!)
             if(rankArr.length > 0) {
                 const renderRankLine = (rank, name, val, unit, isPercent = false) => {
-                    let rankNum = rank === 1 ? `<span style="font-family:'Montserrat'; font-size:18px; font-weight:900; color:var(--accent-gold);">01</span>` : `<span style="font-family:'Montserrat'; font-size:16px; font-weight:800; color:#8E8E93;">02</span>`;
-                    let nameStyle = rank === 1 ? `color:#fff; font-weight:700;` : `color:#E8E8ED; font-weight:500;`;
-                    let valStyle = rank === 1 ? `color:#fff; font-weight:700;` : `color:#A0AAB5; font-weight:500;`;
+                    // 🌟 숫자를 이탤릭체 영문 폰트로 하여 매거진 느낌 연출
+                    let rankNum = rank === 1 ? `<span style="font-family:'Montserrat'; font-size:18px; font-weight:900; color:var(--accent-gold); font-style:italic; line-height: 1;">01</span>` : `<span style="font-family:'Montserrat'; font-size:16px; font-weight:800; color:#8E8E93; font-style:italic; line-height: 1;">02</span>`;
+                    let nameStyle = rank === 1 ? `color:#fff; font-weight:700; font-size:14px;` : `color:#E8E8ED; font-weight:600; font-size:13.5px;`;
+                    let valStyle = rank === 1 ? `color:var(--accent-gold); font-weight:800; font-size:16px; font-family:'Montserrat', sans-serif; letter-spacing: -0.5px;` : `color:#E8E8ED; font-weight:600; font-size:14.5px; font-family:'Montserrat', sans-serif;`;
                     let valDisp = isPercent ? val + '%' : val.toLocaleString();
                     
+                    // 🌟 1위는 골드 그라데이션 박스, 2위는 투명 박스로 차별화
+                    let bgStyle = rank === 1 ? `background: linear-gradient(90deg, rgba(212,175,55,0.15) 0%, transparent 100%); border-left: 3px solid var(--accent-gold);` : `background: transparent; border-left: 3px solid rgba(255,255,255,0.1);`;
+
                     return `
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                        <div style="display:flex; align-items:center; gap:12px;">${rankNum}<span style="font-size:14px; ${nameStyle}">${name}</span></div>
-                        <div style="font-size:14px; ${valStyle}">${valDisp} <span style="font-size:11px; color:#5C6370; font-weight:400;">${unit}</span></div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding: 12px 15px; ${bgStyle} border-radius: 0 8px 8px 0;">
+                        <div style="display:flex; align-items:center; gap:14px;">
+                            ${rankNum}
+                            <span style="${nameStyle}">${name}</span>
+                        </div>
+                        <div style="${valStyle}">${valDisp} <span style="font-size:11px; color:#8E8E93; font-weight:400; font-family: 'Pretendard', sans-serif;">${unit}</span></div>
                     </div>`;
                 };
 
@@ -6968,21 +6977,21 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 let sHtml = "";
                 if(rankArr[0] && rankArr[0].gross > 0) sHtml += renderRankLine(1, rankArr[0].name, rankArr[0].gross, '원');
                 if(rankArr[1] && rankArr[1].gross > 0) sHtml += renderRankLine(2, rankArr[1].name, rankArr[1].gross, '원');
-                document.getElementById('rank-sales').innerHTML = `<div style="width: 65%;">${sHtml || "<div style='color:#5C6370; font-size:12px; text-align:right;'>기록 없음</div>"}</div>`;
+                document.getElementById('rank-sales').innerHTML = sHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
                 
                 // 객단가 1, 2위
                 rankArr.sort((a, b) => b.ticket - a.ticket);
                 let tHtml = "";
                 if(rankArr[0] && rankArr[0].ticket > 0) tHtml += renderRankLine(1, rankArr[0].name, rankArr[0].ticket, '원');
                 if(rankArr[1] && rankArr[1].ticket > 0) tHtml += renderRankLine(2, rankArr[1].name, rankArr[1].ticket, '원');
-                document.getElementById('rank-ticket').innerHTML = `<div style="width: 65%;">${tHtml || "<div style='color:#5C6370; font-size:12px; text-align:right;'>기록 없음</div>"}</div>`;
+                document.getElementById('rank-ticket').innerHTML = tHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
 
                 // 업셀링 1, 2위
                 rankArr.sort((a, b) => b.upsellRate - a.upsellRate);
                 let uHtml = "";
                 if(rankArr[0] && rankArr[0].upsellRate > 0) uHtml += renderRankLine(1, rankArr[0].name, rankArr[0].upsellRate, '', true);
                 if(rankArr[1] && rankArr[1].upsellRate > 0) uHtml += renderRankLine(2, rankArr[1].name, rankArr[1].upsellRate, '', true);
-                document.getElementById('rank-upsell').innerHTML = `<div style="width: 65%;">${uHtml || "<div style='color:#5C6370; font-size:12px; text-align:right;'>기록 없음</div>"}</div>`;
+                document.getElementById('rank-upsell').innerHTML = uHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
             }
 
             // 🌟 [추가] AI 경영 멘토 분석 로직
@@ -7372,6 +7381,7 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 gradProd.addColorStop(0, '#F1C40F'); 
                 gradProd.addColorStop(1, '#B8860B'); 
 
+                // 🌟 업셀링 바 차트
                 window.myStackedChart = new Chart(ctx4, {
                     type: 'bar',
                     data: {
@@ -7383,10 +7393,11 @@ window.mo_hardDeleteStaff = async function(targetName) {
                     },
                     options: {
                         responsive: true, maintainAspectRatio: false,
+                        layout: { padding: { top: 10 } }, // 🌟 [팀장 픽스] 차트 자체를 위에서 10px 밀어내어 숨통 트기!
                         plugins: { 
                             legend: { 
                                 position: 'top', 
-                                labels: { color: '#E8E8ED', font: {family: 'Pretendard', size: 11}, padding: 20 } // 🌟 패딩 20px 띄우기!
+                                labels: { color: '#E8E8ED', font: {family: 'Pretendard', size: 11}, padding: 20 } // 🌟 패딩 20을 주어 차트와 범례 거리를 멂
                             },
                             tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}만원` } }
                         },
@@ -7403,7 +7414,6 @@ window.mo_hardDeleteStaff = async function(targetName) {
         window.mo_selectRadarStaff = function(index) {
             if(!window.moRadarStaffData || !window.myRadarChart) return;
 
-            // 1. 버튼 색상 변경 (누른 칩만 골드로 칠하기)
             document.querySelectorAll('.radar-chip-btn').forEach((btn, i) => {
                 btn.style.background = i === index ? 'var(--accent-gold)' : 'rgba(255,255,255,0.05)';
                 btn.style.color = i === index ? '#000' : '#8E8E93';
@@ -7413,28 +7423,27 @@ window.mo_hardDeleteStaff = async function(targetName) {
             let target = window.moRadarStaffData[index];
             let avg = window.moRadarAvgData;
 
-            // 2. 차트 데이터 교체 (평균 vs 터치한 직원 딱 2명만!)
+            // 🌟 [팀장 픽스] 매장 평균은 투명한 흰색/실버로, 내 차트는 밝은 골드로 명도 극대화!
             window.myRadarChart.data.datasets = [
                 {
                     label: '매장 평균',
                     data: [avg.scoreGross, avg.scoreCust, avg.scoreTicket, avg.scoreChem, avg.scoreUpsell],
-                    backgroundColor: 'rgba(142, 142, 147, 0.05)',
-                    borderColor: 'rgba(142, 142, 147, 0.8)',
-                    pointBackgroundColor: 'rgba(142, 142, 147, 0.8)',
-                    borderWidth: 2, borderDash: [5, 5], pointRadius: 2
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    pointBackgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    borderWidth: 1.5, borderDash: [4, 4], pointRadius: 2
                 },
                 {
                     label: target.name,
                     data: [target.scoreGross, target.scoreCust, target.scoreTicket, target.scoreChem, target.scoreUpsell],
-                    backgroundColor: 'rgba(212, 175, 55, 0.2)',
-                    borderColor: 'var(--accent-gold)',
-                    pointBackgroundColor: 'var(--accent-gold)',
-                    borderWidth: 2, pointRadius: 4
+                    backgroundColor: 'rgba(212, 175, 55, 0.4)', // 투명도 0.2 -> 0.4로 올려서 탁한 색 방지!
+                    borderColor: '#E5C05C', // 칙칙한 골드 대신 밝고 영롱한 라이트 골드로 테두리 강조!
+                    pointBackgroundColor: '#E5C05C',
+                    borderWidth: 2.5, pointRadius: 4
                 }
             ];
             window.myRadarChart.update();
 
-            // 3. 하단 한 줄 요약 텍스트 변경
             const summary = document.getElementById('radar-summary');
             if (summary) {
                 summary.innerHTML = `<span style="color:var(--accent-gold); font-weight:800; font-size:14px;">${target.name}</span> 님의 분석 ➔ 이번 달 총매출: <b style="color:#fff;">${target.gross.toLocaleString()}원</b> (객단가: <b style="color:#fff;">${target.ticket.toLocaleString()}원</b>)`;
