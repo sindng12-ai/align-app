@@ -2191,18 +2191,22 @@ input, textarea {
         <div id="profile-list" style="display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; width: 100%; box-sizing: border-box; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;">
             </div>
 
-        <div style="display: flex; gap: 40px; margin-top: 40px;">
-            <div onclick="addNewProfile()" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.6; transition: 0.2s;" onmousedown="this.style.opacity='1'" onmouseup="this.style.opacity='0.6'">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                <span style="font-size: 10px; color: #fff; margin-top: 8px; letter-spacing: 1px; font-family: 'Montserrat';">ADD STAFF</span>
+        <div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 25px;">
+            
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <button onclick="addNewProfile()" style="background: transparent; border: none; color: #8B949E; font-size: 10.5px; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 2px; padding: 15px 20px; cursor: pointer; transition: 0.2s; outline: none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#8B949E'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+                    + ADD STAFF
+                </button>
+                
+                <div style="width: 1px; height: 12px; background: rgba(255,255,255,0.15);"></div>
+                
+                <button onclick="hideProfile()" style="background: transparent; border: none; color: #8B949E; font-size: 10.5px; font-family: 'Montserrat', sans-serif; font-weight: 700; letter-spacing: 2px; padding: 15px 20px; cursor: pointer; transition: 0.2s; outline: none;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='#8B949E'" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
+                    - HIDE STAFF
+                </button>
             </div>
-            <div onclick="hideProfile()" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; opacity: 0.6; transition: 0.2s;" onmousedown="this.style.opacity='1'" onmouseup="this.style.opacity='0.6'">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8E8E93" stroke-width="1.5"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                <span style="font-size: 10px; color: #8E8E93; margin-top: 8px; letter-spacing: 1px; font-family: 'Montserrat';">HIDE STAFF</span>
-            </div>
-        </div>
 
-        <button onclick="v_goBackToGate()" class="btn-text-back">이전으로 돌아가기</button>
+            <button onclick="v_goBackToGate()" style="background: transparent; border: none; color: #5C6370; font-size: 11px; font-weight: 500; text-decoration: underline; text-underline-offset: 5px; letter-spacing: 1px; padding: 15px 20px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color='#E8E8ED'" onmouseout="this.style.color='#5C6370'">이전 화면으로</button>
+        </div>
     </div>
 
    <div id="custom-logout-modal" class="custom-modal-overlay">
@@ -10730,18 +10734,19 @@ window.v_changeApiKey = async function() {
 };
 
 
+// 🌟 [팀장 픽스] 알림창 멘트 줄바꿈(<br>) 교정 및 하이엔드 워딩 적용
 window.addNewProfile = async function() {
-    const name = await AlignModal.prompt("새 직원의 이름을 입력하세요 (예: 지훈):", "이름 입력", "직원 추가");
+    const name = await AlignModal.prompt("새로 합류한 직원의 이름을 입력해 주세요.<br><span style='font-size:11px; color:#8B949E; margin-top:8px; display:inline-block;'>동명이인이 없도록 고유한 이름을 권장합니다.</span>", "예: 지훈", "새 직원 프로필 생성");
     if(!name) return;
 
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles;
     const isDuplicate = profiles.find(p => p.name === name.trim());
     if(isDuplicate) {
-        AlignModal.alert(`이미 '${name.trim()}' (이)라는 이름의 직원이 존재합니다.데이터 엉킴을 막기 위해 다른 이름을 사용해 주세요!`, "중복 오류");
+        AlignModal.alert(`이미 <b>'${name.trim()}'</b> (이)라는 이름의 직원이 존재합니다.<br>데이터 엉킴을 막기 위해 다른 이름을 사용해 주세요.`, "중복 오류");
         return;
     }
 
-    const title = await AlignModal.prompt("직급을 입력하세요 (예: 파트너, 디자이너):", "직급 입력", "직원 추가");
+    const title = await AlignModal.prompt(`<b>[${name.trim()}]</b> 님의 직급을 입력해 주세요.`, "예: 파트너, 디자이너", "직급 설정");
     if(!title) return;
     
     const trimmedName = name.trim();
@@ -10759,32 +10764,31 @@ window.addNewProfile = async function() {
         }
     }
     renderProfiles();
-    if(typeof app !== 'undefined' && app.toast) app.toast(`${trimmedName} 님의 프로필이 생성되었습니다.`);
+    if(typeof app !== 'undefined' && app.toast) app.toast(`환영합니다! ${trimmedName} 님의 프로필이 생성되었습니다. 🎉`);
 };
 
 window.hideProfile = async function() {
-    const name = await AlignModal.prompt("대문에서 숨김(퇴사) 처리할 직원의 이름을 입력하세요:\n<span style='font-size:11px; color:#8B949E;'>(과거의 실적 및 통계 데이터는 매장 자산으로 영구 보존됩니다)</span>", "이름 입력", "직원 숨김 처리");
+    // 🚨 \n을 <br>로 완벽 교체하고 위아래 여백을 주어 가독성 극대화!
+    const name = await AlignModal.prompt("대문에서 숨김(퇴사) 처리할 직원의 이름을 입력하세요.<br><br><span style='font-size:11.5px; color:#8B949E; line-height:1.5; display:inline-block; background:rgba(255,255,255,0.05); padding:10px; border-radius:8px;'>※ 주의: 과거의 실적 및 통계 데이터는<br>매장 자산으로 영구 보존됩니다.</span>", "이름 입력", "직원 숨김 처리");
     if(!name) return;
     
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles;
     let idx = profiles.findIndex(p => p.name === name.trim());
     
     if(idx === -1) {
-        AlignModal.alert("해당 이름의 직원을 찾을 수 없습니다.", "처리 실패");
+        AlignModal.alert("해당 이름의 직원을 찾을 수 없습니다.<br>오타가 없는지 확인해 주세요.", "처리 실패");
         return;
     }
     
-    // 🌟 [소프트 삭제 엔진] 데이터를 파쇄하지 않고 꼬리표만 조용히 붙입니다.
     profiles[idx].isHidden = true;
-    profiles[idx].personalPw = '0000'; // 보안을 위해 비번은 리셋
+    profiles[idx].personalPw = '0000'; 
     
     localStorage.setItem('alignProfiles', JSON.stringify(profiles));
-    window.alignProfiles = profiles; // 메모리 동기화
+    window.alignProfiles = profiles; 
 
-    renderProfiles(); // 대문 새로고침
-    if(typeof app !== 'undefined' && app.toast) app.toast(`✅ ${name.trim()} 님이 대문에서 숨김 처리되었습니다.`);
+    renderProfiles(); 
+    if(typeof app !== 'undefined' && app.toast) app.toast(`✅ ${name.trim()} 님의 프로필이 대문에서 숨김 처리되었습니다.`);
 };
-
 
 // 🌟 [신규 모터] 프로필 선택 창에서 대문(게이트)으로 부드럽게 돌아가는 직통 엔진
 window.v_goBackToGate = function() {
