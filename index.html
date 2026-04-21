@@ -1339,7 +1339,10 @@ input, textarea {
         
         <div class="mo-header-wrap">
             <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 5px;">
-                <div onclick="triggerQAData()" style="font-size: 26px; color: #ffffff; font-weight: 800; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; cursor: pointer;">경영자 오피스</div>
+                <div onclick="triggerQAData()" style="font-size: 26px; font-weight: 800; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; cursor: pointer; display: flex; align-items: baseline;">
+                    <span style="background: linear-gradient(180deg, #FFFFFF 0%, #A0AAB5 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">경영자 오피스</span>
+                    <span style="color: var(--accent-gold); font-size: 28px; line-height: 1; margin-left: 2px;">.</span>
+                </div>
                 
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <div id="mo-noti-bell" onclick="mo_clickNotification(event)" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
@@ -1470,7 +1473,7 @@ input, textarea {
 <div id="mo-page-analytics" class="mo-page">
                 <div style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(28,28,30,0.8) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 16px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     <div style="display: flex; align-items: center; margin-bottom: 25px;">
-                        <span style="color: var(--accent-gold); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 800; letter-spacing: 3px;">HALL OF FAME</span>
+                        <span style="color: var(--accent-gold); font-size: 12px; font-weight: 800; letter-spacing: 1px;">이달의 명예 전당</span>
                     </div>
                     
                     <div style="margin-bottom: 20px;">
@@ -7381,23 +7384,29 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 gradProd.addColorStop(0, '#F1C40F'); 
                 gradProd.addColorStop(1, '#B8860B'); 
 
-                // 🌟 업셀링 바 차트
+                // 🌟 업셀링 바 차트 (간격 및 막대 두께 교정 완결판)
                 window.myStackedChart = new Chart(ctx4, {
                     type: 'bar',
                     data: {
                         labels: sLabels,
                         datasets: [
-                            { label: '기술 매출 (만원)', data: serviceRevenue, backgroundColor: gradTech, borderRadius: {bottomLeft: 4, bottomRight: 4} },
-                            { label: '점판 매출 (만원)', data: productRevenue, backgroundColor: gradProd, borderRadius: {topLeft: 4, topRight: 4} }
+                            // 🌟 maxBarThickness: 45 로 막대가 무한정 뚱뚱해지는 것 방어!
+                            { label: '기술 매출 (만원)', data: serviceRevenue, backgroundColor: gradTech, borderRadius: {bottomLeft: 4, bottomRight: 4}, maxBarThickness: 45 },
+                            { label: '점판 매출 (만원)', data: productRevenue, backgroundColor: gradProd, borderRadius: {topLeft: 4, topRight: 4}, maxBarThickness: 45 }
                         ]
                     },
                     options: {
                         responsive: true, maintainAspectRatio: false,
-                        layout: { padding: { top: 10 } }, // 🌟 [팀장 픽스] 차트 자체를 위에서 10px 밀어내어 숨통 트기!
+                        layout: { padding: { top: 0 } }, 
                         plugins: { 
                             legend: { 
                                 position: 'top', 
-                                labels: { color: '#E8E8ED', font: {family: 'Pretendard', size: 11}, padding: 20 } // 🌟 패딩 20을 주어 차트와 범례 거리를 멂
+                                align: 'end', // 🌟 범례를 우측으로 살짝 밀어 더 세련되게!
+                                labels: { 
+                                    color: '#E8E8ED', font: {family: 'Pretendard', size: 11}, 
+                                    usePointStyle: true, pointStyle: 'rectRounded',
+                                    padding: 20 // 🌟 글씨와 아래 차트 사이의 여백을 완벽하게 확보
+                                } 
                             },
                             tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}만원` } }
                         },
@@ -11433,14 +11442,14 @@ window.mo_deleteEduRecord = async function(reqId) {
             listContainer.innerHTML = html;
         };
 
-// 🌪️ [모바일 전용] 1개월 하드코어 시뮬레이션 풀-가동 엔진
+// 🌪️ [모바일 전용] 3개월(90일) 하드코어 시뮬레이션 풀-가동 엔진
 let qaClickCount = 0;
 window.triggerQAData = async function() {
     qaClickCount++;
     if (qaClickCount >= 5) {
         qaClickCount = 0; 
         
-        if (!await AlignModal.confirm("🚨 [1개월 시뮬레이션 모드]\n실제 매장이 한 달 동안 돌아간 것과 동일한 30일 치의 방대한 풀-로드(Full-load) 데이터를 생성하시겠습니까?\n(기존 데이터는 모두 덮어씌워집니다.)", "시뮬레이터 가동")) return;
+        if (!await AlignModal.confirm("🚨 [3개월 시뮬레이션 모드]\n과거 3개월 동안 매장이 돌아간 것과 동일한 90일 치의 방대한 풀-로드(Full-load) 데이터를 생성하시겠습니까?\n(기존 데이터는 모두 덮어씌워집니다.)", "시뮬레이터 가동")) return;
 
         // 1. 직원 명부 세팅 (디자이너 2명, 파트너 2명)
         const profiles = [
@@ -11452,96 +11461,99 @@ window.triggerQAData = async function() {
         ];
         localStorage.setItem('alignProfiles', JSON.stringify(profiles));
 
-        // 2. 30일 치 데이터 팩토리 가동 준비
+        let salesData = []; let statsData = []; let dailyRecords = []; let quests = [];
+        let manito = []; let orders = []; let exps = []; let historyData = [];
+
+        // 🌟 [핵심] 3개월(Month) 반복 루프 가동! (m=2: 두 달 전, m=1: 한 달 전, m=0: 이번 달)
+        for (let m = 2; m >= 0; m--) {
+            let targetDate = new Date();
+            targetDate.setMonth(targetDate.getMonth() - m);
+            const year = targetDate.getFullYear();
+            const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+            const lastDay = new Date(year, targetDate.getMonth() + 1, 0).getDate();
+
+            let monthTotalGross = 0;
+
+            const designers = ['민수', '지아'];
+            designers.forEach(designer => {
+                let tRev = 0, tMem = 0, tProd = 0, tCust = 0, tPure = 0, tFan = 0, tNew = 0, tRsv = 0;
+                let tCut = 0, tPermM = 0, tPermF = 0, tColor = 0, tClinic = 0, tDry = 0, tAs = 0, tProdCnt = 0;
+
+                // 일별(Daily) 반복 루프
+                for(let i = 1; i <= lastDay; i++) {
+                    const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
+                    if(i % 7 === 0) continue; // 7일에 한 번 휴무
+
+                    // 약간의 성장 곡선을 주입 (최근 달일수록 매출액이 조금 더 높게)
+                    let baseGross = 300000 + ((2 - m) * 50000); 
+                    let dailyGross = Math.floor(Math.random() * 400000) + baseGross; 
+                    
+                    let dailyProfit = dailyGross * 0.4;
+                    let dCust = Math.floor(Math.random() * 5) + 5; 
+                    let dPure = dCust;
+                    let dFan = Math.floor(dCust * 0.6); 
+                    let dNew = dCust - dFan;
+                    let dSlots = dCust * 2; 
+
+                    tRev += dailyGross; tMem += (dailyGross * 0.2); tProd += (dailyGross * 0.05);
+                    tCust += dCust; tPure += dPure; tFan += dFan; tNew += dNew; tRsv += (dCust + 1); 
+                    tCut += Math.floor(dCust * 0.5); tPermM += Math.floor(dCust * 0.2); tPermF += Math.floor(dCust * 0.1); 
+                    tColor += Math.floor(dCust * 0.1); tClinic += Math.floor(dCust * 0.1); tProdCnt += 2;
+
+                    dailyRecords.push({ date: dateStr, name: designer, revenue: dailyGross, total: dCust, nom: dFan, slots: dSlots, grade: '성장의 불꽃' });
+                    quests.push({ date: dateStr, name: designer, q1: Math.floor(Math.random()*3), q2: Math.floor(Math.random()*2), q3: Math.floor(Math.random()*2), q4: Math.floor(Math.random()*3) });
+
+                    let targetPartner = Math.random() > 0.5 ? '지훈' : '수진';
+                    let kw = ['🧴 빛보다 빠른 샴푸', '🧪 센스있는 약터치', '🧹 깔끔한 셋팅/마감', '⏱️ 칼같은 타임 체크'][Math.floor(Math.random()*4)];
+                    manito.unshift({ date: `${month}/${String(i).padStart(2,'0')} 18:00`, from: designer, to: targetPartner, keyword: kw });
+                }
+
+                // 월별 결산 저장
+                monthTotalGross += tRev;
+                salesData.push({ date: `${year}-${month}-${lastDay}`, name: designer, gross: tRev, profit: tRev * 0.4 });
+                statsData.push({ date: `${year}-${month}-${lastDay}`, name: designer, totalRev: tRev, membershipRev: tMem, productRev: tProd, totalCust: tCust, pureCust: tPure, fanCust: tFan, newCust: tNew, totalRsv: tRsv, cut: tCut, permM: tPermM, permF: tPermF, color: tColor, clinic: tClinic, dry: tDry, as: tAs, productCount: tProdCnt, workDays: 25 });
+            });
+
+            // 🌟 과거 달(m=2, m=1)은 History 금고에도 차곡차곡 보관하여 꺾은선 차트가 그려지게 함!
+            if (m > 0) {
+                historyData.push({ month: `${year}${month}`, totalGross: monthTotalGross, topDesigner: '민수', topGross: monthTotalGross * 0.6, runnerUpDesigner: '지아' });
+            }
+        } // 3개월 루프 종료
+
+        // 파트너(지훈, 수진) 성장 및 업무 데이터 세팅 (최근 1달 기준)
         const d = new Date();
         const year = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, '0');
         
-        let salesData = [];
-        let statsData = [];
-        let dailyRecords = [];
-        let quests = [];
-        let manito = [];
-        let orders = [];
-        let exps = [];
-
-        // 💡 3. 디자이너(민수, 지아) 30일 치 영업 데이터 쾅쾅 찍어내기
-        const designers = ['민수', '지아'];
-        designers.forEach(designer => {
-            let tRev = 0, tMem = 0, tProd = 0, tCust = 0, tPure = 0, tFan = 0, tNew = 0, tRsv = 0;
-            let tCut = 0, tPermM = 0, tPermF = 0, tColor = 0, tClinic = 0, tDry = 0, tAs = 0, tProdCnt = 0;
-
-            for(let i=1; i<=30; i++) {
-                const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
-                // 약간의 기복을 주기 위한 랜덤 엔진 (쉬는 날도 구현)
-                if(i % 7 === 0) continue; // 7일에 한 번 휴무
-
-                // 하루 데이터 무작위 생성
-                let dailyGross = Math.floor(Math.random() * 500000) + 300000; // 하루 30~80만 원
-                let dailyProfit = dailyGross * 0.4;
-                let dCust = Math.floor(Math.random() * 5) + 5; // 하루 5~10명
-                let dPure = dCust;
-                let dFan = Math.floor(dCust * 0.6); // 60% 단골
-                let dNew = dCust - dFan;
-                let dSlots = dCust * 2; // 인당 2칸씩 사용
-
-                // 누적 데이터 합산
-                tRev += dailyGross; tMem += (dailyGross * 0.2); tProd += (dailyGross * 0.05);
-                tCust += dCust; tPure += dPure; tFan += dFan; tNew += dNew; tRsv += (dCust + 1); // 1명 노쇼
-                tCut += Math.floor(dCust * 0.5); tPermM += Math.floor(dCust * 0.2); tPermF += Math.floor(dCust * 0.1); 
-                tColor += Math.floor(dCust * 0.1); tClinic += Math.floor(dCust * 0.1); tProdCnt += 2;
-
-                // 일일 기록(Daily Log) 저장
-                dailyRecords.push({ date: dateStr, name: designer, revenue: dailyGross, total: dCust, nom: dFan, slots: dSlots, grade: '성장의 불꽃' });
-                
-                // 디자이너 퀘스트
-                quests.push({ date: dateStr, name: designer, q1: Math.floor(Math.random()*3), q2: Math.floor(Math.random()*2), q3: Math.floor(Math.random()*2), q4: Math.floor(Math.random()*3) });
-
-                // 마니또 칭찬 발사 (민수/지아 -> 지훈/수진)
-                let targetPartner = Math.random() > 0.5 ? '지훈' : '수진';
-                let kw = ['🧴 빛보다 빠른 샴푸', '🧪 센스있는 약터치', '🧹 깔끔한 셋팅/마감', '⏱️ 칼같은 타임 체크'][Math.floor(Math.random()*4)];
-                manito.unshift({ date: `${month}/${String(i).padStart(2,'0')} 18:00`, from: designer, to: targetPartner, keyword: kw });
-            }
-
-            // 개별 결산 및 먼슬리 프로 기록 저장
-            salesData.push({ date: `${year}-${month}-30`, name: designer, gross: tRev, profit: tRev * 0.4 });
-            statsData.push({ date: `${year}-${month}-30`, name: designer, totalRev: tRev, membershipRev: tMem, productRev: tProd, totalCust: tCust, pureCust: tPure, fanCust: tFan, newCust: tNew, totalRsv: tRsv, cut: tCut, permM: tPermM, permF: tPermF, color: tColor, clinic: tClinic, dry: tDry, as: tAs, productCount: tProdCnt, workDays: 25 });
-        });
-
-        // 4. 파트너(지훈, 수진) 성장 및 업무 데이터 세팅
         ['지훈', '수진'].forEach(partner => {
-            // 파트너 퀘스트 무작위 클리어
             for(let i=1; i<=30; i++) {
                 const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
-                if(i % 7 !== 0) {
-                    quests.push({ date: dateStr, name: partner, pq1: 1, pq2: 1, pq3: 1 });
-                }
+                if(i % 7 !== 0) quests.push({ date: dateStr, name: partner, pq1: 1, pq2: 1, pq3: 1 });
             }
-            // 레벨업 경험치 세팅 (폭풍 성장)
             const partnerData = { exp: Math.floor(Math.random() * 4000) + 3000, level: Math.floor(Math.random() * 2) + 2, todayQuests: {}, lastDate: `${year}-${month}-30` };
             localStorage.setItem('alignPartnerData_' + partner, JSON.stringify(partnerData));
         });
 
-        // 5. 비품 발주 (스와이프 쾌감용 결재 리스트 잔뜩)
+        // 비품 발주 (스와이프 쾌감용 결재 리스트)
         for(let i=25; i<=30; i++) {
             orders.push({ id: 'ORD_'+i, user: '지훈', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 11:30`, items: [{category: 'chemical', name: '밀본 마지렐 6레벨', qty: 5}, {category: 'retail', name: '아윤채 컬크림', qty: 3}] });
             exps.push({ id: i, user: '수진', item: '웰라 산화제 9%', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 15:00` });
         }
 
-        // 6. 금고에 최종 적재
+        // 금고에 최종 적재
         localStorage.setItem('alignSalesData', JSON.stringify(salesData));
         localStorage.setItem('alignMonthlyStats', JSON.stringify(statsData));
         localStorage.setItem('vl_daily_records', JSON.stringify(dailyRecords));
         localStorage.setItem('vl_quests', JSON.stringify(quests));
-        localStorage.setItem('alignManitoLog', JSON.stringify(manito.slice(0,30))); // 30개만 자르기
+        localStorage.setItem('alignManitoLog', JSON.stringify(manito.slice(0,30)));
         localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
         localStorage.setItem('alignExpReports', JSON.stringify(exps));
+        localStorage.setItem('alignHistoryData', JSON.stringify(historyData));
 
-        await AlignModal.alert("🚀 [시뮬레이션 완료]\n한 달 치 데이터가 성공적으로 적재되었습니다.\n앱의 모든 기능과 통계를 테스트해 보세요!", "풀로드 완성");
+        await AlignModal.alert("🚀 [3개월 시뮬레이션 완료]\n총 90일 치의 데이터가 성공적으로 적재되었습니다.\n과거 매출 추이 차트까지 완벽하게 테스트해 보세요!", "풀로드 완성");
         location.reload();
     }
 };
-
 
 </script>
 
