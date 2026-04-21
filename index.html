@@ -3762,6 +3762,13 @@ const app = {
                 document.getElementById('gate-overlay').style.display = 'none';
                 document.getElementById('manager-room').style.display = 'flex'; 
                 
+                // 🌟 [팀장의 긴급 수술] 경영자 오피스 진입 시, 디자이너용 하단 바 완벽 차단!
+                const nav = document.getElementById('global-nav');
+                if(nav) {
+                    nav.style.display = 'none';
+                    nav.style.opacity = '0';
+                }
+                
                 if(typeof window.loadRealData === 'function') window.loadRealData();
                 if(typeof window.renderManagerCharts === 'function') setTimeout(window.renderManagerCharts, 100);
                 if(typeof mo_updateNotification === 'function') mo_updateNotification();
