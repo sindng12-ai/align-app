@@ -52,42 +52,59 @@
         }
 
 
-        /* 🎨 [팀장의 수술] 하이엔드 & 가독성 최적화 팔레트 (원색 제거) */
+        /* 🎨 [극강의 미니멀리즘] 눈이 편안한 매트 다크 & 골드 영구 고정 팔레트 */
         :root {
-            /* 1. Base & Surface (도화지와 가구) */
-            --bg: #050507; 
-            --card-bg: #1C1C1E;
-            --nav-bg: rgba(5,5,7,0.95);
+            /* 1. Base & Surface: 눈을 찌르는 흑색 제거, 부드러운 매트 블랙 & 딥 차콜 */
+            --bg: #09090B; 
+            --card-bg: #141417;
+            --nav-bg: rgba(9, 9, 11, 0.85);
             
-            /* 2. Text & Mute (명확한 정보 전달) */
-            --text: #E8E8ED; 
-            --text-dim: #8B949E;
+            /* 2. Text: 새하얀색 대신 시력을 보호하는 따뜻한 오프화이트 */
+            --text: #F4F4F5; 
+            --text-dim: #A1A1AA;
             
-            /* 3. Signature Point (유일한 주인공) */
-            --accent-gold: #D4AF37; 
-            --accent-beige: #D2B48C; /* 서브 골드 (입력창 포커스 등) */
+            /* 3. Signature Point: 채도를 살짝 낮춰 우아하고 묵직해진 골드 */
+            --accent-gold: #C5A059; 
+            --accent-beige: #B59A6D;
             
-            /* 4. Status (통제된 신호등 - 가독성을 위해 명도/채도 최적화) */
-            --daily-green: #32D74B;
-            --success: #32D74B;
+            /* 4. Status: 형광기를 뺀 차분한 신호등 컬러 */
+            --daily-green: #30D158;
+            --success: #30D158;
             --error: #FF453A;
-            --error-dim: rgba(255, 69, 58, 0.12);
-            --warning: #FF9F0A; /* 🚨 칙칙한 옐로우를 시인성 높은 앰버(주황빛)로 교체 */
-
-            --edu-blue: #0A84FF; /* 교육 탭 전용 신뢰의 블루 */
-            --edu-blue-dim: rgba(10, 132, 255, 0.15); /* 파란색 투명 배경 */
+            --error-dim: rgba(255, 69, 58, 0.08);
+            --warning: #FF9F0A; 
+            --edu-blue: #0A84FF; 
+            --edu-blue-dim: rgba(10, 132, 255, 0.1);
             
-            /* 5. Glass & Border (입체감과 구분선) */
-            --dark-glass: rgba(28, 28, 30, 0.65); 
-            --dark-border: rgba(255, 255, 255, 0.08); /* 🚨 촌스러운 골드 섞인 테두리를 깔끔한 화이트 투명도로 통일 */
-            --dark-line: rgba(255, 255, 255, 0.05);
+            /* 5. Glass & Border: 억지 선을 지우고, 공간과 미세한 음영으로 구분 */
+            --dark-glass: rgba(20, 20, 23, 0.6); 
+            --dark-border: rgba(255, 255, 255, 0.03); 
+            --dark-line: rgba(255, 255, 255, 0.02);
             
-            --ai-bg: #0A0A0F;
-            --ambient-glow: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+            --ai-bg: #09090B;
+            --ambient-glow: radial-gradient(circle at 50% 50%, rgba(197, 160, 89, 0.04) 0%, rgba(0, 0, 0, 0) 70%);
         }
 
+        /* 🌟 [인테리어 공간 확장] 패널 여백을 20% 늘려 숨통을 틔우고 곡선을 다듬습니다. */
+        .align-panel, .align-panel-gold, .align-panel-green, .align-panel-red, .align-panel-blue { 
+            padding: 30px 25px !important; /* 기존 25px 20px -> 상하좌우 대폭 확장 */
+            border-radius: 18px !important; /* 둥글기 상향 */
+            border: 1px solid var(--dark-border) !important; 
+            background: var(--card-bg) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15) !important; /* 부드러운 그림자 */
+            margin-bottom: 24px !important; /* 패널 간 간격 확장 */
+        }
+        
+        /* 패널 내부의 상단 타이틀 밑 여백 확장 */
+        .align-panel > div:first-child, .align-panel-gold > div:first-child, 
+        .align-panel-green > div:first-child, .align-panel-red > div:first-child, 
+        .align-panel-blue > div:first-child {
+            margin-bottom: 20px !important; 
+        }
 
         ::-webkit-scrollbar { display: none; }
+
+
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -ms-overflow-style: none; scrollbar-width: none; }
         
         /* 🌟 [팀장의 카무플라주] 진짜 밑바닥(html)까지 앱 배경색으로 통일하여, 아이폰이 화면을 들어 올려도 검은 박스가 안 보이게 완벽 위장! */
@@ -1958,28 +1975,7 @@ input, textarea {
                         </div>
                     </div>
 
-                    <div>
-                        <div style="font-size: 11px; color: var(--accent-gold); font-family: 'Montserrat', sans-serif; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.05em;">UI & TYPOGRAPHY</div>
-                        <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div>
-                                <label style="display: block; font-size: 11px; color: #5C6370; margin-bottom: 6px;">앱 타이포그래피 (글꼴 스타일)</label>
-                                <select id="sys-font-style" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s; appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%23D4AF37%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/><path d=%22M0 0h24v24H0z%22 fill=%22none%22/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 18px;">
-                                    <option value="modern">Modern Clean (모던 핏 - 세련되고 깔끔한 느낌)</option>
-                                    <option value="classic">Classic Boutique (클래식 핏 - 우아한 명조 느낌)</option>
-                                    <option value="soft">Soft & Emotional (감성 핏 - 부드럽고 친근한 느낌)</option>
-                                </select>
-                            </div>
-                            <div>
-        <label style="display: block; font-size: 11px; color: #5C6370; margin-bottom: 6px;">앱 베이스 톤 (다크 테마)</label>
-        <select id="sys-theme-tone" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none; transition: 0.2s; appearance: none; cursor: pointer; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%23D4AF37%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/><path d=%22M0 0h24v24H0z%22 fill=%22none%22/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 18px;">
-            <option value="midnight">Midnight Black (미드나잇 블랙 - 깊고 시크한 블랙)</option>
-            <option value="charcoal">Charcoal Gray (차콜 그레이 - 눈이 편안한 네이비 톤)</option>
-            <option value="emerald">Royal Emerald (로얄 에메랄드 - 클래식 딥 그린)</option>
-        </select>
-    </div>
-                        </div>
-                    </div>
-
+                   
                     <div style="margin-top: 25px; padding-top: 20px; border-top: 1px dashed rgba(212,175,55,0.2);">
                         <div style="font-size: 11px; color: var(--accent-gold); font-family: 'Montserrat', sans-serif; font-weight: 700; margin-bottom: 15px; letter-spacing: 0.05em;">AI INTELLIGENCE (STORE WIDE)</div>
                         <div style="margin-bottom: 15px;">
@@ -9779,47 +9775,32 @@ window.mo_toggleMasterApiKey = function() {
 };
 
 // ==========================================
-// ⚙️ ALIGN 2.0: 시스템 환경 설정 (중앙 제어실 V3) 로직
+// ⚙️ ALIGN 2.0: 시스템 환경 설정 (미니멀 하이엔드 고정판)
 // ==========================================
 
-// 1. 설정 저장 함수 (수정 완료본)
 function mo_saveSystemSettings() {
-    // 원장님이 선택한 값들 싹 긁어오기
     const brandName = document.getElementById('sys-brand-name').value || 'ALIGN';
     const ceoName = document.getElementById('sys-ceo-name').value || '';
     const growthTrack = document.getElementById('sys-growth-track').value || '1.0';
-    const fontStyle = document.getElementById('sys-font-style').value || 'modern';
-    const themeTone = document.getElementById('sys-theme-tone').value || 'midnight';
     const adminPassword = document.getElementById('sys-admin-password').value || '0000';
-    
-    // 🌟 [수정 포인트] 변수 선언을 정확하게 해줍니다.
     const apiKey = document.getElementById('sys-api-key').value.trim(); 
 
-    // 로컬 스토리지(브라우저 금고)에 예쁘게 포장해서 영구 저장
     const settings = {
         brandName: brandName,
         ceoName: ceoName,        
         growthTrack: parseFloat(growthTrack),
-        fontStyle: fontStyle,
-        themeTone: themeTone,
         adminPassword: adminPassword,
-        apiKey: apiKey // 🌟 [수정 포인트] 객체 안에 apiKey를 포함시킵니다.
+        apiKey: apiKey 
     };
     localStorage.setItem('alignSystemSettings', JSON.stringify(settings));
 
-    // 저장하자마자 즉시 화면 대문, 글꼴, 테마 색상 싹 다 갈아끼우기!
     applySystemSettings();
 
-    // 팝업 닫고 원장님께 성공 알림 띄우기
     document.getElementById('mo-sys-settings-modal').style.display = 'none';
-    if(typeof app !== 'undefined' && app.toast) {
-        app.toast('시스템 설정이 성공적으로 적용되었습니다.');
-    } else {
-        alert('시스템 설정이 성공적으로 적용되었습니다.');
-    }
+    if(typeof app !== 'undefined' && app.toast) app.toast('시스템 설정이 성공적으로 적용되었습니다.');
+    else alert('시스템 설정이 성공적으로 적용되었습니다.');
 }
 
-// 2. 설정 불러오기 및 앱 껍데기(테마/폰트/이름) 적용 함수
 function applySystemSettings() {
     const saved = localStorage.getItem('alignSystemSettings');
     if(!saved) return; 
@@ -9829,75 +9810,13 @@ function applySystemSettings() {
     // [마법 1] 이름표 교체
     const mainTitleElements = document.querySelectorAll('.app-brand-title');
     mainTitleElements.forEach(el => {
-        el.innerHTML = settings.brandName; 
+        el.innerHTML = settings.brandName || 'ALIGN'; 
     });
-    document.title = settings.brandName + " | Master App";
+    document.title = (settings.brandName || 'ALIGN') + " | Master App";
 
-    // [마법 2] 다크 테마 톤 변경 및 🌟애플 홈 인디케이터 색상 강제 동기화🌟
-    const root = document.documentElement;
-    let themeColorStr = '#050507'; // 애플 홈바에 칠해줄 기본 물감 색상
-
-    if(settings.themeTone === 'charcoal') {
-        root.style.setProperty('--bg', '#16161A');       
-        root.style.setProperty('--card-bg', '#222227');  
-        root.style.setProperty('--nav-bg', '#16161A');
-        root.style.setProperty('--edu-blue', '#0A84FF'); 
-        root.style.setProperty('--edu-blue-dim', 'rgba(10, 132, 255, 0.15)');
-        themeColorStr = '#16161A'; // 차콜색 물감 장전
-    } else if(settings.themeTone === 'emerald') {
-        root.style.setProperty('--bg', '#0A1A14');       
-        root.style.setProperty('--card-bg', '#122A20');  
-        root.style.setProperty('--nav-bg', '#0A1A14');
-        root.style.setProperty('--edu-blue', '#0AC29D'); 
-        root.style.setProperty('--edu-blue-dim', 'rgba(10, 194, 157, 0.15)');
-        themeColorStr = '#0A1A14'; // 에메랄드색 물감 장전
-    } else {
-        root.style.setProperty('--bg', '#050507');
-        root.style.setProperty('--card-bg', '#1C1C1E');
-        root.style.setProperty('--nav-bg', '#050507');
-        root.style.setProperty('--edu-blue', '#0A84FF');
-        root.style.setProperty('--edu-blue-dim', 'rgba(10, 132, 255, 0.15)');
-        themeColorStr = '#050507'; // 미드나잇 블랙 물감 장전
-    }
-
-    // 🌟 [변태적 디테일 끝판왕 V2] 태그가 없으면 강제로 창조해서라도 아이폰의 쥐색을 덮어버립니다!
-    let metaTheme = document.querySelector('meta[name="theme-color"]');
-    if(!metaTheme) { 
-        metaTheme = document.createElement('meta');
-        metaTheme.name = 'theme-color';
-        document.head.appendChild(metaTheme);
-    }
-    metaTheme.setAttribute('content', themeColorStr);
-
-    // 🌟 [애플 전용 방어막] 아이폰 상태바/바닥을 투명하게 만들어주는 네이티브 강제 설정
-    let appleMeta = document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]');
-    if(!appleMeta) {
-        appleMeta = document.createElement('meta');
-        appleMeta.name = 'apple-mobile-web-app-status-bar-style';
-        document.head.appendChild(appleMeta);
-    }
-    appleMeta.setAttribute('content', 'black-translucent');
-
-    // [마법 3] 폰트 적용
-    let fontCss = '';
-    if(settings.fontStyle === 'classic') {
-        fontCss = `@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
-                   body *:not(#graduation-overlay *) { font-family: 'Nanum Myeongjo', serif !important; }`;
-    } else if(settings.fontStyle === 'soft') {
-        fontCss = `@import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
-                   body *:not(#graduation-overlay *) { font-family: 'Gowun Dodum', sans-serif !important; }`;
-    } else {
-        fontCss = `body *:not(#graduation-overlay *) { font-family: 'Montserrat', 'Pretendard', sans-serif !important; }`;
-    }
-
-    let oldStyle = document.getElementById('dynamic-theme-style');
-    if(oldStyle) oldStyle.remove();
-
-    const styleTag = document.createElement('style');
-    styleTag.id = 'dynamic-theme-style';
-    styleTag.innerHTML = fontCss;
-    document.head.appendChild(styleTag);
+    // 🌟 테마/폰트는 CSS(:root)에서 영구적으로 통제하므로 JS 로직은 모두 소각!
 }
+
 
 // ==========================================
     // 🎓 [블랙 라벨] 디자이너 승급 수료증 엔진 (여기에 쏙 들어갑니다!)
@@ -11447,56 +11366,115 @@ window.mo_deleteEduRecord = async function(reqId) {
             listContainer.innerHTML = html;
         };
 
-// 💉 [모바일 전용] 경영자 오피스 하드코어 QA 데이터 수혈 백도어
+// 🌪️ [모바일 전용] 1개월 하드코어 시뮬레이션 풀-가동 엔진
 let qaClickCount = 0;
 window.triggerQAData = async function() {
     qaClickCount++;
     if (qaClickCount >= 5) {
-        qaClickCount = 0; // 카운트 초기화
+        qaClickCount = 0; 
         
-        if (!await AlignModal.confirm("🚨 [모바일 QA 테스트 모드]\n가상의 한 달 치 풀-로드(Full-load) 데이터를 앱에 수혈하시겠습니까?\n(현재 화면의 데이터는 덮어씌워집니다.)", "QA 수혈기 가동")) return;
+        if (!await AlignModal.confirm("🚨 [1개월 시뮬레이션 모드]\n실제 매장이 한 달 동안 돌아간 것과 동일한 30일 치의 방대한 풀-로드(Full-load) 데이터를 생성하시겠습니까?\n(기존 데이터는 모두 덮어씌워집니다.)", "시뮬레이터 가동")) return;
 
-        const d = new Date();
-        const cm = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-        const cd = `${cm}-${String(d.getDate()).padStart(2, '0')}`;
-
-        // 1. 가상 직원 프로필
+        // 1. 직원 명부 세팅 (디자이너 2명, 파트너 2명)
         const profiles = [
-            { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false },
-            { name: '지훈', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false }
+            { name: '원장', title: 'Director', color: 'linear-gradient(135deg, #D4AF37, #8a7123)', text: '#050507', isHidden: false, personalPw: '0000' },
+            { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
+            { name: '지아', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
+            { name: '지훈', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
+            { name: '수진', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }
         ];
         localStorage.setItem('alignProfiles', JSON.stringify(profiles));
 
-        // 2. 극단적 매출 & 통계
-        const sales = [{ date: cd, name: '민수', gross: 15000000, profit: 5000000 }];
-        localStorage.setItem('alignSalesData', JSON.stringify(sales));
-        const stats = [{ date: cd, name: '민수', totalRev: 15000000, membershipRev: 3000000, productRev: 1000000, totalCust: 150, pureCust: 120, fanCust: 80, newCust: 20, totalRsv: 160, cut: 50, permM: 30, permF: 20, color: 30, clinic: 20, dry: 10, as: 2, productCount: 15, workDays: 24 }];
-        localStorage.setItem('alignMonthlyStats', JSON.stringify(stats));
+        // 2. 30일 치 데이터 팩토리 가동 준비
+        const d = new Date();
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        
+        let salesData = [];
+        let statsData = [];
+        let dailyRecords = [];
+        let quests = [];
+        let manito = [];
+        let orders = [];
+        let exps = [];
 
-        // 3. 랭킹 & 알림 폭주
-        const quests = [
-            { date: cd, name: '민수', q1: 15, q2: 8, q3: 12, q4: 20 },
-            { date: cd, name: '지훈', pq1: 5, pq2: 10, pq3: 8 }
-        ];
+        // 💡 3. 디자이너(민수, 지아) 30일 치 영업 데이터 쾅쾅 찍어내기
+        const designers = ['민수', '지아'];
+        designers.forEach(designer => {
+            let tRev = 0, tMem = 0, tProd = 0, tCust = 0, tPure = 0, tFan = 0, tNew = 0, tRsv = 0;
+            let tCut = 0, tPermM = 0, tPermF = 0, tColor = 0, tClinic = 0, tDry = 0, tAs = 0, tProdCnt = 0;
+
+            for(let i=1; i<=30; i++) {
+                const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
+                // 약간의 기복을 주기 위한 랜덤 엔진 (쉬는 날도 구현)
+                if(i % 7 === 0) continue; // 7일에 한 번 휴무
+
+                // 하루 데이터 무작위 생성
+                let dailyGross = Math.floor(Math.random() * 500000) + 300000; // 하루 30~80만 원
+                let dailyProfit = dailyGross * 0.4;
+                let dCust = Math.floor(Math.random() * 5) + 5; // 하루 5~10명
+                let dPure = dCust;
+                let dFan = Math.floor(dCust * 0.6); // 60% 단골
+                let dNew = dCust - dFan;
+                let dSlots = dCust * 2; // 인당 2칸씩 사용
+
+                // 누적 데이터 합산
+                tRev += dailyGross; tMem += (dailyGross * 0.2); tProd += (dailyGross * 0.05);
+                tCust += dCust; tPure += dPure; tFan += dFan; tNew += dNew; tRsv += (dCust + 1); // 1명 노쇼
+                tCut += Math.floor(dCust * 0.5); tPermM += Math.floor(dCust * 0.2); tPermF += Math.floor(dCust * 0.1); 
+                tColor += Math.floor(dCust * 0.1); tClinic += Math.floor(dCust * 0.1); tProdCnt += 2;
+
+                // 일일 기록(Daily Log) 저장
+                dailyRecords.push({ date: dateStr, name: designer, revenue: dailyGross, total: dCust, nom: dFan, slots: dSlots, grade: '성장의 불꽃' });
+                
+                // 디자이너 퀘스트
+                quests.push({ date: dateStr, name: designer, q1: Math.floor(Math.random()*3), q2: Math.floor(Math.random()*2), q3: Math.floor(Math.random()*2), q4: Math.floor(Math.random()*3) });
+
+                // 마니또 칭찬 발사 (민수/지아 -> 지훈/수진)
+                let targetPartner = Math.random() > 0.5 ? '지훈' : '수진';
+                let kw = ['🧴 빛보다 빠른 샴푸', '🧪 센스있는 약터치', '🧹 깔끔한 셋팅/마감', '⏱️ 칼같은 타임 체크'][Math.floor(Math.random()*4)];
+                manito.unshift({ date: `${month}/${String(i).padStart(2,'0')} 18:00`, from: designer, to: targetPartner, keyword: kw });
+            }
+
+            // 개별 결산 및 먼슬리 프로 기록 저장
+            salesData.push({ date: `${year}-${month}-30`, name: designer, gross: tRev, profit: tRev * 0.4 });
+            statsData.push({ date: `${year}-${month}-30`, name: designer, totalRev: tRev, membershipRev: tMem, productRev: tProd, totalCust: tCust, pureCust: tPure, fanCust: tFan, newCust: tNew, totalRsv: tRsv, cut: tCut, permM: tPermM, permF: tPermF, color: tColor, clinic: tClinic, dry: tDry, as: tAs, productCount: tProdCnt, workDays: 25 });
+        });
+
+        // 4. 파트너(지훈, 수진) 성장 및 업무 데이터 세팅
+        ['지훈', '수진'].forEach(partner => {
+            // 파트너 퀘스트 무작위 클리어
+            for(let i=1; i<=30; i++) {
+                const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
+                if(i % 7 !== 0) {
+                    quests.push({ date: dateStr, name: partner, pq1: 1, pq2: 1, pq3: 1 });
+                }
+            }
+            // 레벨업 경험치 세팅 (폭풍 성장)
+            const partnerData = { exp: Math.floor(Math.random() * 4000) + 3000, level: Math.floor(Math.random() * 2) + 2, todayQuests: {}, lastDate: `${year}-${month}-30` };
+            localStorage.setItem('alignPartnerData_' + partner, JSON.stringify(partnerData));
+        });
+
+        // 5. 비품 발주 (스와이프 쾌감용 결재 리스트 잔뜩)
+        for(let i=25; i<=30; i++) {
+            orders.push({ id: 'ORD_'+i, user: '지훈', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 11:30`, items: [{category: 'chemical', name: '밀본 마지렐 6레벨', qty: 5}, {category: 'retail', name: '아윤채 컬크림', qty: 3}] });
+            exps.push({ id: i, user: '수진', item: '웰라 산화제 9%', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 15:00` });
+        }
+
+        // 6. 금고에 최종 적재
+        localStorage.setItem('alignSalesData', JSON.stringify(salesData));
+        localStorage.setItem('alignMonthlyStats', JSON.stringify(statsData));
+        localStorage.setItem('vl_daily_records', JSON.stringify(dailyRecords));
         localStorage.setItem('vl_quests', JSON.stringify(quests));
-        const partnerData = { exp: 2850, level: 3, todayQuests: {}, lastDate: cd };
-        localStorage.setItem('alignPartnerData_지훈', JSON.stringify(partnerData));
-        const manito = [{ date: `${d.getMonth()+1}/${d.getDate()} 14:00`, from: '민수', to: '지훈', keyword: '🧴 빛보다 빠른 샴푸' }];
-        localStorage.setItem('alignManitoLog', JSON.stringify(manito));
-
-        // 4. 결재 스와이프 테스트용
-        const orders = [
-            { id: 'ORD_1', user: '지훈', status: 'pending', date: cd + ' 12:00', items: [{category: 'chemical', name: '아베다 펌제', qty: 2}] },
-            { id: 'ORD_2', user: '지훈', status: 'pending', date: cd + ' 14:00', items: [{category: 'supply', name: '넥셔터', qty: 5}] }
-        ];
+        localStorage.setItem('alignManitoLog', JSON.stringify(manito.slice(0,30))); // 30개만 자르기
         localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
-        const expReports = [{ id: 1, user: '지훈', item: '로레알 산화제 6%', status: 'pending', date: cd + ' 15:00' }];
-        localStorage.setItem('alignExpReports', JSON.stringify(expReports));
+        localStorage.setItem('alignExpReports', JSON.stringify(exps));
 
-        await AlignModal.alert("💉 모바일 QA 데이터 수혈이 완료되었습니다!\n확인을 누르면 화면이 새로고침됩니다.", "수혈 성공");
+        await AlignModal.alert("🚀 [시뮬레이션 완료]\n한 달 치 데이터가 성공적으로 적재되었습니다.\n앱의 모든 기능과 통계를 테스트해 보세요!", "풀로드 완성");
         location.reload();
     }
 };
+
 
 </script>
 
