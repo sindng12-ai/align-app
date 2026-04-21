@@ -289,7 +289,7 @@
         .nav-item.active svg { color: var(--accent-gold); }
         .nav-text { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; font-family: 'Montserrat', sans-serif;}
 
-        .scroll-container { flex: 1; overflow-y: auto; z-index: 10; position: relative; padding-bottom: 120px; -webkit-overflow-scrolling: touch; }
+        .scroll-container { flex: 1; overflow-y: auto; z-index: 10; position: relative; padding-bottom: 110px; -webkit-overflow-scrolling: touch; }
 
         /* =========================================================
            [2] HOME DASHBOARD STYLES
@@ -1409,22 +1409,34 @@ input, textarea {
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 22px 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 1px; margin-bottom: 15px;">TOTAL REVENUE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 총 매출</span></div>
-                        <div style="text-align: right;"><span id="dash-total" style="font-size: 26px; color: #ffffff; font-weight: 300; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #8E8E93; margin-left: 2px;">KRW</span></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;">
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 10.5px; color: #8E8E93; letter-spacing: 1px;">TOTAL REVENUE</span>
+                            <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.6); margin-top: 2px;">총 매출</span>
+                        </div>
+                        <div style="text-align: right;"><span id="dash-total" style="font-size: 20px; color: #ffffff; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">0</span><span style="font-size: 9px; color: #5C6370; margin-left: 2px;">KRW</span></div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 22px 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--accent-gold); letter-spacing: 1px; margin-bottom: 15px;">AVG TICKET <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(212,175,55,0.8); letter-spacing: 0; margin-left: 4px;">· 매장 객단가</span></div>
-                        <div style="text-align: right;"><span id="dash-ticket" style="font-size: 26px; color: var(--accent-gold); font-weight: 300; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: rgba(212,175,55,0.7); margin-left: 2px;">KRW</span></div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 10.5px; color: var(--accent-gold); letter-spacing: 1px;">AVG TICKET</span>
+                            <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(212,175,55,0.6); margin-top: 2px;">매장 객단가</span>
+                        </div>
+                        <div style="text-align: right;"><span id="dash-ticket" style="font-size: 20px; color: var(--accent-gold); font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">0</span><span style="font-size: 9px; color: rgba(212,175,55,0.6); margin-left: 2px;">KRW</span></div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 22px 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 1px; margin-bottom: 15px;">STYLE CHANGE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 펌/컬러 전환</span></div>
-                        <div style="text-align: right;"><span id="dash-style" style="font-size: 26px; color: #ffffff; font-weight: 300; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #8E8E93; margin-left: 2px;">%</span></div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 10.5px; color: #8E8E93; letter-spacing: 1px;">STYLE CHANGE</span>
+                            <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.6); margin-top: 2px;">펌/컬러 전환</span>
+                        </div>
+                        <div style="text-align: right;"><span id="dash-style" style="font-size: 22px; color: #ffffff; font-weight: 600; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #5C6370; margin-left: 2px;">%</span></div>
                     </div>
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 22px 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between;">
-                        <div style="font-family: 'Montserrat', sans-serif; font-size: 11px; color: #8E8E93; letter-spacing: 1px; margin-bottom: 15px;">HAIR CARE <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.8); letter-spacing: 0; margin-left: 4px;">· 클리닉 전환</span></div>
-                        <div style="text-align: right;"><span id="dash-care" style="font-size: 26px; color: #ffffff; font-weight: 300; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #8E8E93; margin-left: 2px;">%</span></div>
+                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
+                            <span style="font-family: 'Montserrat', sans-serif; font-size: 10.5px; color: #8E8E93; letter-spacing: 1px;">HAIR CARE</span>
+                            <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.6); margin-top: 2px;">클리닉 전환</span>
+                        </div>
+                        <div style="text-align: right;"><span id="dash-care" style="font-size: 22px; color: #ffffff; font-weight: 600; font-family: 'Montserrat', sans-serif;">0</span><span style="font-size: 11px; color: #5C6370; margin-left: 2px;">%</span></div>
                     </div>
                 </div>
                 
@@ -1833,33 +1845,33 @@ input, textarea {
                     <div style="font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 10px;">🔥 디자이너 퀘스트 커스텀</div>
                     <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">라운지의 불꽃(🔥) 버튼 메뉴와 명예의 전당 타이틀을 실시간으로 변경합니다.</div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 15px;">
                         <div>
                             <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">1번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 5px;">
-                                <input type="text" id="mo-q-emoji-1" value="💳" style="width: 40px; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 6px;">
-                                <input type="text" id="mo-q-title-1" value="N페이 결제" style="flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="mo-q-emoji-1" value="💳" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
+                                <input type="text" id="mo-q-title-1" value="N페이 결제" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
                             </div>
                         </div>
                         <div>
                             <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">2번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 5px;">
-                                <input type="text" id="mo-q-emoji-2" value="💬" style="width: 40px; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 6px;">
-                                <input type="text" id="mo-q-title-2" value="리뷰 / 답글" style="flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="mo-q-emoji-2" value="💬" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
+                                <input type="text" id="mo-q-title-2" value="리뷰 / 답글" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
                             </div>
                         </div>
                         <div>
                             <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">3번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 5px;">
-                                <input type="text" id="mo-q-emoji-3" value="📸" style="width: 40px; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 6px;">
-                                <input type="text" id="mo-q-title-3" value="B/A 촬영" style="flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="mo-q-emoji-3" value="📸" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
+                                <input type="text" id="mo-q-title-3" value="B/A 촬영" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
                             </div>
                         </div>
                         <div>
                             <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">4번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 5px;">
-                                <input type="text" id="mo-q-emoji-4" value="🗓️" style="width: 40px; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 6px;">
-                                <input type="text" id="mo-q-title-4" value="다음예약 픽스" style="flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                            <div style="display: flex; gap: 8px;">
+                                <input type="text" id="mo-q-emoji-4" value="🗓️" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
+                                <input type="text" id="mo-q-title-4" value="다음예약 픽스" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
                             </div>
                         </div>
                     </div>
