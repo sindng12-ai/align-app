@@ -1339,9 +1339,7 @@ input, textarea {
         
         <div class="mo-header-wrap">
             <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 5px;">
-                <div onclick="triggerQAData()" style="font-family: 'Montserrat', sans-serif; font-size: 22px; color: #ffffff; font-weight: 800; letter-spacing: 2px; white-space: nowrap; flex-shrink: 0; cursor: pointer;">
-                    EXECUTIVE OFFICE
-                </div>
+                <div onclick="triggerQAData()" style="font-size: 26px; color: #ffffff; font-weight: 800; letter-spacing: 1px; white-space: nowrap; flex-shrink: 0; cursor: pointer;">경영자 오피스</div>
                 
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <div id="mo-noti-bell" onclick="mo_clickNotification(event)" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
@@ -1472,7 +1470,7 @@ input, textarea {
 <div id="mo-page-analytics" class="mo-page">
                 <div style="background: linear-gradient(135deg, rgba(212,175,55,0.08) 0%, rgba(28,28,30,0.8) 100%); border: 1px solid rgba(212,175,55,0.2); border-radius: 16px; padding: 25px 20px; margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                     <div style="display: flex; align-items: center; margin-bottom: 25px;">
-                        <span style="color: var(--accent-gold); font-size: 12px; font-weight: 800; letter-spacing: 1px;">이달의 명예 전당</span>
+                        <span style="color: var(--accent-gold); font-size: 14px; font-weight: 800; letter-spacing: 1px;">이번달 명예의 전당</span>
                     </div>
                     
                     <div style="margin-bottom: 20px;">
@@ -1514,8 +1512,8 @@ input, textarea {
                     </div>
 
                     <div id="ana-view-upsell" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; z-index: 1;">
-                        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 20px;">업셀링 실적 (기술 vs 점판)</div>
-                        <div style="position: relative; height: 200px; width: 100%;"><canvas id="barChart"></canvas></div>
+                        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px;">업셀링 실적 (기술 vs 점판)</div>
+                        <div style="position: relative; height: 220px; width: 100%;"><canvas id="barChart"></canvas></div>
                     </div>
                 </div>
 
@@ -6952,22 +6950,23 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 };
             });
 
-            //  4. 명예의 전당 (하이엔드 영수증/레저 핏으로 전면 재설계!)
+            //  4. 명예의 전당 (타이포그래피 리디자인 완결판 복구!)
             if(rankArr.length > 0) {
                 const renderRankLine = (rank, name, val, unit, isPercent = false) => {
-                    // 🌟 1ST, 2ND 영문 텍스트로 세련미 극대화
-                    let rankText = rank === 1 ? `<span style="font-family:'Montserrat', sans-serif; font-size:11px; font-weight:800; color:var(--accent-gold); letter-spacing: 1px; width: 35px;">1ST</span>` : `<span style="font-family:'Montserrat', sans-serif; font-size:11px; font-weight:800; color:#8E8E93; letter-spacing: 1px; width: 35px;">2ND</span>`;
-                    let nameStyle = rank === 1 ? `color:#fff; font-weight:700; font-size:13.5px;` : `color:#E8E8ED; font-weight:500; font-size:13px;`;
-                    let valStyle = rank === 1 ? `color:#fff; font-weight:700; font-size:15px; font-family:'Montserrat', sans-serif; letter-spacing: -0.5px;` : `color:#A0AAB5; font-weight:600; font-size:14px; font-family:'Montserrat', sans-serif;`;
+                    let rankNum = rank === 1 ? `<span style="font-family:'Montserrat'; font-size:18px; font-weight:900; color:var(--accent-gold); font-style:italic; line-height: 1;">01</span>` : `<span style="font-family:'Montserrat'; font-size:16px; font-weight:800; color:#8E8E93; font-style:italic; line-height: 1;">02</span>`;
+                    let nameStyle = rank === 1 ? `color:#fff; font-weight:700; font-size:14px;` : `color:#E8E8ED; font-weight:600; font-size:13.5px;`;
+                    let valStyle = rank === 1 ? `color:var(--accent-gold); font-weight:800; font-size:16px; font-family:'Montserrat', sans-serif; letter-spacing: -0.5px;` : `color:#E8E8ED; font-weight:600; font-size:14.5px; font-family:'Montserrat', sans-serif;`;
                     let valDisp = isPercent ? val + '%' : val.toLocaleString();
+                    
+                    let bgStyle = rank === 1 ? `background: linear-gradient(90deg, rgba(212,175,55,0.15) 0%, transparent 100%); border-left: 3px solid var(--accent-gold);` : `background: transparent; border-left: 3px solid rgba(255,255,255,0.1);`;
 
                     return `
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid rgba(255,255,255,0.05); padding: 12px 0;">
-                        <div style="display:flex; align-items:center; gap:8px;">
-                            ${rankText}
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding: 12px 15px; ${bgStyle} border-radius: 0 8px 8px 0;">
+                        <div style="display:flex; align-items:center; gap:14px;">
+                            ${rankNum}
                             <span style="${nameStyle}">${name}</span>
                         </div>
-                        <div style="${valStyle}">${valDisp} <span style="font-size:11px; color:#5C6370; font-weight:400; font-family: 'Pretendard', sans-serif;">${unit}</span></div>
+                        <div style="${valStyle}">${valDisp} <span style="font-size:11px; color:#8E8E93; font-weight:400; font-family: 'Pretendard', sans-serif;">${unit}</span></div>
                     </div>`;
                 };
 
@@ -6976,21 +6975,21 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 let sHtml = "";
                 if(rankArr[0] && rankArr[0].gross > 0) sHtml += renderRankLine(1, rankArr[0].name, rankArr[0].gross, '원');
                 if(rankArr[1] && rankArr[1].gross > 0) sHtml += renderRankLine(2, rankArr[1].name, rankArr[1].gross, '원');
-                document.getElementById('rank-sales').innerHTML = sHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px 0;'>기록 없음</div>";
+                document.getElementById('rank-sales').innerHTML = sHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
                 
                 // 객단가 1, 2위
                 rankArr.sort((a, b) => b.ticket - a.ticket);
                 let tHtml = "";
                 if(rankArr[0] && rankArr[0].ticket > 0) tHtml += renderRankLine(1, rankArr[0].name, rankArr[0].ticket, '원');
                 if(rankArr[1] && rankArr[1].ticket > 0) tHtml += renderRankLine(2, rankArr[1].name, rankArr[1].ticket, '원');
-                document.getElementById('rank-ticket').innerHTML = tHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px 0;'>기록 없음</div>";
+                document.getElementById('rank-ticket').innerHTML = tHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
 
                 // 업셀링 1, 2위
                 rankArr.sort((a, b) => b.upsellRate - a.upsellRate);
                 let uHtml = "";
                 if(rankArr[0] && rankArr[0].upsellRate > 0) uHtml += renderRankLine(1, rankArr[0].name, rankArr[0].upsellRate, '', true);
                 if(rankArr[1] && rankArr[1].upsellRate > 0) uHtml += renderRankLine(2, rankArr[1].name, rankArr[1].upsellRate, '', true);
-                document.getElementById('rank-upsell').innerHTML = uHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px 0;'>기록 없음</div>";
+                document.getElementById('rank-upsell').innerHTML = uHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
             }
 
             // 🌟 [추가] AI 경영 멘토 분석 로직
@@ -7193,7 +7192,7 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 gradPerm.addColorStop(0, '#F1C40F'); gradPerm.addColorStop(1, '#B8860B'); 
 
                 let gradColor = ctx2.createLinearGradient(0, 0, 0, 200);
-                gradColor.addColorStop(0, '#FFFFFF'); gradColor.addColorStop(1, '#A0A0A5'); 
+                gradColor.addColorStop(0, '#FF7E5F'); gradColor.addColorStop(1, '#FEB47B'); 
 
                 let gradClinic = ctx2.createLinearGradient(0, 0, 0, 200);
                 gradClinic.addColorStop(0, '#2C3E50'); gradClinic.addColorStop(1, '#0F172A'); 
@@ -7201,7 +7200,7 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 window.myMenuChart = new Chart(ctx2, {
                     type: 'doughnut',
                     data: {
-                        labels: ['커트', '펌', '컬러', '클리닉'], // 🌟 (다운펌) 텍스트 삭제 완료!
+                        labels: ['커트', '펌', '컬러', '클리닉'], 
                         datasets: [{
                             data: donutValues, 
                             backgroundColor: [gradCut, gradPerm, gradColor, gradClinic],
@@ -7210,11 +7209,11 @@ window.mo_hardDeleteStaff = async function(targetName) {
                     },
                     options: {
                         responsive: true, maintainAspectRatio: false,
-                        layout: { padding: { right: 10 } }, // 🌟 우측 범례 잘림 방지 여백
+                        layout: { padding: { right: 10 } }, 
                         plugins: { 
                             legend: { 
                                 position: 'right', 
-                                labels: { color: '#E8E8ED', font: {size: 11, family: 'Pretendard'}, padding: 25, usePointStyle: true, pointStyle: 'circle' } // 패딩 증가
+                                labels: { color: '#E8E8ED', font: {size: 11, family: 'Pretendard'}, padding: 25, usePointStyle: true, pointStyle: 'circle' }
                             } 
                         },
                         cutout: '70%'
@@ -7222,7 +7221,7 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 });
             }
 
-           // 🌟 3. 디자이너 역량 육각형 (Radar Chart) - 인터랙티브 칩 스위치 엔진 탑재!
+          // 🌟 3. 디자이너 역량 육각형 (Radar Chart) - 인터랙티브 칩 스위치 엔진 탑재!
             const canvas3 = document.getElementById('radarChart');
             if(canvas3) {
                 if(window.myRadarChart) { window.myRadarChart.destroy(); window.myRadarChart = null; }
@@ -7397,24 +7396,18 @@ window.mo_hardDeleteStaff = async function(targetName) {
                         plugins: { 
                             legend: { 
                                 position: 'top', 
-                                align: 'end',
+                                align: 'end', // 🌟 범례를 우측으로 살짝 밀어 더 세련되게!
                                 labels: { 
                                     color: '#E8E8ED', font: {family: 'Pretendard', size: 11}, 
                                     usePointStyle: true, pointStyle: 'rectRounded',
-                                    padding: 25 // 🌟 [팀장 픽스] 범례 자체의 패딩을 키워 박스 크기 확보
+                                    padding: 20 // 🌟 글씨와 아래 차트 사이의 여백을 완벽하게 확보
                                 } 
                             },
                             tooltip: { callbacks: { label: (ctx) => `${ctx.dataset.label}: ${ctx.raw.toLocaleString()}만원` } }
                         },
                         scales: {
                             x: { stacked: true, grid: { display: false }, ticks: { color: '#8E8E93', font: {family: 'Pretendard'} } },
-                            y: { 
-                                stacked: true, beginAtZero: true, 
-                                grid: { color: 'rgba(255,255,255,0.05)' }, 
-                                ticks: { color: '#8E8E93', font: {family: 'Pretendard'} },
-                                // 🌟 [팀장 픽스] 막대 차트의 Y축 최대값을 강제로 여유 있게 잡아 차트와 범례 사이 공간을 뻥 뚫어줍니다!
-                                grace: '15%' 
-                            }
+                            y: { stacked: true, beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#8E8E93', font: {family: 'Pretendard'} } }
                         }
                     }
                 });
@@ -7434,22 +7427,22 @@ window.mo_hardDeleteStaff = async function(targetName) {
             let target = window.moRadarStaffData[index];
             let avg = window.moRadarAvgData;
 
-            // 2. 차트 데이터 교체 (평균 vs 터치한 직원 딱 2명만!)
+            // 🌟 [팀장 픽스] 매장 평균은 투명한 흰색/실버로, 내 차트는 밝은 골드로 명도 극대화!
             window.myRadarChart.data.datasets = [
                 {
                     label: '매장 평균',
                     data: [avg.scoreGross, avg.scoreCust, avg.scoreTicket, avg.scoreChem, avg.scoreUpsell],
-                    backgroundColor: 'transparent', // 🌟 내부 색상 완전 투명하게! (탁함 방지)
-                    borderColor: 'rgba(255, 255, 255, 0.4)', // 은은한 화이트 점선
-                    pointBackgroundColor: 'rgba(255, 255, 255, 0.4)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)', 
+                    borderColor: 'rgba(255, 255, 255, 0.3)',
+                    pointBackgroundColor: 'rgba(255, 255, 255, 0.5)',
                     borderWidth: 1.5, borderDash: [4, 4], pointRadius: 2
                 },
                 {
                     label: target.name,
                     data: [target.scoreGross, target.scoreCust, target.scoreTicket, target.scoreChem, target.scoreUpsell],
-                    backgroundColor: 'rgba(212, 175, 55, 0.1)', // 🌟 아주 옅고 맑은 골드로 배경색 정화
-                    borderColor: 'var(--accent-gold)', // 🌟 테두리는 가장 선명한 순금색!
-                    pointBackgroundColor: 'var(--accent-gold)',
+                    backgroundColor: 'rgba(212, 175, 55, 0.4)', // 투명도 0.2 -> 0.4로 올려서 탁한 색 방지!
+                    borderColor: '#E5C05C', // 칙칙한 골드 대신 밝고 영롱한 라이트 골드로 테두리 강조!
+                    pointBackgroundColor: '#E5C05C',
                     borderWidth: 2.5, pointRadius: 4
                 }
             ];
@@ -7460,7 +7453,6 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 summary.innerHTML = `<span style="color:var(--accent-gold); font-weight:800; font-size:14px;">${target.name}</span> 님의 분석 ➔ 이번 달 총매출: <b style="color:#fff;">${target.gross.toLocaleString()}원</b> (객단가: <b style="color:#fff;">${target.ticket.toLocaleString()}원</b>)`;
             }
         };
-
 // ==========================================
         // 🌟 [신규 엔진] 도파민 퀘스트 위젯 & 랭킹 연동 (커스텀 신형 두뇌)
         // ==========================================
@@ -11444,20 +11436,22 @@ window.mo_deleteEduRecord = async function(reqId) {
             listContainer.innerHTML = html;
         };
 
-// 🌪️ [모바일 전용] 3개월(90일) 하드코어 시뮬레이션 풀-가동 엔진
+// 🌪️ [모바일 전용] 3개월(90일) 하드코어 시뮬레이션 풀-가동 엔진 (4인 디자이너)
 let qaClickCount = 0;
 window.triggerQAData = async function() {
     qaClickCount++;
     if (qaClickCount >= 5) {
         qaClickCount = 0; 
         
-        if (!await AlignModal.confirm("🚨 [3개월 시뮬레이션 모드]\n과거 3개월 동안 매장이 돌아간 것과 동일한 90일 치의 방대한 풀-로드(Full-load) 데이터를 생성하시겠습니까?\n(기존 데이터는 모두 덮어씌워집니다.)", "시뮬레이터 가동")) return;
+        if (!await AlignModal.confirm("🚨 [3개월 시뮬레이션 모드 - 4인 체제]\n과거 3개월 동안 4명의 디자이너가 영업한 방대한 90일 치 풀-로드(Full-load) 데이터를 생성하시겠습니까?\n(모든 차트의 색상과 4명의 막대그래프를 확인하실 수 있습니다. 기존 데이터는 덮어씌워집니다.)", "시뮬레이터 가동")) return;
 
-        // 1. 직원 명부 세팅 (디자이너 2명, 파트너 2명)
+        // 🌟 1. 직원 명부 셋업 (디자이너 4명, 파트너 2명)
         const profiles = [
-            { name: '원장', title: 'Director', color: 'linear-gradient(135deg, #D4AF37, #8a7123)', text: '#050507', isHidden: false, personalPw: '0000' },
+            { name: '희웅', title: 'Director', color: 'linear-gradient(135deg, #D4AF37, #8a7123)', text: '#050507', isHidden: false, personalPw: '0000' },
             { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
             { name: '지아', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
+            { name: '은우', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }, // 💡 추가 디자이너
+            { name: '유진', title: 'Junior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }, // 💡 추가 디자이너
             { name: '지훈', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
             { name: '수진', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }
         ];
@@ -11466,7 +11460,7 @@ window.triggerQAData = async function() {
         let salesData = []; let statsData = []; let dailyRecords = []; let quests = [];
         let manito = []; let orders = []; let exps = []; let historyData = [];
 
-        // 🌟 [핵심] 3개월(Month) 반복 루프 가동! (m=2: 두 달 전, m=1: 한 달 전, m=0: 이번 달)
+        // 🌟 2. 3개월(Month) 반복 루프 가동! (m=2: 두 달 전, m=1: 한 달 전, m=0: 이번 달)
         for (let m = 2; m >= 0; m--) {
             let targetDate = new Date();
             targetDate.setMonth(targetDate.getMonth() - m);
@@ -11476,7 +11470,14 @@ window.triggerQAData = async function() {
 
             let monthTotalGross = 0;
 
-            const designers = ['민수', '지아'];
+            // 💡 3. 디자이너 4명의 각기 다른 특성을 가진 영업 데이터 생성
+            const designers = [
+                { name: '민수', type: '올라운더' }, 
+                { name: '지아', type: '컬러마스터' }, 
+                { name: '은우', type: '펌장인' }, 
+                { name: '유진', type: '케어전문' }
+            ];
+
             designers.forEach(designer => {
                 let tRev = 0, tMem = 0, tProd = 0, tCust = 0, tPure = 0, tFan = 0, tNew = 0, tRsv = 0;
                 let tCut = 0, tPermM = 0, tPermF = 0, tColor = 0, tClinic = 0, tDry = 0, tAs = 0, tProdCnt = 0;
@@ -11486,43 +11487,55 @@ window.triggerQAData = async function() {
                     const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
                     if(i % 7 === 0) continue; // 7일에 한 번 휴무
 
-                    // 약간의 성장 곡선을 주입 (최근 달일수록 매출액이 조금 더 높게)
-                    let baseGross = 300000 + ((2 - m) * 50000); 
-                    let dailyGross = Math.floor(Math.random() * 400000) + baseGross; 
+                    // 매출 볼륨 설정
+                    let baseGross = 250000 + ((2 - m) * 50000); 
+                    let dailyGross = Math.floor(Math.random() * 350000) + baseGross; 
                     
-                    let dailyProfit = dailyGross * 0.4;
-                    let dCust = Math.floor(Math.random() * 5) + 5; 
+                    let dCust = Math.floor(Math.random() * 6) + 4; // 하루 4~9명
                     let dPure = dCust;
                     let dFan = Math.floor(dCust * 0.6); 
                     let dNew = dCust - dFan;
                     let dSlots = dCust * 2; 
 
-                    tRev += dailyGross; tMem += (dailyGross * 0.2); tProd += (dailyGross * 0.05);
-                    tCust += dCust; tPure += dPure; tFan += dFan; tNew += dNew; tRsv += (dCust + 1); 
-                    tCut += Math.floor(dCust * 0.5); tPermM += Math.floor(dCust * 0.2); tPermF += Math.floor(dCust * 0.1); 
-                    tColor += Math.floor(dCust * 0.1); tClinic += Math.floor(dCust * 0.1); tProdCnt += 2;
+                    // 💡 [핵심] 디자이너 특성(type)에 따라 4가지 시술 비중을 완전히 다르게 찢어줍니다!
+                    let dCut = 0, dPermM = 0, dPermF = 0, dColor = 0, dClinic = 0;
+                    
+                    if (designer.type === '올라운더') {
+                        dCut = Math.floor(dCust * 0.4); dPermM = Math.floor(dCust * 0.2); dPermF = Math.floor(dCust * 0.1); dColor = Math.floor(dCust * 0.15); dClinic = Math.floor(dCust * 0.15);
+                    } else if (designer.type === '컬러마스터') {
+                        dCut = Math.floor(dCust * 0.2); dPermM = Math.floor(dCust * 0.1); dPermF = 0; dColor = Math.floor(dCust * 0.6); dClinic = Math.floor(dCust * 0.1);
+                    } else if (designer.type === '펌장인') {
+                        dCut = Math.floor(dCust * 0.3); dPermM = Math.floor(dCust * 0.3); dPermF = Math.floor(dCust * 0.3); dColor = 0; dClinic = Math.floor(dCust * 0.1);
+                    } else { // 케어전문
+                        dCut = Math.floor(dCust * 0.2); dPermM = Math.floor(dCust * 0.1); dPermF = Math.floor(dCust * 0.1); dColor = 0; dClinic = Math.floor(dCust * 0.6);
+                    }
 
-                    dailyRecords.push({ date: dateStr, name: designer, revenue: dailyGross, total: dCust, nom: dFan, slots: dSlots, grade: '성장의 불꽃' });
-                    quests.push({ date: dateStr, name: designer, q1: Math.floor(Math.random()*3), q2: Math.floor(Math.random()*2), q3: Math.floor(Math.random()*2), q4: Math.floor(Math.random()*3) });
+                    // 누적 데이터 합산
+                    tRev += dailyGross; tMem += (dailyGross * 0.2); tProd += (dailyGross * 0.08); // 점판 비중 8%로 고정
+                    tCust += dCust; tPure += dPure; tFan += dFan; tNew += dNew; tRsv += (dCust + 1); 
+                    tCut += dCut; tPermM += dPermM; tPermF += dPermF; tColor += dColor; tClinic += dClinic; tProdCnt += Math.floor(Math.random() * 3) + 1; // 하루 1~3개씩 점판 판매
+
+                    dailyRecords.push({ date: dateStr, name: designer.name, revenue: dailyGross, total: dCust, nom: dFan, slots: dSlots, grade: '성장의 불꽃' });
+                    quests.push({ date: dateStr, name: designer.name, q1: Math.floor(Math.random()*3), q2: Math.floor(Math.random()*2), q3: Math.floor(Math.random()*2), q4: Math.floor(Math.random()*3) });
 
                     let targetPartner = Math.random() > 0.5 ? '지훈' : '수진';
                     let kw = ['🧴 빛보다 빠른 샴푸', '🧪 센스있는 약터치', '🧹 깔끔한 셋팅/마감', '⏱️ 칼같은 타임 체크'][Math.floor(Math.random()*4)];
-                    manito.unshift({ date: `${month}/${String(i).padStart(2,'0')} 18:00`, from: designer, to: targetPartner, keyword: kw });
+                    manito.unshift({ date: `${month}/${String(i).padStart(2,'0')} 18:00`, from: designer.name, to: targetPartner, keyword: kw });
                 }
 
                 // 월별 결산 저장
                 monthTotalGross += tRev;
-                salesData.push({ date: `${year}-${month}-${lastDay}`, name: designer, gross: tRev, profit: tRev * 0.4 });
-                statsData.push({ date: `${year}-${month}-${lastDay}`, name: designer, totalRev: tRev, membershipRev: tMem, productRev: tProd, totalCust: tCust, pureCust: tPure, fanCust: tFan, newCust: tNew, totalRsv: tRsv, cut: tCut, permM: tPermM, permF: tPermF, color: tColor, clinic: tClinic, dry: tDry, as: tAs, productCount: tProdCnt, workDays: 25 });
+                salesData.push({ date: `${year}-${month}-${lastDay}`, name: designer.name, gross: tRev, profit: tRev * 0.4 });
+                statsData.push({ date: `${year}-${month}-${lastDay}`, name: designer.name, totalRev: tRev, membershipRev: tMem, productRev: tProd, totalCust: tCust, pureCust: tPure, fanCust: tFan, newCust: tNew, totalRsv: tRsv, cut: tCut, permM: tPermM, permF: tPermF, color: tColor, clinic: tClinic, dry: tDry, as: tAs, productCount: tProdCnt, workDays: 25 });
             });
 
-            // 🌟 과거 달(m=2, m=1)은 History 금고에도 차곡차곡 보관하여 꺾은선 차트가 그려지게 함!
+            // 🌟 과거 달(m=2, m=1)은 History 금고에도 보관하여 꺾은선 차트가 웅장하게 그려지게 함!
             if (m > 0) {
-                historyData.push({ month: `${year}${month}`, totalGross: monthTotalGross, topDesigner: '민수', topGross: monthTotalGross * 0.6, runnerUpDesigner: '지아' });
+                historyData.push({ month: `${year}${month}`, totalGross: monthTotalGross, topDesigner: '민수', topGross: monthTotalGross * 0.3, runnerUpDesigner: '지아' });
             }
         } // 3개월 루프 종료
 
-        // 파트너(지훈, 수진) 성장 및 업무 데이터 세팅 (최근 1달 기준)
+        // 🌟 4. 파트너(지훈, 수진) 성장 및 업무 데이터 세팅 (최근 1달 기준)
         const d = new Date();
         const year = d.getFullYear();
         const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -11536,13 +11549,13 @@ window.triggerQAData = async function() {
             localStorage.setItem('alignPartnerData_' + partner, JSON.stringify(partnerData));
         });
 
-        // 비품 발주 (스와이프 쾌감용 결재 리스트)
+        // 🌟 5. 비품 발주 (결재 센터용)
         for(let i=25; i<=30; i++) {
             orders.push({ id: 'ORD_'+i, user: '지훈', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 11:30`, items: [{category: 'chemical', name: '밀본 마지렐 6레벨', qty: 5}, {category: 'retail', name: '아윤채 컬크림', qty: 3}] });
             exps.push({ id: i, user: '수진', item: '웰라 산화제 9%', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 15:00` });
         }
 
-        // 금고에 최종 적재
+        // 🌟 6. 금고에 최종 적재
         localStorage.setItem('alignSalesData', JSON.stringify(salesData));
         localStorage.setItem('alignMonthlyStats', JSON.stringify(statsData));
         localStorage.setItem('vl_daily_records', JSON.stringify(dailyRecords));
@@ -11552,10 +11565,11 @@ window.triggerQAData = async function() {
         localStorage.setItem('alignExpReports', JSON.stringify(exps));
         localStorage.setItem('alignHistoryData', JSON.stringify(historyData));
 
-        await AlignModal.alert("🚀 [3개월 시뮬레이션 완료]\n총 90일 치의 데이터가 성공적으로 적재되었습니다.\n과거 매출 추이 차트까지 완벽하게 테스트해 보세요!", "풀로드 완성");
+        await AlignModal.alert("🚀 [3개월 시뮬레이션 완료]\n총 4명의 디자이너가 활약한 90일 치의 데이터가 성공적으로 적재되었습니다.\n(컬러, 펌, 클리닉 색상을 모두 확인해 보세요!)", "풀로드 완성");
         location.reload();
     }
 };
+
 
 </script>
 
