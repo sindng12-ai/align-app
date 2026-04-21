@@ -1418,14 +1418,14 @@ input, textarea {
                             <span style="font-family: 'Montserrat', sans-serif; font-size: 10.5px; color: #8E8E93; letter-spacing: 1px;">TOTAL REVENUE</span>
                             <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(142,142,147,0.6); margin-top: 2px;">총 매출</span>
                         </div>
-                        <div style="text-align: right;"><span id="dash-total" style="font-size: 20px; color: #ffffff; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">0</span><span style="font-size: 9px; color: #5C6370; margin-left: 2px;">KRW</span></div>
+                        <div style="text-align: right;"><span id="dash-total" style="font-size: 22px; color: #ffffff; font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">0</span><span style="font-family: 'Pretendard', sans-serif; font-size: 11px; color: #8E8E93; margin-left: 2px;">만 원</span></div>
                     </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
                         <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
                             <span style="font-family: 'Montserrat', sans-serif; font-size: 10.5px; color: var(--accent-gold); letter-spacing: 1px;">AVG TICKET</span>
                             <span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(212,175,55,0.6); margin-top: 2px;">매장 객단가</span>
                         </div>
-                        <div style="text-align: right;"><span id="dash-ticket" style="font-size: 20px; color: var(--accent-gold); font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">0</span><span style="font-size: 9px; color: rgba(212,175,55,0.6); margin-left: 2px;">KRW</span></div>
+                        <div style="text-align: right;"><span id="dash-ticket" style="font-size: 20px; color: var(--accent-gold); font-weight: 600; font-family: 'Montserrat', sans-serif; letter-spacing: -0.5px;">0</span><span style="font-family: 'Pretendard', sans-serif; font-size: 10px; color: rgba(212,175,55,0.8); margin-left: 2px;">원</span></div>
                     </div>
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 18px 15px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between;">
                         <div style="display: flex; flex-direction: column; margin-bottom: 12px;">
@@ -1829,10 +1829,10 @@ input, textarea {
                         <span style="font-size: 14px; font-weight: 700; color: var(--daily-green);">파트너 퀘스트 통합 관리소</span>
                     </div>
                     <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
-                        <input type="text" id="admin-q-title" placeholder="퀘스트 미션 (예: 시술 도구 세팅)" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
+                        <input type="text" id="admin-q-title" placeholder="퀘스트 미션 (예: 시술 도구 세팅)" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
                         <div style="display: flex; gap: 10px;">
-                            <input type="text" id="admin-q-desc" placeholder="서브 설명 (예: 흐름을 읽는 서포트)" style="flex: 2; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
-                            <input type="number" id="admin-q-exp" placeholder="EXP 보상" style="flex: 1; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; text-align: center;">
+                            <input type="text" id="admin-q-desc" placeholder="서브 설명 (예: 흐름을 읽는 서포트)" style="flex: 2; min-width: 0; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; outline: none;">
+                            <input type="number" id="admin-q-exp" placeholder="EXP 보상" style="flex: 1; min-width: 0; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px; text-align: center; outline: none;">
                         </div>
                         <button onclick="m_addQuest()" style="background: var(--daily-green); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(50,215,75,0.2);">+ 새 퀘스트 전 직원 배포</button>
                     </div>
@@ -6915,7 +6915,8 @@ window.mo_hardDeleteStaff = async function(targetName) {
             let styleChange = t_cust > 0 ? Math.round(((t_perm + t_color) / t_cust) * 100) : 0; 
             let hairCare = t_cust > 0 ? Math.round((t_clinic / t_cust) * 100) : 0; 
 
-            document.getElementById('dash-total').innerText = totalGross.toLocaleString();
+            // 🌟 [팀장 픽스] 총매출은 10000으로 나누어 '만 원' 단위로 렌더링, 객단가는 그대로!
+            document.getElementById('dash-total').innerText = Math.floor(totalGross / 10000).toLocaleString();
             document.getElementById('dash-ticket').innerText = avgTicket.toLocaleString();
             document.getElementById('dash-style').innerText = styleChange;
             document.getElementById('dash-care').innerText = hairCare;
