@@ -1664,26 +1664,31 @@ input, textarea {
                     <div id="hr-panel-curriculum" style="display: none; margin-top: 20px; animation: fadeUp 0.3s ease;">
                         <div style="font-size: 14px; font-weight: 700; color: var(--daily-green); margin-bottom: 15px;">스마트 커리큘럼 배포</div>
                         <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px;">
-                            <select id="mo-edu-level" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
-                                <option value="LV.1 (1~3개월)">LV.1 (1~3개월) CS 및 샴푸 테크닉</option>
-                                <option value="LV.2 (4~6개월)">LV.2 (4~6개월) 기초 이론/약제</option>
-                                <option value="LV.3 (7~12개월)">LV.3 (7~12개월) 열펌/드라이</option>
-                                <option value="LV.4 (13~18개월)">LV.4 (13~18개월) 기초 커트</option>
-                                <option value="LV.5 (19~24개월)">LV.5 (19~24개월) 트렌드 디자인</option>
+                            
+                            <select id="mo-edu-level" style="height: 52px; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0 16px; border-radius: 12px; font-size: 14px; outline: none; appearance: none; background-image: url('data:image/svg+xml;utf8,<svg fill=%22%238E8E93%22 height=%2224%22 viewBox=%220 0 24 24%22 width=%2224%22 xmlns=%22http://www.w3.org/2000/svg%22><path d=%22M7 10l5 5 5-5z%22/><path d=%22M0 0h24v24H0z%22 fill=%22none%22/></svg>'); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px; cursor: pointer;">
+                                <option value="LV.1 (1~3개월)">LV.1 (1~3개월)</option>
+                                <option value="LV.2 (4~6개월)">LV.2 (4~6개월)</option>
+                                <option value="LV.3 (7~12개월)">LV.3 (7~12개월)</option>
+                                <option value="LV.4 (13~18개월)">LV.4 (13~18개월)</option>
+                                <option value="LV.5 (19~24개월)">LV.5 (19~24개월)</option>
                             </select>
-                            <input type="text" id="mo-edu-title" placeholder="교육 세션 제목 (예: 숏 레이어드 기초)" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 8px; font-size: 13px;">
-                            <div style="margin-top: 10px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.03);">
-                                <div style="font-size: 11px; color: #8E8E93; margin-bottom: 10px; letter-spacing: 1px; font-weight: 600;">EVALUATION POINTS (평가 지표)</div>
-                                <div id="mo-edu-points-container">
-                                    <div class="edu-check-input-group">
-                                        <input type="text" class="mo-edu-point-input" placeholder="평가 항목 1" style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
+                            
+                            <input type="text" id="mo-edu-title" placeholder="교육 세션 제목 (예: 숏 레이어드 기초)" style="height: 52px; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 0 16px; border-radius: 12px; font-size: 14px; outline: none; transition: 0.2s;" onfocus="this.style.borderColor='var(--daily-green)'" onblur="this.style.borderColor='rgba(255,255,255,0.1)'">
+                            
+                            <div style="margin-top: 10px; background: rgba(0,0,0,0.2); padding: 18px 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.03);">
+                                <div style="font-size: 11px; color: #8E8E93; margin-bottom: 12px; letter-spacing: 1px; font-weight: 600;">EVALUATION POINTS (평가 지표)</div>
+                                <div id="mo-edu-points-container" style="display: flex; flex-direction: column; gap: 8px;">
+                                    
+                                    <div class="edu-check-input-group" style="margin: 0;">
+                                        <input type="text" class="mo-edu-point-input" placeholder="평가 항목 1" style="height: 44px; box-sizing: border-box; flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #fff; padding: 0 14px; border-radius: 8px; font-size: 13px; outline: none;">
                                     </div>
                                 </div>
-                                <div style="text-align: center; margin-top: 10px;">
-                                    <button class="btn-add-point" style="background: rgba(50, 215, 75, 0.1) !important; border: 1px dashed var(--daily-green) !important; color: var(--daily-green) !important;" onclick="mo_addEduPointRow()">+ 평가 지표 추가</button>
+                                <div style="text-align: center; margin-top: 12px;">
+                                    <button class="btn-add-point" style="background: rgba(50, 215, 75, 0.1) !important; border: 1px dashed rgba(50,215,75,0.4) !important; color: var(--daily-green) !important; margin: 0 !important; padding: 12px !important; border-radius: 8px; font-size: 12px !important; font-weight: 700; transition: 0.2s;" onmousedown="this.style.background='rgba(50,215,75,0.2)'" onmouseup="this.style.background='rgba(50,215,75,0.1)'" onclick="mo_addEduPointRow()">+ 평가 지표 추가</button>
                                 </div>
                             </div>
-                            <button onclick="mo_addEduManual()" style="background: transparent; border: 1px solid rgba(50, 215, 75, 0.5); color: var(--daily-green); padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; margin-top: 5px; transition: 0.2s;" onmousedown="this.style.background='rgba(50, 215, 75, 0.1)'" onmouseup="this.style.background='transparent'">커리큘럼 및 평가 양식 배포</button>
+                            
+                            <button onclick="mo_addEduManual()" style="background: rgba(50, 215, 75, 0.1); border: 1px solid rgba(50, 215, 75, 0.4); color: var(--daily-green); padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 14px; margin-top: 5px; transition: 0.2s; box-shadow: 0 4px 15px rgba(50,215,75,0.1);" onmousedown="this.style.background='rgba(50, 215, 75, 0.2)'" onmouseup="this.style.background='rgba(50, 215, 75, 0.1)'">커리큘럼 및 평가 양식 배포</button>
                         </div>
 
                         <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">전체 커리큘럼 리스트</div>
@@ -8840,14 +8845,19 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         // 🌟 교육 아카이브 (커리큘럼) 시스템 엔진 V2.5
         // ==========================================
         
-        // 🌟 [신규] 평가 항목 입력줄을 동적으로 늘려주는 엔진
+        // 🌟 평가 항목 입력줄을 동적으로 늘려주는 엔진 (디자인 핏업 적용)
         window.mo_addEduPointRow = function() {
             const container = document.getElementById('mo-edu-points-container');
             const div = document.createElement('div');
             div.className = 'edu-check-input-group';
+            div.style.margin = '0'; // 쓸데없는 외부 여백 차단
+            
+            // 🌟 [팀장 픽스] 텍스트 X 대신 깔끔한 SVG 아이콘 적용 및 44px 듀얼 핏업!
             div.innerHTML = `
-                <input type="text" class="mo-edu-point-input" placeholder="추가 평가 항목" style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); color: #fff; padding: 10px; border-radius: 6px; font-size: 12px;">
-                <button class="edu-point-del-btn" onclick="this.parentElement.remove()" style="margin-left:5px;">×</button>
+                <input type="text" class="mo-edu-point-input" placeholder="추가 평가 항목" style="height: 44px; box-sizing: border-box; flex: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #fff; padding: 0 14px; border-radius: 8px; font-size: 13px; outline: none;">
+                <button class="edu-point-del-btn" onclick="this.parentElement.remove()" style="height: 44px; width: 44px; margin-left: 6px; background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmousedown="this.style.background='rgba(255,69,58,0.2)'" onmouseup="this.style.background='rgba(255,69,58,0.1)'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
             `;
             container.appendChild(div);
         };
@@ -11556,6 +11566,18 @@ window.mo_addEduManual = async function() {
     
     if(typeof mo_renderEduAll === 'function') mo_renderEduAll();
     if(typeof app !== 'undefined' && app.toast) app.toast(`교육 평가 양식이 배포되었습니다! 📖`);
+};
+
+// 🌟 [누락 복구] 커리큘럼 마스터 삭제 엔진
+window.mo_deleteEduManual = async function(manualId) {
+    if(!await AlignModal.confirm("[커리큘럼 삭제]\n이 교육 과정을 전체 리스트에서 삭제하시겠습니까?\n\n(※ 이미 이 과정을 수료했거나 심사 대기 중인 파트너의 기록은 안전하게 보존됩니다.)", "과정 삭제")) return;
+
+    let manuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
+    manuals = manuals.filter(m => m.id !== manualId);
+    localStorage.setItem('alignEduManuals', JSON.stringify(manuals));
+
+    mo_renderEduAll(); // 리스트 즉시 새로고침
+    if(typeof app !== 'undefined' && app.toast) app.toast("해당 커리큘럼이 삭제되었습니다.");
 };
 
 // 🌟 [개조 완료] 교육 기록 삭제 (팝업 텍스트 다이어트)
