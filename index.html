@@ -1653,11 +1653,7 @@ input, textarea {
                                 <button onclick="mo_hardDeleteStaff(window.currentCtrlUser)" style="flex: 1; background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--error); padding: 16px; border-radius: 12px; font-weight: 700; font-size: 13px; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">완전 폐기</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="align-panel" style="margin-bottom: 0;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('hr-panel-curriculum'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                    </div> <div class="align-panel" style="margin-bottom: 0;"> <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('hr-panel-curriculum'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
                         <span style="font-size: 15px; font-weight: 800; color: #fff;">아카데미 커리큘럼 설계</span>
                         <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
                     </div>
@@ -1702,10 +1698,7 @@ input, textarea {
                         </div>
                         <div id="mo-edu-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;"></div>
                     </div>
-                </div>
-            </div>
-
-            <div id="mo-page-oper" class="mo-page">
+                </div> </div> <div id="mo-page-oper" class="mo-page">
                 
                 <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;">
                     <div class="align-panel-red" style="margin-bottom: 0;">
@@ -11345,7 +11338,7 @@ window.mo_resetStaffPassword = async function() {
 };
 
 window.mo_resetStaffData = async function() {
-    if(!await AlignModal.confirm(`[데이터 리셋] ${window.currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제하시겠습니까?\n(이름표와 비밀번호는 유지됩니다.)`, "개인 실적 초기화")) return;
+    if(!await AlignModal.confirm(`${window.currentCtrlUser} 님의 '이번 달' 실적 데이터만 삭제하시겠습니까?\n(이름표와 비밀번호는 유지됩니다.)`, "개인 실적 초기화")) return;
     
     const today = new Date();
     const currentMonth = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
@@ -11362,7 +11355,7 @@ window.mo_resetStaffData = async function() {
 
 // 🌟 [최종 퇴사 엔진] 과거 데이터 보존형 소프트 삭제 (알람 요약 적용)
 window.mo_terminateStaff = async function() {
-    if(!await AlignModal.confirm(`[퇴사/숨김 처리] ${window.currentCtrlUser} 님을 퇴사 처리하시겠습니까?\n즉시 접속 권한이 차단되며, 과거 통계 데이터는 매장 자산으로 보존됩니다.`, "퇴사 처리")) return;
+    if(!await AlignModal.confirm(`${window.currentCtrlUser} 님을 퇴사 처리하시겠습니까?\n즉시 접속 권한이 차단되며, 과거 통계 데이터는 매장 자산으로 보존됩니다.`, "퇴사 처리")) return;
 
     const targetName = window.currentCtrlUser;
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
@@ -11387,7 +11380,7 @@ window.mo_terminateStaff = async function() {
 
 // 🌟 [계정 복구 엔진] 누락된 복구 기능 부활 및 알람 요약
 window.mo_restoreStaff = async function(name) {
-    if(!await AlignModal.confirm(`[계정 복구] ${name} 님의 계정을 재활성화하시겠습니까?\n과거 데이터와 함께 로그인 명부에 복구됩니다.`, "계정 복구")) return;
+    if(!await AlignModal.confirm(`${name} 님의 계정을 재활성화하시겠습니까?\n과거 데이터와 함께 로그인 명부에 복구됩니다.`, "계정 복구")) return;
     
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
     let idx = profiles.findIndex(p => p.name === name);
@@ -11408,7 +11401,7 @@ window.mo_restoreStaff = async function(name) {
 
 // 🌟 [스마트 파쇄기] 매장 매출 통계는 남기고 개인 명부/비번만 찢어버리는 완전 폐기 엔진
 window.mo_hardDeleteStaff = async function(targetName) {
-    if(!await AlignModal.confirm(`[영구 폐기] ${targetName} 님의 계정을 완전히 폐기하시겠습니까?\n\n개인 설정이 영구 삭제되며 복구할 수 없습니다.\n(이미 합산된 과거 실적 통계는 유지됩니다.)`, "완전 폐기")) return;
+    if(!await AlignModal.confirm(`${targetName} 님의 계정을 완전히 폐기하시겠습니까?\n\n개인 설정이 영구 삭제되며 복구할 수 없습니다.\n(이미 합산된 과거 실적 통계는 유지됩니다.)`, "완전 폐기")) return;
 
     let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
     profiles = profiles.filter(p => p.name !== targetName);
@@ -11431,7 +11424,7 @@ window.mo_hardDeleteStaff = async function(targetName) {
 
 window.mo_resetPartner = async function(type) {
     if (type === 'format') {
-        if(await AlignModal.confirm(`⚠️ [포맷 경고]\n정말 ${window.currentCtrlUser}님의 데이터를 LV.1로 초기화하시겠습니까?\n(경험치, 레벨, 이번 달 퀘스트 달성률이 모두 0으로 바뀝니다.)`, "데이터 클린 포맷")) {
+        if(await AlignModal.confirm(`\n정말 ${window.currentCtrlUser}님의 데이터를 LV.1로 초기화하시겠습니까?\n(경험치, 레벨, 이번 달 퀘스트 달성률이 모두 0으로 바뀝니다.)`, "데이터 클린 포맷")) {
             const pKey = 'alignPartnerData_' + window.currentCtrlUser;
             const resetData = { exp: 0, level: 1, todayQuests: {}, lastDate: '' };
             localStorage.setItem(pKey, JSON.stringify(resetData));
@@ -11443,10 +11436,10 @@ window.mo_resetPartner = async function(type) {
             mo_refreshCtrlStatus(); 
             if(typeof m_renderPartnerRadar === 'function') m_renderPartnerRadar();
             if(typeof mo_renderQuestRanking === 'function') mo_renderQuestRanking(); 
-            await AlignModal.alert("🔄 모든 데이터가 0으로 클린 포맷되었습니다.", "포맷 완료");
+            await AlignModal.alert("모든 데이터가 0으로 클린 포맷되었습니다.", "포맷 완료");
         }
     } else if (type === 'delete') {
-        if(await AlignModal.confirm(`☠️ [경고]\n정말 ${window.currentCtrlUser}님을 완전히 삭제하시겠습니까? (퇴사 시 사용)`, "계정 영구 삭제")) {
+        if(await AlignModal.confirm(`[경고]\n정말 ${window.currentCtrlUser}님을 완전히 삭제하시겠습니까? (퇴사 시 사용)`, "계정 영구 삭제")) {
             localStorage.removeItem('alignPartnerData_' + window.currentCtrlUser);
             let allEduReqs = JSON.parse(localStorage.getItem('alignEduRequests') || '[]');
             let filteredEduReqs = allEduReqs.filter(r => r.userName !== window.currentCtrlUser);
@@ -11471,7 +11464,7 @@ window.mo_resetPartner = async function(type) {
             if(typeof mo_renderStaffGrid === 'function') mo_renderStaffGrid(); 
             if(typeof renderProfiles === 'function') renderProfiles();
             
-            await AlignModal.alert(`☠️ ${window.currentCtrlUser}님의 모든 데이터와 명부가 영구 삭제되었습니다.`, "삭제 완료");
+            await AlignModal.alert(`${window.currentCtrlUser}님의 모든 데이터와 명부가 영구 삭제되었습니다.`, "삭제 완료");
         }
     }
 };
@@ -11497,7 +11490,7 @@ window.m_deleteQuest = async function(id) {
 };
 
 window.mo_deleteStockItem = async function(itemId) {
-    if(await AlignModal.confirm("🚨 이 재고 항목을 리스트에서 완전히 삭제하시겠습니까?", "마스터 항목 삭제")) {
+    if(await AlignModal.confirm("이 재고 항목을 리스트에서 완전히 삭제하시겠습니까?", "마스터 항목 삭제")) {
         let master = JSON.parse(localStorage.getItem('alignStockMaster')) || [];
         master = master.filter(item => String(item.id) !== String(itemId));
         localStorage.setItem('alignStockMaster', JSON.stringify(master));
@@ -11523,7 +11516,7 @@ window.mo_addStockMaster = async function() {
 
     if(!name) { AlignModal.alert("제품명을 입력해주세요!", "입력 오류"); return; }
     if(cat === 'retail' && (cost === 0 || price === 0)) {
-        if(!await AlignModal.confirm("💡 점판 제품인데 가격이 0원입니다. 그대로 등록할까요?", "확인")) return;
+        if(!await AlignModal.confirm("점판 제품인데 가격이 0원입니다. 그대로 등록할까요?", "확인")) return;
     }
 
     let master = JSON.parse(localStorage.getItem('alignStockMaster')) || [];
@@ -11536,7 +11529,7 @@ window.mo_addStockMaster = async function() {
     
     mo_renderStockMaster(); 
     mo_renderStockStatus(); 
-    if(typeof app !== 'undefined' && app.toast) app.toast("마스터 리스트에 가격 정보가 포함되었습니다! 📦");
+    if(typeof app !== 'undefined' && app.toast) app.toast("마스터 리스트에 가격 정보가 포함되었습니다!");
 };
 
 window.mo_addEduManual = async function() {
@@ -11568,12 +11561,12 @@ window.mo_addEduManual = async function() {
     `;
     
     if(typeof mo_renderEduAll === 'function') mo_renderEduAll();
-    if(typeof app !== 'undefined' && app.toast) app.toast(`교육 평가 양식이 배포되었습니다! 📖`);
+    if(typeof app !== 'undefined' && app.toast) app.toast(`교육 평가 양식이 배포되었습니다!`);
 };
 
 // 🌟 [누락 복구] 커리큘럼 마스터 삭제 엔진
 window.mo_deleteEduManual = async function(manualId) {
-    if(!await AlignModal.confirm("[커리큘럼 삭제]\n이 교육 과정을 전체 리스트에서 삭제하시겠습니까?\n\n(※ 이미 이 과정을 수료했거나 심사 대기 중인 파트너의 기록은 안전하게 보존됩니다.)", "과정 삭제")) return;
+    if(!await AlignModal.confirm("\n이 교육 과정을 전체 리스트에서 삭제하시겠습니까?\n\n(※ 이미 이 과정을 수료했거나 심사 대기 중인 파트너의 기록은 안전하게 보존됩니다.)", "과정 삭제")) return;
 
     let manuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
     manuals = manuals.filter(m => m.id !== manualId);
