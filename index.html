@@ -1495,19 +1495,21 @@ input, textarea {
                         <div class="align-panel-gold">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                                 <span style="font-size: 14px; font-weight: 800; color: var(--accent-gold);">월간 퀘스트 통합 랭킹</span>
-                                <button onclick="mo_renderQuestRanking();" style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;">새로고침</button>
+                                <button onclick="mo_renderQuestRanking(); if(typeof app !== 'undefined') app.toast('랭킹 데이터가 최신화되었습니다.');" 
+                                        style="background: transparent; border: 1px solid rgba(212,175,55,0.5); color: var(--accent-gold); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;"
+                                        onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
                             </div>
                             
                             <div style="margin-bottom: 20px;">
                                 <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                                    <span style="background: rgba(212, 175, 55, 0.1); color: var(--accent-gold); padding: 4px 6px; border-radius: 4px; font-size: 10px;">PRO</span> 디자이너 리그 (업셀링/리뷰)
+                                    <span style="background: rgba(212, 175, 55, 0.1); color: var(--accent-gold); padding: 4px 6px; border-radius: 4px; font-size: 10px;">PRO</span> 디자이너 리그
                                 </div>
                                 <div id="mo-quest-ranking-designer" style="display: flex; flex-direction: column; gap: 6px;"></div>
                             </div>
 
                             <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;">
                                 <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
-                                    <span style="background: rgba(50, 215, 75, 0.1); color: var(--daily-green); padding: 4px 6px; border-radius: 4px; font-size: 10px;">JUNIOR</span> 파트너 리그 (실천/연습)
+                                    <span style="background: rgba(50, 215, 75, 0.1); color: var(--daily-green); padding: 4px 6px; border-radius: 4px; font-size: 10px;">JUNIOR</span> 파트너 리그
                                 </div>
                                 <div id="mo-quest-ranking-partner" style="display: flex; flex-direction: column; gap: 6px;"></div>
                             </div>
@@ -1515,7 +1517,9 @@ input, textarea {
                         <div class="align-panel" style="margin-bottom: 0;">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                                 <div style="font-size: 14px; font-weight: 700; color: var(--accent-gold);">베스트 서포터 모니터링</div>
-                                <button onclick="mo_renderManitoLog();" style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #8E8E93; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer;">새로고침</button>
+                                <button onclick="mo_renderManitoLog(); if(typeof app !== 'undefined') app.toast('칭찬 장부가 최신화되었습니다.');" 
+                                        style="background: transparent; border: 1px solid rgba(255,255,255,0.15); color: #8E8E93; padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;"
+                                        onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">새로고침</button>
                             </div>
                             <div id="mo-manito-log-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
                         </div>
@@ -9580,15 +9584,12 @@ window.mo_renderQuestRanking = function() {
     const buildHtml = (mapData, isPartner) => {
         let arr = Object.keys(mapData).map(name => {
             let pInfo = profiles.find(p => p.name === name);
-            if(!pInfo || pInfo.isHidden) return null; // 🚨 퇴사자 필터링
-            
+            if(!pInfo || pInfo.isHidden) return null; 
             let isP = pInfo.title.toUpperCase().includes('PARTNER') || pInfo.title.includes('파트너') || pInfo.title.includes('인턴');
-            if(isPartner !== isP) return null; // 🚨 직군 엇갈리면 컷! (디자이너 탭엔 디자이너만)
-            
+            if(isPartner !== isP) return null; 
             return { name: name, title: pInfo.title, count: mapData[name] };
         }).filter(r => r !== null);
 
-        // 점수 높은 순으로 1열 종대!
         arr.sort((a, b) => b.count - a.count);
 
         if(arr.length === 0) {
@@ -9596,29 +9597,35 @@ window.mo_renderQuestRanking = function() {
         }
 
         return arr.map((r, idx) => {
-            // 🌟 [팀장 픽스] 촌스러운 메달 이모지 싹 버리고 시크한 텍스트로 교체!
             let rankTrophy = idx === 0 ? '1위' : (idx === 1 ? '2위' : (idx === 2 ? '3위' : `${idx+1}위`));
             let themeColor = isPartner ? 'var(--daily-green)' : 'var(--accent-gold)';
             let themeBg = isPartner ? 'rgba(50, 215, 75, 0.05)' : 'rgba(212, 175, 55, 0.05)';
             let themeBorder = isPartner ? 'rgba(50, 215, 75, 0.2)' : 'rgba(212, 175, 55, 0.2)';
             
-            // 1등만 영광의 후광(테마 컬러 박스) 부여
+            // 🌟 [팀장 픽스] 1등만 테마 박스, 2~3등은 일반, 4등부터는 초슬림 박스로 3단 차등화!
             let boxStyle = idx === 0 ? `background: ${themeBg}; border: 1px solid ${themeBorder};` : 'background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);';
+            let paddingStyle = idx < 3 ? '12px 15px' : '8px 15px'; // 4등부터 위아래 여백 축소
+            let nameColor = idx === 0 ? '#fff' : (idx < 3 ? '#E8E8ED' : '#A0AAB5'); // 4등부터 이름도 약간 흐릿하게
+            let numColor = idx === 0 ? themeColor : (idx < 3 ? '#E8E8ED' : '#8E8E93'); // 건수 색상 차등
 
             return `
-            <div style="${boxStyle} padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <div style="${boxStyle} padding: ${paddingStyle}; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-shrink: 0;">
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="font-size: 13px; font-weight: 800; color: ${idx === 0 ? themeColor : '#8E8E93'}; width: 45px;">${rankTrophy}</div>
-                    <div style="font-size: 13px; font-weight: 600; color: #fff;">${r.name} <span style="font-size: 10px; color: #8E8E93; font-weight: 400; margin-left: 4px;">${r.title}</span></div>
+                    <div style="font-size: 13px; font-weight: 800; color: ${idx === 0 ? themeColor : '#8E8E93'}; width: 35px;">${rankTrophy}</div>
+                    <div style="font-size: 13px; font-weight: 600; color: ${nameColor};">${r.name} <span style="font-size: 10px; color: #8E8E93; font-weight: 400; margin-left: 4px;">${r.title}</span></div>
                 </div>
-                <div style="font-size: 15px; font-weight: 800; color: ${idx === 0 ? themeColor : '#E8E8ED'};">${r.count} <span style="font-size: 10px; font-weight: 400; color: #5C6370;">건</span></div>
+                <div style="font-size: 14px; font-weight: 800; color: ${numColor};">${r.count} <span style="font-size: 10px; font-weight: 400; color: #5C6370;">건</span></div>
             </div>`;
         }).join('');
     };
 
     // 3. 각각의 구역에 렌더링 결과물 투척!
-    dListEl.innerHTML = buildHtml(dMap, false); // 디자이너 렌더링
-    pListEl.innerHTML = buildHtml(pMap, true);  // 파트너 렌더링
+    dListEl.innerHTML = buildHtml(dMap, false);
+    pListEl.innerHTML = buildHtml(pMap, true);
+    
+    // 🌟 [팀장 픽스] 인원이 100명이어도 화면이 터지지 않도록 내부 스크롤 방어막 구축!
+    dListEl.style.maxHeight = '180px'; dListEl.style.overflowY = 'auto'; dListEl.style.paddingRight = '5px';
+    pListEl.style.maxHeight = '180px'; pListEl.style.overflowY = 'auto'; pListEl.style.paddingRight = '5px';
 };
 
         window.mo_modifyExp = function(isAdd) {
