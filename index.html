@@ -1700,7 +1700,7 @@ input, textarea {
                             <button onclick="mo_setEduFilter('LV.4')" class="mo-edu-filter-btn" data-level="LV.4" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.4</button>
                             <button onclick="mo_setEduFilter('LV.5')" class="mo-edu-filter-btn" data-level="LV.5" style="background: rgba(255,255,255,0.03); color: #8E8E93; border: 1px solid rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap;">LV.5</button>
                         </div>
-                        <div id="mo-edu-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 350px; overflow-y: auto; padding-right: 5px;"></div>
+                        <div id="mo-edu-master-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 240px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;"></div>
                     </div>
                 </div>
             </div>
@@ -8888,13 +8888,16 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
 
             if(mList) {
                 mList.innerHTML = manuals.length === 0 ? `<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">해당 레벨의 커리큘럼이 없습니다.</div>` 
-                : manuals.map(m => `<div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 8px; font-size: 13px; color: #E8E8ED; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="background: rgba(50,215,75,0.1); color: var(--daily-green); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;">${m.level.split(' ')[0]}</span> 
-                        <span style="font-weight: 600;">${m.title}</span> 
-                        <span style="font-size:10px; color:#8E8E93; font-family:'Montserrat', sans-serif;">(+${m.exp || 100} EXP)</span>
+                : manuals.map(m => `
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; margin-right: 15px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="background: rgba(50,215,75,0.1); color: var(--daily-green); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 800;">${m.level.split(' ')[0]}</span> 
+                            <span style="font-size: 10.5px; color: #8E8E93; font-family:'Montserrat', sans-serif; font-weight: 600;">+${m.exp || 100} EXP</span>
+                        </div>
+                        <div style="font-size: 13.5px; font-weight: 600; color: #E8E8ED; line-height: 1.4; word-break: keep-all;">${m.title}</div>
                     </div>
-                    <button onclick="mo_deleteEduManual(${m.id})" style="background: transparent; border: 1px solid rgba(255,69,58,0.3); color: var(--error); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(255,69,58,0.1)'" onmouseout="this.style.background='transparent'" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">삭제</button>
+                    <button onclick="mo_deleteEduManual(${m.id})" style="flex-shrink: 0; background: rgba(255,69,58,0.05); border: 1px solid rgba(255,69,58,0.2); color: var(--error); padding: 10px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(255,69,58,0.15)'" onmouseup="this.style.background='rgba(255,69,58,0.05)'">삭제</button>
                 </div>`).join('');
             }
 
