@@ -1522,7 +1522,7 @@ input, textarea {
                 </div>
 
             </div> <div id="mo-page-hr" class="mo-page">
-                <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;">
+                <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px;">
                     <div class="align-panel-red" style="margin-bottom: 0;">
                         <div style="font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 15px;">👑 승급 심사 대기열</div>
                         <div id="mo-level-up-queue" style="display: flex; flex-direction: column; gap: 8px;"></div>
@@ -8898,15 +8898,16 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             const aList = document.getElementById('mo-edu-approval-list');
             let requests = JSON.parse(localStorage.getItem('alignEduRequests')) || [];
             let pending = requests.filter(r => r.status === 'pending');
-            // 📍 [V2.5 업그레이드형 승인 대기열]
+            
             if(aList) {
-                aList.innerHTML = pending.length === 0 ? '<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">대기 중인 승인 요청이 없습니다.</div>'
+                aList.innerHTML = pending.length === 0 ? '<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 10px 0;">대기 중인 승인 요청이 없습니다.</div>'
                 : pending.map(r => `
-                <div style="background: rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-size: 12px; color: #fff;">
-                        <span style="color:var(--daily-green); font-weight:700;">${r.userName}</span> 님이 <span style="color:var(--accent-gold); font-weight:600;">${r.title}</span> 심사를 요청했습니다.
+                <div style="background: rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 8px;">
+                    <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1;">
+                        <div style="font-size: 13px; font-weight: 700; color: var(--daily-green);">${r.userName} <span style="font-size: 11px; color: #8E8E93; font-weight: 500;">님의 승인 요청</span></div>
+                        <div style="font-size: 12px; color: #E8E8ED; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${r.title}</div>
                     </div>
-                    <button onclick="mo_openAuditModal(${r.id})" style="background: var(--accent-gold); color: #000; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">심사하기</button>
+                    <button onclick="mo_openAuditModal(${r.id})" style="background: var(--accent-gold); color: #000; border: none; padding: 10px 14px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; white-space: nowrap; flex-shrink: 0; box-shadow: 0 4px 10px rgba(212,175,55,0.2);" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">심사하기</button>
                 </div>`).join('');
             }
             
@@ -9114,12 +9115,12 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             mo_renderEduAll(); 
             if(typeof app !== 'undefined' && app.toast) app.toast(`${request.userName}님 합격 처리 및 PDF 발행 완료! 📄`);
         };
-// 🌟 [V2.8 통합 완결판] 리포트 엔진 (유리 글래스 UI 유지 + 데이터 방어 및 오타 교정)
+// 🌟 [V2.8 통합 완결판] 리포트 엔진 (하이엔드 매거진 핏 + 동적 워터마크)
         window.mo_generateEduReport = function(req, masterMsg) {
             const manuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
             const mInfo = manuals.find(m => m.id === req.manualId) || {};
             const brandName = JSON.parse(localStorage.getItem('alignSystemSettings'))?.brandName || 'ALIGN';
-            const ceoName = JSON.parse(localStorage.getItem('alignSystemSettings'))?.ceoName || '희웅';
+            const ceoName = JSON.parse(localStorage.getItem('alignSystemSettings'))?.ceoName || '대표 원장';
 
             // 🛡️ [데이터 방어] undefined 유령 글자 및 공백 완벽 방어 엔진
             const safeSelfFeedback = (req.selfFeedback && req.selfFeedback !== 'undefined') ? req.selfFeedback : "기록된 셀프 피드백이 없습니다.";
@@ -9128,35 +9129,43 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
 
             const reportContent = `
                 <div class="a4-page">
+                    <div class="watermark">${brandName}</div>
+                    
                     <div class="report-header">
-                        <h1 class="main-title">교 육 평 가 서</h1>
-                        <p class="sub-title">OFFICIAL EDUCATION REPORT</p>
+                        <h1 class="main-title">OFFICIAL EDUCATION REPORT</h1>
+                        <p class="sub-title">교육 이수 평가서</p>
                     </div>
                     
                     <table class="info-table">
-                        <tr><th>교 육 과 정</th><td class="bold-text">${req.title}</td></tr>
+                        <tr><th>교육 과정</th><td class="bold-text">${req.title}</td></tr>
                         <tr><th>이 수 자</th><td>${req.userName} 파트너</td></tr>
-                        <tr><th>평 가 일 자</th><td>${new Date().toLocaleDateString()}</td></tr>
+                        <tr><th>평가 일자</th><td>${new Date().toLocaleDateString('ko-KR')}</td></tr>
                     </table>
 
                     <div class="section-title">1. 마스터 체크리스트 심사 결과</div>
                     <div class="checklist-grid">
                         ${(mInfo.checklist || []).map(item => `
                             <div class="check-item">
-                                <span class="check-mark">✓</span>
+                                <span class="check-mark">✔</span>
                                 <span class="check-text">${item}</span>
                             </div>`).join('')}
                     </div>
 
                     <div class="section-title">2. 파트너 셀프 피드백</div>
-                    <div class="feedback-box self">${safeSelfFeedback}</div>
+                    <div class="feedback-box self">
+                        <span class="quote-mark">“</span>
+                        ${safeSelfFeedback}
+                    </div>
 
                     <div class="section-title">3. 마스터 브리핑 (지도 의견)</div>
-                    <div class="feedback-box master">${safeMasterFeedback}</div>
+                    <div class="feedback-box master">
+                        <span class="quote-mark" style="color: #D4AF37;">“</span>
+                        ${safeMasterFeedback}
+                    </div>
 
                     <div class="signature-zone">
                         <p class="brand-name">${brandName} ACADEMY</p>
-                        <p class="ceo-name">${safeEducator} (인)</p>
+                        <p class="ceo-name">${safeEducator} <span style="font-size:14px; font-style:normal;">(Sign)</span></p>
                         <p class="footer-note">This document is an official record issued by the ${brandName} Archive System.</p>
                     </div>
                 </div>
@@ -9168,9 +9177,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                 <head>
                     <title>${req.userName}_평가서</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-                    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+                    <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;1,800&display=swap" rel="stylesheet">
                     <style>
-                        /* 💎 [유리 글래스 UI] 복원 완료 */
+                        /* 💎 [유리 글래스 UI] */
                         .ui-bar { 
                             position: sticky; top: 0; z-index: 100; padding: 12px; display: flex; justify-content: center; gap: 12px;
                             background: rgba(255, 255, 255, 0.1); 
@@ -9184,55 +9193,64 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                             font-weight: 700; cursor: pointer; font-size: 13px; 
                             font-family: 'Montserrat', sans-serif; transition: 0.3s;
                         }
-                        .btn-print { 
-                            background: rgba(212, 175, 55, 0.1); 
-                            color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.2); 
-                        }
-                        .btn-close { 
-                            background: rgba(255, 255, 255, 0.05); color: #fff; 
-                            border: 1px solid rgba(255, 255, 255, 0.1); 
-                        }
+                        .btn-print { background: rgba(212, 175, 55, 0.1); color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.2); }
+                        .btn-close { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); }
 
-                        /* 📄 [A4 규격] 중앙 고정 */
+                        /* 📄 [A4 규격 및 럭셔리 매거진 핏] */
                         body { background: #525659; margin: 0; padding: 0; -webkit-print-color-adjust: exact; }
                         .a4-page { 
+                            position: relative; overflow: hidden;
                             background: #fff; width: 210mm; min-height: 297mm; 
-                            margin: 20px auto; padding: 25mm 20mm; box-sizing: border-box; 
-                            box-shadow: 0 0 20px rgba(0,0,0,0.5); font-family: 'Nanum Myeongjo', serif; color: #000; 
+                            margin: 20px auto; padding: 30mm 25mm; box-sizing: border-box; 
+                            box-shadow: 0 0 20px rgba(0,0,0,0.5); font-family: 'Nanum Myeongjo', serif; color: #1a1a1a; 
+                        }
+                        
+                        /* 워터마크 중앙 정렬 */
+                        .watermark {
+                            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
+                            font-size: 140px; font-weight: 800; color: rgba(0,0,0,0.03); z-index: 0; 
+                            white-space: nowrap; font-family: 'Montserrat', sans-serif; pointer-events: none;
                         }
 
-                        .report-header { text-align: center; border: 4px double #000; padding: 15px; margin-bottom: 30px; }
-                        .main-title { font-size: 26px; margin: 0; letter-spacing: 8px; font-weight: 800; }
-                        .sub-title { font-size: 11px; color: #666; margin: 5px 0 0 0; font-family: 'Montserrat'; letter-spacing: 2px; }
+                        .report-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 1; }
+                        .main-title { font-size: 24px; margin: 0; letter-spacing: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; }
+                        .sub-title { font-size: 14px; color: #888; margin: 10px 0 0 0; letter-spacing: 6px; }
 
-                        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px; }
-                        .info-table th { border: 1px solid #000; padding: 8px; background: #f8f9fa; text-align: center; white-space: nowrap; width: 80px; }
-                        .info-table td { border: 1px solid #000; padding: 8px; text-align: left; }
-                        .bold-text { font-weight: 800; font-size: 14px; }
+                        /* 표 껍데기 벗기기 (상하 실선만 유지) */
+                        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 13px; border-top: 2px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; position: relative; z-index: 1; }
+                        .info-table th, .info-table td { padding: 14px 10px; border-bottom: 1px solid #f1f1f1; text-align: left; }
+                        .info-table th { width: 100px; color: #666; font-weight: 700; letter-spacing: 2px; }
+                        .bold-text { font-weight: 800; font-size: 15px; color: #000; }
 
-                        .section-title { border-left: 5px solid #000; padding-left: 10px; margin: 25px 0 10px 0; font-size: 15px; font-weight: 800; }
+                        .section-title { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #333; margin: 30px 0 15px 0; letter-spacing: 1px; position: relative; z-index: 1; }
                         
-                        /* 📋 [가독성 해결] 체크리스트 레이아웃 */
-                        .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 15px; padding-left: 5px; margin-bottom: 20px; }
-                        .check-item { display: flex; align-items: flex-start; gap: 8px; font-size: 13px; line-height: 1.4; }
-                        .check-mark { font-weight: bold; font-family: sans-serif; flex-shrink: 0; }
-                        .check-text { word-break: keep-all; }
+                        .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 30px; position: relative; z-index: 1; }
+                        .check-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; color: #444; }
+                        .check-mark { font-weight: bold; color: #1a1a1a; }
 
-                        .feedback-box { border: 1px solid #eee; padding: 12px; font-size: 13.5px; min-height: 60px; white-space: pre-wrap; line-height: 1.6; background: #fafafa; }
-                        .feedback-box.master { border: 1.5px solid #000; background: #fff; font-weight: 500; min-height: 80px; }
+                        /* 고급 인용구 스타일 피드백 박스 */
+                        .feedback-box { 
+                            position: relative; padding: 25px 25px 25px 40px; font-size: 13.5px; 
+                            line-height: 1.8; margin-bottom: 20px; z-index: 1;
+                            background: #fdfdfd; border-radius: 4px; color: #333;
+                        }
+                        .feedback-box.self { border-left: 3px solid #ccc; }
+                        .feedback-box.master { border-left: 3px solid #D4AF37; background: rgba(212,175,55,0.03); font-weight: 600; color: #1a1a1a; }
+                        .quote-mark { position: absolute; left: 12px; top: 15px; font-size: 28px; font-family: 'Georgia', serif; color: #ccc; line-height: 1; }
 
-                        .signature-zone { text-align: right; margin-top: 50px; }
-                        .brand-name { font-size: 12px; color: #666; font-family: 'Montserrat'; letter-spacing: 1px; margin: 0; }
-                        .ceo-name { font-size: 22px; font-weight: 800; margin: 5px 0; }
-                        .footer-note { font-size: 9px; color: #aaa; margin-top: 30px; text-align: center; border-top: 1px solid #eee; padding-top: 15px; font-family: 'Montserrat'; }
+                        .signature-zone { text-align: right; margin-top: 70px; position: relative; z-index: 1; }
+                        .brand-name { font-size: 11px; color: #888; font-family: 'Montserrat'; letter-spacing: 2px; margin: 0; }
+                        /* 서명란 고급화 */
+                        .ceo-name { font-size: 28px; font-weight: 800; margin: 15px 0; font-family: 'Montserrat', serif; font-style: italic; letter-spacing: 2px; }
+                        .footer-note { font-size: 9px; color: #bbb; margin-top: 40px; text-align: center; font-family: 'Montserrat'; letter-spacing: 1px; }
 
                         @media print {
                             .ui-bar { display: none !important; }
-                            .a4-page { margin: 0; box-shadow: none; width: 100%; border: none; }
+                            .a4-page { margin: 0; box-shadow: none; width: 100%; border: none; padding: 10mm; }
                             body { background: #fff; margin: 0; }
                         }
                         @media screen and (max-width: 210mm) {
-                            .a4-page { width: 95%; height: auto; padding: 15mm 10mm; margin: 10px auto; }
+                            .a4-page { width: 95%; height: auto; padding: 20mm 15mm; margin: 10px auto; }
                             .checklist-grid { grid-template-columns: 1fr; }
                         }
                     </style>
@@ -9248,6 +9266,7 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             `);
             previewWin.document.close();
         };
+
 
         window.mo_deleteEduManual = function(id) {
             let manuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
@@ -9524,7 +9543,27 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
             grids.forEach(grid => grid.innerHTML = html);
         };
           
-              
+// 🌟 [추가 엔진] 승급 심사 다이렉트 처리 로직
+        window.mo_directLevelUpApprove = async function(partnerName, currentLevel) {
+            if(!await AlignModal.confirm(`👑 [승급 심사]\n${partnerName} 님을 LV.${currentLevel + 1}(으)로 승급 처리하시겠습니까?`, "승급 승인")) return;
+            
+            const pKey = 'alignPartnerData_' + partnerName;
+            let pData = JSON.parse(localStorage.getItem(pKey));
+            pData.level += 1; // 레벨업!
+            
+            if(pData.level === 5) pData.isGraduated = true; // 수료증 발급 대기
+            
+            localStorage.setItem(pKey, JSON.stringify(pData));
+            
+            mo_renderLevelUpQueue(); // 대기열 새로고침
+            if(typeof m_renderPartnerRadar === 'function') m_renderPartnerRadar(); // 레이더망 갱신
+            
+            if(pData.level === 5) {
+                if(typeof app !== 'undefined' && app.toast) app.toast(`👑 ${partnerName}님 승급 처리 완료! (수료증 발급 대기)`);
+            } else {
+                if(typeof app !== 'undefined' && app.toast) app.toast(`👑 ${partnerName}님 LV.${pData.level}(으)로 승급 완료!`);
+            }
+        };              
 
         // 🌟 [신규] 승급 심사 대기열 렌더링 엔진
         window.mo_renderLevelUpQueue = function() {
@@ -9532,10 +9571,9 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
             if(!queueEl) return;
 
             let profiles = db.get('alignProfiles', window.alignProfiles || []);
-            // 🚨 [보안 픽스] 파트너이면서, '숨김(퇴사)' 처리되지 않은 현직자만 필터링!
             let activePartners = profiles.filter(p => (p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) && !p.isHidden);
             
-            const levelMax = [3000, 6000, 12000, 18000, 99999]; // 24개월 밸런스 패치 기준
+            const levelMax = [3000, 6000, 12000, 18000, 99999];
             let queueHtml = '';
 
             activePartners.forEach(p => {
@@ -9545,21 +9583,20 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
                     let curExp = pData.exp || 0;
                     let targetExp = levelMax[curLevel - 1] || 99999;
                     
-                    // 💡 경험치가 다 찼고, 만렙(5)이 아니라면 대기열에 올림!
                     if(curExp >= targetExp && curLevel < 5) {
                         queueHtml += `
-                        <div style="background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--error);">
+                        <div style="background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; border-left: 3px solid var(--error); margin-bottom: 8px;">
                             <div style="font-size: 13px; color: #fff; font-weight: 600;">
                                 ${p.name} <span style="color: #8E8E93; font-weight: 400; font-size: 11px; margin-left: 6px;">(LV.${curLevel} ➔ LV.${curLevel+1})</span>
                             </div>
-                            <button onclick="document.getElementById('mo-ctrl-partner-name').value='${p.name}'; mo_loadPartnerControl();" style="background: var(--error); color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer; box-shadow: 0 4px 10px rgba(255,69,58,0.3);">심사하기</button>
+                            <button onclick="mo_directLevelUpApprove('${p.name}', ${curLevel})" style="background: var(--error); color: #fff; border: none; padding: 10px 14px; border-radius: 8px; font-weight: 800; font-size: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(255,69,58,0.3); white-space: nowrap; flex-shrink: 0;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">심사하기</button>
                         </div>`;
                     }
                 }
             });
 
             if(queueHtml === '') {
-                queueEl.innerHTML = '<div style="color: #5C6370; font-size: 12px; text-align: center;">대기 중인 파트너가 없습니다.</div>';
+                queueEl.innerHTML = '<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 10px 0;">대기 중인 파트너가 없습니다.</div>';
             } else {
                 queueEl.innerHTML = queueHtml;
             }
