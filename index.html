@@ -1374,7 +1374,7 @@ input, textarea {
             <div class="mo-tab-menu">
                 <button class="mo-tab-btn active" id="mo-tab-dash" onclick="switchMoTab('dash')">대시보드</button>
                 <button class="mo-tab-btn" id="mo-tab-analytics" onclick="switchMoTab('analytics')">통합 통계</button>
-                <button class="mo-tab-btn" id="mo-tab-hr" onclick="switchMoTab('hr')">인사·교육</button>
+                <button class="mo-tab-btn" id="mo-tab-hr" onclick="switchMoTab('hr'); injectHRDummy();">인사·교육</button>
                 <button class="mo-tab-btn" id="mo-tab-oper" onclick="switchMoTab('oper')">운영·결재</button>
                 <button class="mo-tab-btn" id="mo-tab-fin" onclick="switchMoTab('fin')">재무·정산</button>
                 <button class="mo-tab-btn" id="mo-tab-sys" onclick="switchMoTab('sys')">시스템</button>
@@ -1478,11 +1478,11 @@ input, textarea {
                         <div id="rank-sales"></div>
                     </div>
                     <div style="margin-bottom: 20px;">
-                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">객수 TOP</div>
+                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">객단가 TOP</div>
                         <div id="rank-ticket"></div>
                     </div>
                     <div>
-                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">업셀링 TOP</div>
+                        <div style="font-size: 12px; color: #8E8E93; margin-bottom: 10px; font-weight: 600;">결합률 TOP</div>
                         <div id="rank-upsell"></div>
                     </div>
                 </div>
@@ -1491,7 +1491,7 @@ input, textarea {
                     <button id="btn-ana-sales" onclick="mo_switchAnalytics('sales')" style="flex: 1; padding: 10px 0; background: rgba(255,255,255,0.1); color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 700; transition: 0.3s; cursor: pointer;">매출 추이</button>
                     <button id="btn-ana-menu" onclick="mo_switchAnalytics('menu')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">시술 비중</button>
                     <button id="btn-ana-radar" onclick="mo_switchAnalytics('radar')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">역량 분석</button>
-                    <button id="btn-ana-upsell" onclick="mo_switchAnalytics('upsell')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">업셀링</button>
+                    <button id="btn-ana-upsell" onclick="mo_switchAnalytics('upsell')" style="flex: 1; padding: 10px 0; background: transparent; color: #8E8E93; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; transition: 0.3s; cursor: pointer;">크로스셀링</button>
                 </div>
 
                 <div style="position: relative; min-height: 380px;"> <div id="ana-view-sales" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 1; z-index: 2;">
@@ -1512,7 +1512,7 @@ input, textarea {
                     </div>
 
                     <div id="ana-view-upsell" class="align-panel" style="position: absolute; top: 0; left: 0; width: 100%; transition: opacity 0.3s ease; opacity: 0; pointer-events: none; z-index: 1;">
-                        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px;">업셀링 실적 (기술 vs 점판)</div>
+                        <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 5px;">크로스셀링 실적</div>
                         <div style="width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding-bottom: 5px;">
                             <div id="barChartWrapper" style="position: relative; height: 215px; width: 100%;">
                                 <canvas id="barChart"></canvas>
@@ -6896,15 +6896,22 @@ window.mo_hardDeleteStaff = async function(targetName) {
         // [VIP룸] 실제 데이터 불러오기 및 대시보드 업데이트
         // ==========================================
         window.loadRealData = function() {
-            let salesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
-            let statsData = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
+            let allSalesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
+            let allStatsData = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
 
-            // 👻 [유령 데이터 필터링] 현재 등록된 직원 명단에 있는 사람 데이터만 골라냅니다.
+            // 👻 [유령 데이터 필터링] 
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
             const activeNames = profiles.map(p => p.name);
             
-            salesData = salesData.filter(item => activeNames.includes(item.name));
-            statsData = statsData.filter(item => activeNames.includes(item.name));
+            allSalesData = allSalesData.filter(item => activeNames.includes(item.name));
+            allStatsData = allStatsData.filter(item => activeNames.includes(item.name));
+
+            // 🌟 [팀장 긴급 픽스] 대시보드와 명예의 전당은 무조건 '이번 달' 데이터만 핀셋으로 뽑아야 합니다!
+            const today = new Date();
+            const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+            
+            let salesData = allSalesData.filter(item => item.date && item.date.startsWith(currentMonthStr));
+            let statsData = allStatsData.filter(item => item.date && item.date.startsWith(currentMonthStr));
 
             // 필터링 된 데이터로 총매출 다시 계산
             let totalGross = 0;
@@ -6938,16 +6945,20 @@ window.mo_hardDeleteStaff = async function(targetName) {
             // 1. 사람별 매출 싹 모으기
             salesData.forEach(item => {
                 if(!item.name) return;
-                if(!rankMap[item.name]) rankMap[item.name] = { gross: 0, cust: 0, upsell: 0 };
+                // 🌟 [팀장 픽스] 옛날 이름표(upsell) 완전 폐기! crossChem 바구니로 통일해서 기초 공사!
+                if(!rankMap[item.name]) rankMap[item.name] = { gross: 0, cust: 0, crossChem: 0 };
                 rankMap[item.name].gross += item.gross;
             });
 
             // 2. 사람별 시술 건수 싹 모으기
             statsData.forEach(item => {
                 if(!item.name) return;
-                if(!rankMap[item.name]) rankMap[item.name] = { gross: 0, cust: 0, upsell: 0 };
-                rankMap[item.name].cust += item.totalCust;
-                rankMap[item.name].upsell += ((item.permM || 0) + (item.permF || 0) + (item.color || 0) + (item.clinic || 0));
+                // 만약 1단계에서 누락된 사람이 있다면 여기서도 crossChem 바구니로 안전하게 생성
+                if(!rankMap[item.name]) rankMap[item.name] = { gross: 0, cust: 0, crossChem: 0 };
+                
+                // 🌟 [팀장 픽스] totalCust가 없어서 생기는 NaN 방어막 추가
+                rankMap[item.name].cust += (Number(item.totalCust) || 0);
+                rankMap[item.name].crossChem += ((item.permM || 0) + (item.permF || 0) + (item.color || 0) + (item.clinic || 0));
             });
 
             // 3. 순위 매기기 좋게 배열로 정렬
@@ -6957,7 +6968,8 @@ window.mo_hardDeleteStaff = async function(targetName) {
                     name: name,
                     gross: d.gross,
                     ticket: d.cust > 0 ? Math.round(d.gross / d.cust) : 0,
-                    upsellRate: d.cust > 0 ? Math.round((d.upsell / d.cust) * 100) : 0
+                    // 🌟 [팀장 픽스] (화학시술 합계 / 총접객수 * 100) = 결합률(crossRate)
+                    crossRate: d.cust > 0 ? Math.round((d.crossChem / d.cust) * 100) : 0 
                 };
             });
 
@@ -6995,11 +7007,50 @@ window.mo_hardDeleteStaff = async function(targetName) {
                 if(rankArr[1] && rankArr[1].ticket > 0) tHtml += renderRankLine(2, rankArr[1].name, rankArr[1].ticket, '원');
                 document.getElementById('rank-ticket').innerHTML = tHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
 
-                // 업셀링 1, 2위
-                rankArr.sort((a, b) => b.upsellRate - a.upsellRate);
+                // 🌟 결합률 1, 2위 (기존 업셀링 1,2위)
+                rankArr.sort((a, b) => b.crossRate - a.crossRate);
                 let uHtml = "";
-                if(rankArr[0] && rankArr[0].upsellRate > 0) uHtml += renderRankLine(1, rankArr[0].name, rankArr[0].upsellRate, '', true);
-                if(rankArr[1] && rankArr[1].upsellRate > 0) uHtml += renderRankLine(2, rankArr[1].name, rankArr[1].upsellRate, '', true);
+                if(rankArr[0] && rankArr[0].crossRate > 0) uHtml += renderRankLine(1, rankArr[0].name, rankArr[0].crossRate, '', true);
+                if(rankArr[1] && rankArr[1].crossRate > 0) uHtml += renderRankLine(2, rankArr[1].name, rankArr[1].crossRate, '', true);
+                document.getElementById('rank-upsell').innerHTML = uHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
+            }if(rankArr.length > 0) {
+                const renderRankLine = (rank, name, val, unit, isPercent = false) => {
+                    let rankNum = rank === 1 ? `<span style="font-family:'Montserrat'; font-size:18px; font-weight:900; color:var(--accent-gold); font-style:italic; line-height: 1;">01</span>` : `<span style="font-family:'Montserrat'; font-size:16px; font-weight:800; color:#8E8E93; font-style:italic; line-height: 1;">02</span>`;
+                    let nameStyle = rank === 1 ? `color:#fff; font-weight:700; font-size:14px;` : `color:#E8E8ED; font-weight:600; font-size:13.5px;`;
+                    let valStyle = rank === 1 ? `color:var(--accent-gold); font-weight:800; font-size:16px; font-family:'Montserrat', sans-serif; letter-spacing: -0.5px;` : `color:#E8E8ED; font-weight:600; font-size:14.5px; font-family:'Montserrat', sans-serif;`;
+                    let valDisp = isPercent ? val + '%' : val.toLocaleString();
+                    
+                    let bgStyle = rank === 1 ? `background: linear-gradient(90deg, rgba(212,175,55,0.15) 0%, transparent 100%); border-left: 3px solid var(--accent-gold);` : `background: transparent; border-left: 3px solid rgba(255,255,255,0.1);`;
+
+                    return `
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; padding: 12px 15px; ${bgStyle} border-radius: 0 8px 8px 0;">
+                        <div style="display:flex; align-items:center; gap:14px;">
+                            ${rankNum}
+                            <span style="${nameStyle}">${name}</span>
+                        </div>
+                        <div style="${valStyle}">${valDisp} <span style="font-size:11px; color:#8E8E93; font-weight:400; font-family: 'Pretendard', sans-serif;">${unit}</span></div>
+                    </div>`;
+                };
+
+                // 매출 1, 2위
+                rankArr.sort((a, b) => b.gross - a.gross);
+                let sHtml = "";
+                if(rankArr[0] && rankArr[0].gross > 0) sHtml += renderRankLine(1, rankArr[0].name, rankArr[0].gross, '원');
+                if(rankArr[1] && rankArr[1].gross > 0) sHtml += renderRankLine(2, rankArr[1].name, rankArr[1].gross, '원');
+                document.getElementById('rank-sales').innerHTML = sHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
+                
+                // 객단가 1, 2위
+                rankArr.sort((a, b) => b.ticket - a.ticket);
+                let tHtml = "";
+                if(rankArr[0] && rankArr[0].ticket > 0) tHtml += renderRankLine(1, rankArr[0].name, rankArr[0].ticket, '원');
+                if(rankArr[1] && rankArr[1].ticket > 0) tHtml += renderRankLine(2, rankArr[1].name, rankArr[1].ticket, '원');
+                document.getElementById('rank-ticket').innerHTML = tHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
+
+                // 🌟 결합률 1, 2위 (기존 업셀링 1,2위)
+                rankArr.sort((a, b) => b.crossRate - a.crossRate);
+                let uHtml = "";
+                if(rankArr[0] && rankArr[0].crossRate > 0) uHtml += renderRankLine(1, rankArr[0].name, rankArr[0].crossRate, '', true);
+                if(rankArr[1] && rankArr[1].crossRate > 0) uHtml += renderRankLine(2, rankArr[1].name, rankArr[1].crossRate, '', true);
                 document.getElementById('rank-upsell').innerHTML = uHtml || "<div style='color:#5C6370; font-size:12px; padding: 10px;'>기록 없음</div>";
             }
 
@@ -7094,15 +7145,21 @@ window.mo_hardDeleteStaff = async function(targetName) {
         window.myMenuChart = null;  
 
         window.renderManagerCharts = function() {
-            let salesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
-            let statsData = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
+            let allSalesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
+            let allStatsData = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
 
-            // 👻 [차트용 유령 데이터 필터링] 명단에 없는 직원의 기록을 차트에서 그리기 전에 삭제!
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
             const activeNames = profiles.map(p => p.name);
             
-            salesData = salesData.filter(item => activeNames.includes(item.name));
-            statsData = statsData.filter(item => activeNames.includes(item.name));
+            allSalesData = allSalesData.filter(item => activeNames.includes(item.name));
+            allStatsData = allStatsData.filter(item => activeNames.includes(item.name));
+
+            // 🌟 [팀장 긴급 픽스] 차트 엔진 역시 무조건 '이번 달' 실적만 그려야 합계 버그가 나지 않습니다.
+            const today = new Date();
+            const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+            
+            let salesData = allSalesData.filter(item => item.date && item.date.startsWith(currentMonthStr));
+            let statsData = allStatsData.filter(item => item.date && item.date.startsWith(currentMonthStr));
 
             // 🌟 [완벽 진화] 꺾은선 차트: 직원 개인이 아닌 '매장 월별 총매출 추이'로 변경!
             let lineLabels = [];
@@ -7257,34 +7314,33 @@ window.mo_hardDeleteStaff = async function(targetName) {
 
                 let rArr = Object.keys(rMap).map(name => {
                     let d = rMap[name];
+                    // 🌟 [팀장 픽스] 해당 디자이너의 화학 시술(펌/컬러) 총 횟수 합산
+                    let myChemCount = statsData.filter(x=>x.name===name).reduce((acc,cur)=>acc+(cur.permM||0)+(cur.permF||0)+(cur.color||0),0);
                     return {
-                        name: name,
-                        gross: d.gross,
-                        totalCust: d.cust,
-                        ticket: d.cust > 0 ? (d.gross / d.cust) : 0,
-                        chem: statsData.filter(x=>x.name===name).reduce((acc,cur)=>acc+(cur.permM||0)+(cur.permF||0)+(cur.color||0),0),
+                        name: name, gross: d.gross, totalCust: d.cust, ticket: d.cust > 0 ? (d.gross / d.cust) : 0,
+                        // 🌟 [팀장 픽스] 화학 시술 건수를 총 접객 수로 나누어 진짜 '비중(%)'을 구합니다!
+                        chemRate: d.cust > 0 ? (myChemCount / d.cust) * 100 : 0,
                         upsellRate: d.cust > 0 ? ((d.productCount / d.cust) * 100) : 0
                     };
                 });
                
                 rArr.sort((a,b)=> b.gross - a.gross);
 
-                // 점수 정규화 (100점 만점 환산)
                 let maxGross = Math.max(...rArr.map(x => x.gross), 1);
                 let maxCust = Math.max(...rArr.map(x => x.totalCust), 1);
                 let maxTicket = Math.max(...rArr.map(x => x.ticket), 1);
-                let maxChem = Math.max(...rArr.map(x => x.chem), 1);
+                let maxChemRate = Math.max(...rArr.map(x => x.chemRate), 1); // 🌟 비율(%)의 최댓값을 구함!
                 let maxUpsell = Math.max(...rArr.map(x => x.upsellRate), 1);
 
                 rArr.forEach(d => {
                     d.scoreGross = maxGross > 0 ? (d.gross / maxGross) * 100 : 0;
                     d.scoreCust = maxCust > 0 ? (d.totalCust / maxCust) * 100 : 0;
                     d.scoreTicket = maxTicket > 0 ? (d.ticket / maxTicket) * 100 : 0;
-                    d.scoreChem = maxChem > 0 ? (d.chem / maxChem) * 100 : 0;
+                    d.scoreChem = maxChemRate > 0 ? (d.chemRate / maxChemRate) * 100 : 0; // 🌟 진짜 비중으로 점수 렌더링!
                     d.scoreUpsell = maxUpsell > 0 ? (d.upsellRate / maxUpsell) * 100 : 0;
                 });
 
-                // 👑 매장 평균 데이터 계산
+                // 매장 평균 생성
                 if (rArr.length > 0) {
                     let storeGross = salesData.reduce((sum, cur) => sum + (cur.gross || 0), 0);
                     let storeCust = statsData.reduce((sum, cur) => sum + (cur.totalCust || 0), 0);
@@ -7293,17 +7349,16 @@ window.mo_hardDeleteStaff = async function(targetName) {
                     let staffCount = rArr.length;
                     
                     let avgData = {
-                        name: '매장 평균',
-                        gross: storeGross / staffCount,
-                        totalCust: storeCust / staffCount,
-                        ticket: storeCust > 0 ? (storeGross / storeCust) : 0,
-                        chem: storeChem / staffCount,
+                        name: '매장 평균', gross: storeGross / staffCount, totalCust: storeCust / staffCount,
+                        ticket: storeCust > 0 ? (storeGross / storeCust) : 0, 
+                        // 🌟 [팀장 픽스] 매장 평균도 (전체 화학 시술 수 / 전체 접객 수)로 진짜 비중(%)을 구함!
+                        chemRate: storeCust > 0 ? (storeChem / storeCust) * 100 : 0,
                         upsellRate: storeCust > 0 ? (storeUpsell / storeCust) * 100 : 0
                     };
                     avgData.scoreGross = maxGross > 0 ? (avgData.gross / maxGross) * 100 : 0;
                     avgData.scoreCust = maxCust > 0 ? (avgData.totalCust / maxCust) * 100 : 0;
                     avgData.scoreTicket = maxTicket > 0 ? (avgData.ticket / maxTicket) * 100 : 0;
-                    avgData.scoreChem = maxChem > 0 ? (avgData.chem / maxChem) * 100 : 0;
+                    avgData.scoreChem = maxChemRate > 0 ? (avgData.chemRate / maxChemRate) * 100 : 0;
                     avgData.scoreUpsell = maxUpsell > 0 ? (avgData.upsellRate / maxUpsell) * 100 : 0;
                     
                     rArr.unshift(avgData); 
@@ -7519,8 +7574,9 @@ window.mo_selectRadarStaff = function(index) {
             let target = window.moRadarStaffData[staffIdx];
             let color = arrIdx === 0 ? 'var(--accent-gold)' : '#5AC8FA';
             let margin = (arrIdx === 0 && window.moSelectedRadarStaff.length > 1) ? 'margin-bottom: 6px;' : '';
+            // 🌟 [팀장 픽스] Math.round()를 씌워 꼴 보기 싫은 소수점을 영구 삭제합니다!
             return `<div style="${margin}">
-                <span style="color:${color}; font-weight:800; font-size:13.5px;">${target.name}</span> 님의 총매출: <b style="color:#fff;">${target.gross.toLocaleString()}원</b> (객단가: <b style="color:#fff;">${target.ticket.toLocaleString()}원</b>)
+                <span style="color:${color}; font-weight:800; font-size:13.5px;">${target.name}</span> 님의 이번 달 총매출: <b style="color:#fff;">${Math.round(target.gross).toLocaleString()}원</b> (객단가: <b style="color:#fff;">${Math.round(target.ticket).toLocaleString()}원</b>)
             </div>`;
         }).join('');
         summary.innerHTML = summaryHtml;
@@ -11137,10 +11193,32 @@ window.sys_smartMonthlyClose = async function() {
     let questsToKeep = questData.filter(q => !q.date.startsWith(targetMonth));
 
     let monthTotalGross = salesToBackup.reduce((sum, s) => sum + (s.gross || 0), 0);
+    
+    // 🌟 [팀장 픽스] 마감할 때 해당 월의 1등, 2등 디자이너도 색출하여 함께 박제합니다!
+    let rankMap = {};
+    salesToBackup.forEach(s => { rankMap[s.name] = (rankMap[s.name] || 0) + s.gross; });
+    let sortedRank = Object.entries(rankMap).sort(([,a],[,b]) => b - a);
+    let topDesigner = sortedRank[0] ? sortedRank[0][0] : "없음";
+    let topGross = sortedRank[0] ? sortedRank[0][1] : 0;
+    let runnerUpDesigner = sortedRank[1] ? sortedRank[1][0] : "없음";
+
     let historyMonthKey = targetMonth.replace('-', '');
     let existHistory = historyData.find(h => h.month === historyMonthKey);
-            if(existHistory) { existHistory.totalGross = monthTotalGross; } 
-            else { historyData.push({ month: historyMonthKey, totalGross: monthTotalGross }); }
+            
+            if(existHistory) { 
+                existHistory.totalGross = monthTotalGross; 
+                existHistory.topDesigner = topDesigner;
+                existHistory.topGross = topGross;
+                existHistory.runnerUpDesigner = runnerUpDesigner;
+            } else { 
+                historyData.push({ 
+                    month: historyMonthKey, 
+                    totalGross: monthTotalGross,
+                    topDesigner: topDesigner,
+                    topGross: topGross,
+                    runnerUpDesigner: runnerUpDesigner
+                }); 
+            }
 
             if(salesToBackup.length > 0) {
                 // 🌟 [코드 다이어트] 스냅샷 데이터도 db 엔진으로 안전하게 처리
@@ -11643,6 +11721,50 @@ window.triggerQAData = async function() {
         await AlignModal.alert("🚀 [3개월 시뮬레이션 완료]\n총 4명의 디자이너가 활약한 90일 치의 데이터가 성공적으로 적재되었습니다.\n(컬러, 펌, 클리닉 색상을 모두 확인해 보세요!)", "풀로드 완성");
         location.reload();
     }
+};
+
+// 🧪 [임시] HR 탭 점검용 더미 데이터 주입기
+window.injectHRDummy = function() {
+    // 1. 교육 이수 승인 대기열 더미 생성 (지훈, 수진 파트너가 제출함)
+    let requests = JSON.parse(localStorage.getItem('alignEduRequests')) || [];
+    // 이미 pending 상태인 더미가 없으면 넣기
+    if (!requests.some(r => r.status === 'pending')) {
+        requests.push({
+            id: Date.now() + 1,
+            manualId: 1, 
+            title: 'CS교육 및 샴푸 테크닉',
+            userName: '지훈',
+            level: 'LV.1 (1~3개월)',
+            exp: 100,
+            status: 'pending',
+            selfFeedback: '샴푸 시 고객의 두피 텐션을 조절하는 방법을 배웠습니다. 손에 힘을 빼고 부드럽게 밀착하는 연습을 더 하겠습니다!'
+        });
+        requests.push({
+            id: Date.now() + 2,
+            manualId: 2,
+            title: '기초 이론 및 약터치, 와인딩',
+            userName: '수진',
+            level: 'LV.2 (4~6개월)',
+            exp: 150,
+            status: 'pending',
+            selfFeedback: '약제 도포 시 두피에 닿지 않게 텐션을 유지하는 것이 아직 조금 어렵습니다. 마네킹으로 꼼꼼히 복습하겠습니다.'
+        });
+        localStorage.setItem('alignEduRequests', JSON.stringify(requests));
+    }
+
+    // 2. 승급 심사 대기열 더미 생성 
+    // (지훈을 Lv.2 -> 3 승급 대기로, 수진을 Lv.1 -> 2 승급 대기로 강제 경험치 조작!)
+    let jihoonData = JSON.parse(localStorage.getItem('alignPartnerData_지훈')) || { level: 2, exp: 0, todayQuests: {}, lastDate: '' };
+    jihoonData.level = 2; jihoonData.exp = 6050; // LV.2 최대치(6000) 돌파!
+    localStorage.setItem('alignPartnerData_지훈', JSON.stringify(jihoonData));
+
+    let sujinData = JSON.parse(localStorage.getItem('alignPartnerData_수진')) || { level: 1, exp: 0, todayQuests: {}, lastDate: '' };
+    sujinData.level = 1; sujinData.exp = 3100; // LV.1 최대치(3000) 돌파!
+    localStorage.setItem('alignPartnerData_수진', JSON.stringify(sujinData));
+
+    // 화면 다시 그리기
+    if(typeof mo_renderEduAll === 'function') mo_renderEduAll();
+    if(typeof mo_renderLevelUpQueue === 'function') mo_renderLevelUpQueue();
 };
 
 
