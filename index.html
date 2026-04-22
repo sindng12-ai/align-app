@@ -9115,14 +9115,15 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             mo_renderEduAll(); 
             if(typeof app !== 'undefined' && app.toast) app.toast(`${request.userName}님 합격 처리 및 PDF 발행 완료! 📄`);
         };
-// 🌟 [V2.8 통합 완결판] 리포트 엔진 (하이엔드 매거진 핏 + 동적 워터마크)
+
+
+// 🌟 [V2.9 최종] 리포트 엔진 (모바일 밸런스 최적화 + ACADEMY 제거)
         window.mo_generateEduReport = function(req, masterMsg) {
             const manuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
             const mInfo = manuals.find(m => m.id === req.manualId) || {};
             const brandName = JSON.parse(localStorage.getItem('alignSystemSettings'))?.brandName || 'ALIGN';
             const ceoName = JSON.parse(localStorage.getItem('alignSystemSettings'))?.ceoName || '대표 원장';
 
-            // 🛡️ [데이터 방어] undefined 유령 글자 및 공백 완벽 방어 엔진
             const safeSelfFeedback = (req.selfFeedback && req.selfFeedback !== 'undefined') ? req.selfFeedback : "기록된 셀프 피드백이 없습니다.";
             const safeMasterFeedback = (masterMsg && masterMsg !== 'undefined' && masterMsg !== '') ? masterMsg : "기록된 마스터 브리핑이 없습니다.";
             const safeEducator = (req.educatorName && req.educatorName !== 'undefined') ? req.educatorName : ceoName;
@@ -9164,8 +9165,8 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                     </div>
 
                     <div class="signature-zone">
-                        <p class="brand-name">${brandName} ACADEMY</p>
-                        <p class="ceo-name">${safeEducator} <span style="font-size:14px; font-style:normal;">(Sign)</span></p>
+                        <p class="brand-name">${brandName}</p>
+                        <p class="ceo-name">${safeEducator} <span style="font-size:12px; font-style:normal; color:#aaa;">(Sign)</span></p>
                         <p class="footer-note">This document is an official record issued by the ${brandName} Archive System.</p>
                     </div>
                 </div>
@@ -9179,69 +9180,40 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
                     <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;0,800;1,800&display=swap" rel="stylesheet">
                     <style>
-                        /* 💎 [유리 글래스 UI] */
-                        .ui-bar { 
-                            position: sticky; top: 0; z-index: 100; padding: 12px; display: flex; justify-content: center; gap: 12px;
-                            background: rgba(255, 255, 255, 0.1); 
-                            backdrop-filter: blur(15px) saturate(180%);
-                            -webkit-backdrop-filter: blur(15px) saturate(180%);
-                            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-                        }
-                        .btn-glass { 
-                            border: none; padding: 10px 22px; border-radius: 6px; 
-                            font-weight: 700; cursor: pointer; font-size: 13px; 
-                            font-family: 'Montserrat', sans-serif; transition: 0.3s;
-                        }
+                        .ui-bar { position: sticky; top: 0; z-index: 100; padding: 12px; display: flex; justify-content: center; gap: 12px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px) saturate(180%); -webkit-backdrop-filter: blur(15px) saturate(180%); border-bottom: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); }
+                        .btn-glass { border: none; padding: 10px 22px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px; font-family: 'Montserrat', sans-serif; transition: 0.3s; }
                         .btn-print { background: rgba(212, 175, 55, 0.1); color: #D4AF37; border: 1px solid rgba(212, 175, 55, 0.2); }
                         .btn-close { background: rgba(255, 255, 255, 0.05); color: #fff; border: 1px solid rgba(255, 255, 255, 0.1); }
 
-                        /* 📄 [A4 규격 및 럭셔리 매거진 핏] */
                         body { background: #525659; margin: 0; padding: 0; -webkit-print-color-adjust: exact; }
-                        .a4-page { 
-                            position: relative; overflow: hidden;
-                            background: #fff; width: 210mm; min-height: 297mm; 
-                            margin: 20px auto; padding: 30mm 25mm; box-sizing: border-box; 
-                            box-shadow: 0 0 20px rgba(0,0,0,0.5); font-family: 'Nanum Myeongjo', serif; color: #1a1a1a; 
-                        }
+                        .a4-page { position: relative; overflow: hidden; background: #fff; width: 210mm; min-height: 297mm; margin: 20px auto; padding: 30mm 25mm; box-sizing: border-box; box-shadow: 0 0 20px rgba(0,0,0,0.5); font-family: 'Nanum Myeongjo', serif; color: #1a1a1a; }
                         
-                        /* 워터마크 중앙 정렬 */
-                        .watermark {
-                            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
-                            font-size: 140px; font-weight: 800; color: rgba(0,0,0,0.03); z-index: 0; 
-                            white-space: nowrap; font-family: 'Montserrat', sans-serif; pointer-events: none;
-                        }
+                        .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg); font-size: 140px; font-weight: 800; color: rgba(0,0,0,0.03); z-index: 0; white-space: nowrap; font-family: 'Montserrat', sans-serif; pointer-events: none; }
 
                         .report-header { text-align: center; margin-bottom: 40px; position: relative; z-index: 1; }
                         .main-title { font-size: 24px; margin: 0; letter-spacing: 4px; font-weight: 800; font-family: 'Montserrat', sans-serif; }
                         .sub-title { font-size: 14px; color: #888; margin: 10px 0 0 0; letter-spacing: 6px; }
 
-                        /* 표 껍데기 벗기기 (상하 실선만 유지) */
+                        /* 🌟 [팀장 픽스] th 넓이를 100px -> 75px로 줄여 파트너 정보가 숨통 트이게 확장! */
                         .info-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; font-size: 13px; border-top: 2px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; position: relative; z-index: 1; }
                         .info-table th, .info-table td { padding: 14px 10px; border-bottom: 1px solid #f1f1f1; text-align: left; }
-                        .info-table th { width: 100px; color: #666; font-weight: 700; letter-spacing: 2px; }
+                        .info-table th { width: 75px; color: #666; font-weight: 700; letter-spacing: 2px; }
                         .bold-text { font-weight: 800; font-size: 15px; color: #000; }
 
                         .section-title { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 700; color: #333; margin: 30px 0 15px 0; letter-spacing: 1px; position: relative; z-index: 1; }
-                        
                         .checklist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; margin-bottom: 30px; position: relative; z-index: 1; }
                         .check-item { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; line-height: 1.5; color: #444; }
                         .check-mark { font-weight: bold; color: #1a1a1a; }
 
-                        /* 고급 인용구 스타일 피드백 박스 */
-                        .feedback-box { 
-                            position: relative; padding: 25px 25px 25px 40px; font-size: 13.5px; 
-                            line-height: 1.8; margin-bottom: 20px; z-index: 1;
-                            background: #fdfdfd; border-radius: 4px; color: #333;
-                        }
+                        .feedback-box { position: relative; padding: 25px 25px 25px 40px; font-size: 13.5px; line-height: 1.8; margin-bottom: 20px; z-index: 1; background: #fdfdfd; border-radius: 4px; color: #333; }
                         .feedback-box.self { border-left: 3px solid #ccc; }
                         .feedback-box.master { border-left: 3px solid #D4AF37; background: rgba(212,175,55,0.03); font-weight: 600; color: #1a1a1a; }
                         .quote-mark { position: absolute; left: 12px; top: 15px; font-size: 28px; font-family: 'Georgia', serif; color: #ccc; line-height: 1; }
 
                         .signature-zone { text-align: right; margin-top: 70px; position: relative; z-index: 1; }
-                        .brand-name { font-size: 11px; color: #888; font-family: 'Montserrat'; letter-spacing: 2px; margin: 0; }
-                        /* 서명란 고급화 */
-                        .ceo-name { font-size: 28px; font-weight: 800; margin: 15px 0; font-family: 'Montserrat', serif; font-style: italic; letter-spacing: 2px; }
+                        /* 🌟 [팀장 픽스] 브랜드명과 대표자명 폰트를 축소하여 하단 밸런스 교정! */
+                        .brand-name { font-size: 10px; color: #888; font-family: 'Montserrat'; letter-spacing: 2px; margin: 0; }
+                        .ceo-name { font-size: 22px; font-weight: 800; margin: 10px 0; font-family: 'Montserrat', serif; font-style: italic; letter-spacing: 2px; }
                         .footer-note { font-size: 9px; color: #bbb; margin-top: 40px; text-align: center; font-family: 'Montserrat'; letter-spacing: 1px; }
 
                         @media print {
@@ -9249,8 +9221,11 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                             .a4-page { margin: 0; box-shadow: none; width: 100%; border: none; padding: 10mm; }
                             body { background: #fff; margin: 0; }
                         }
+                        /* 🌟 [모바일 최적화 픽스] 영어 타이틀 다이어트 및 좌우 여백(Padding) 넓게 쓰기! */
                         @media screen and (max-width: 210mm) {
-                            .a4-page { width: 95%; height: auto; padding: 20mm 15mm; margin: 10px auto; }
+                            .a4-page { width: 95%; height: auto; padding: 15mm 10mm; margin: 10px auto; }
+                            .main-title { font-size: 18px; letter-spacing: 2px; } 
+                            .sub-title { font-size: 12px; letter-spacing: 4px; }
                             .checklist-grid { grid-template-columns: 1fr; }
                         }
                     </style>
@@ -9266,15 +9241,6 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             `);
             previewWin.document.close();
         };
-
-
-        window.mo_deleteEduManual = function(id) {
-            let manuals = JSON.parse(localStorage.getItem('alignEduManuals')) || [];
-            manuals = manuals.filter(m => m.id !== id);
-            localStorage.setItem('alignEduManuals', JSON.stringify(manuals));
-            mo_renderEduAll();
-        };
-
 
         // 🌟 [파트너 필터 상태 저장 변수]
         window.p_currentEduFilter = 'all';
@@ -9545,7 +9511,8 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
           
 // 🌟 [추가 엔진] 승급 심사 다이렉트 처리 로직
         window.mo_directLevelUpApprove = async function(partnerName, currentLevel) {
-            if(!await AlignModal.confirm(`👑 [승급 심사]\n${partnerName} 님을 LV.${currentLevel + 1}(으)로 승급 처리하시겠습니까?`, "승급 승인")) return;
+            // 🌟 [팀장 픽스] 중복되는 텍스트 제거하고 깔끔하게 묻기!
+            if(!await AlignModal.confirm(`${partnerName} 님을 LV.${currentLevel + 1}(으)로 승급 처리하시겠습니까?`, "승급 승인")) return;
             
             const pKey = 'alignPartnerData_' + partnerName;
             let pData = JSON.parse(localStorage.getItem(pKey));
