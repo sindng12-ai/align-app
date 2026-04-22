@@ -1620,17 +1620,16 @@ input, textarea {
                         </div>
 
                         <div id="mo-staff-list-grid" style="display: flex; gap: 15px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; -webkit-overflow-scrolling: touch;"></div>
-
-                        <div class="bottom-sheet-overlay" id="staff-ctrl-overlay" onclick="mo_closeStaffControl()"></div>
                         
-                        <div class="bottom-sheet" id="staff-ctrl-sheet" style="padding-bottom: calc(25px + env(safe-area-inset-bottom));">
-                            <div class="sheet-handle"></div>
-                            <div id="mo-ctrl-status" style="color: #fff; font-size: 15px; font-weight: 800; text-align: center; margin-bottom: 20px;"></div>
-                            
-                            <div id="mo-ctrl-security" style="padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(212,175,55,0.2); margin-bottom: 12px;">
-                                <div style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; font-weight: 700; letter-spacing: 0.5px;">SECURITY SETTINGS</div>
-                                <button onclick="mo_resetStaffPassword()" style="width: 100%; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 14px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(212,175,55,0.1)'" onmouseup="this.style.background='transparent'">비밀번호 0000으로 강제 초기화</button>
-                            </div>
+                    </div> <div class="bottom-sheet-overlay" id="staff-ctrl-overlay" onclick="mo_closeStaffControl()"></div>
+                    <div class="bottom-sheet" id="staff-ctrl-sheet" style="padding-bottom: calc(25px + env(safe-area-inset-bottom));">
+                        <div class="sheet-handle"></div>
+                        <div id="mo-ctrl-status" style="color: #fff; font-size: 15px; font-weight: 800; text-align: center; margin-bottom: 20px;"></div>
+                        
+                        <div id="mo-ctrl-security" style="padding: 15px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid rgba(212,175,55,0.2); margin-bottom: 12px;">
+                            <div style="font-size: 11px; color: var(--accent-gold); margin-bottom: 10px; font-weight: 700; letter-spacing: 0.5px;">SECURITY SETTINGS</div>
+                            <button onclick="mo_resetStaffPassword()" style="width: 100%; background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 14px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(212,175,55,0.1)'" onmouseup="this.style.background='transparent'">비밀번호 0000으로 강제 초기화</button>
+                        </div>
                             
                             <div id="mo-ctrl-partner-only" style="display: none; flex-direction: column; gap: 10px; margin-bottom: 12px;">
                                 <div style="font-size: 11px; color: var(--daily-green); margin: 5px 0 0; font-weight: 700; letter-spacing: 0.5px;">PARTNER EXP CONTROL</div>
@@ -9536,7 +9535,7 @@ window.p_submitEduEval = function(mId, mTitle, mExp, mLevel) {
                             <span style="color: ${nameColor}; font-size: 22px; font-weight: 300;">${initial}</span>
                         </div>
                         <div style="font-size: 13px; font-weight: 700; color: ${nameColor}; margin-bottom: 4px; letter-spacing: -0.5px;">${p.name}</div>
-                        <div style="font-size: 9px; color: ${titleColor}; font-family: 'Montserrat'; font-weight: 800; letter-spacing: 0.5px;">${p.title.toUpperCase()}</div>
+                        <div style="font-size: 9.5px; color: ${titleColor}; font-family: 'Montserrat'; font-weight: 800; letter-spacing: 1px;">${p.title.toUpperCase()}</div>
                     </div>`;
                 }).join('');
             }
