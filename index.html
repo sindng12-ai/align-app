@@ -1705,7 +1705,7 @@ input, textarea {
 
                     <div class="align-panel" style="margin-bottom: 0; padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'" onclick="mo_openStockMasterSheet()">
                         <div style="display: flex; flex-direction: column; gap: 6px;">
-                            <span style="font-size: 15px; font-weight: 800; color: #fff;">마스터 백과사전 리스트</span>
+                            <span style="font-size: 15px; font-weight: 800; color: #fff;">제품 리스트</span>
                             <span style="font-size: 12px; color: #8E8E93;">신규 제품 등록 및 원가/판매가 관리</span>
                         </div>
                         <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #fff;">
@@ -1721,9 +1721,15 @@ input, textarea {
                 <div style="width: 100%; box-sizing: border-box; background: rgba(255,255,255,0.02); border: 1px solid rgba(212,175,55,0.3); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; text-align: center; position: relative; overflow: hidden;">
                     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.1) 0%, transparent 70%); pointer-events: none;"></div>
                     <div style="font-size: 11px; color: var(--accent-gold); font-weight: 700; letter-spacing: 2px; margin-bottom: 10px;">ESTIMATED NET PROFIT</div>
-                    <div style="font-size: 32px; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif; letter-spacing: -1px; margin-bottom: 20px;" id="mo-fin-net-profit">0 <span style="font-size: 16px; font-weight: 400; color: #8E8E93;">원</span></div>
-                    <div style="position: relative; height: 180px; width: 100%;"><canvas id="mo-fin-donut-chart"></canvas></div>
+                <div style="font-size: 32px; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif; letter-spacing: -1px; margin-bottom: 10px;" id="mo-fin-net-profit">0 <span style="font-size: 16px; font-weight: 400; color: #8E8E93;">원</span></div>
+                
+                <div id="mo-fin-empty-msg" style="font-size: 11.5px; color: #5C6370; padding-bottom: 10px; line-height: 1.5; word-break: keep-all; text-align: center;">
+                    직원 정산 및 지출 내역을 입력하시면<br>순수익 도넛 차트가 활성화됩니다.<br>
+                    <button onclick="injectDummyFinanceData()" style="margin-top: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">🧪 차트 애니메이션 테스트</button>
                 </div>
+                
+                <div id="mo-fin-chart-zone" style="display: none; position: relative; height: 180px; width: 100%; margin-top: 20px; animation: fadeUp 0.5s ease;"><canvas id="mo-fin-donut-chart"></canvas></div>
+            </div>
 
                 <div class="align-panel" style="padding-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
@@ -1931,8 +1937,7 @@ input, textarea {
         
         <div style="flex-shrink: 0; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <span style="font-size: 18px; font-weight: 800; color: #fff;">📊 실시간 매장 재고 현황</span>
-                <button onclick="mo_closeStockStatusSheet()" style="background: rgba(255,255,255,0.1); border: none; color: #8E8E93; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; font-weight: 800; cursor: pointer;">X</button>
+                <span style="font-size: 18px; font-weight: 800; color: #fff;">실시간 매장 재고 현황</span>
             </div>
             
             <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 5px; -webkit-overflow-scrolling: touch;">
@@ -1956,13 +1961,10 @@ input, textarea {
         <div class="sheet-handle" style="flex-shrink: 0;"></div>
         
         <div style="flex-shrink: 0; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                <span style="font-size: 18px; font-weight: 800; color: #fff;">📖 마스터 백과사전 리스트</span>
-                <button onclick="mo_closeStockMasterSheet()" style="background: rgba(255,255,255,0.1); border: none; color: #8E8E93; width: 28px; height: 28px; border-radius: 50%; font-size: 14px; font-weight: 800; cursor: pointer;">X</button>
-            </div>
             
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 15px;">
-                <button onclick="document.getElementById('mo-master-add-modal').style.display='flex'" style="background: var(--accent-gold); color: #000; border: none; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(212,175,55,0.3); transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">+ 새 제품 등록하기</button>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <span style="font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.5px;">마스터 백과사전</span>
+                <button onclick="document.getElementById('mo-master-add-modal').style.display='flex'" style="background: var(--accent-gold); color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(212,175,55,0.3); transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">+ 새 제품 등록</button>
             </div>
             
             <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 5px; -webkit-overflow-scrolling: touch;">
@@ -1982,7 +1984,7 @@ input, textarea {
     </div>
 
 
-<div id="mo-master-add-modal" style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,7,0.85); backdrop-filter: blur(15px); z-index: 99999; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
+<div id="mo-master-add-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5,5,7,0.85); backdrop-filter: blur(15px); z-index: 100005; flex-direction: column; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;">
         <div style="width: 100%; max-width: 400px; background: rgba(28, 28, 30, 0.98); border: 1px solid rgba(212, 175, 55, 0.3); padding: 30px 25px; border-radius: 16px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: fadeUp 0.3s ease;">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px;">
                 <div>
@@ -8166,18 +8168,22 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
     let html = '';
     master.forEach(item => {
         let currentCount = stockRecords[item.id];
+        // 🌟 [팀장 픽스] 미입력 텍스트를 에러(Red)에서 차분한 다크 그레이 뱃지로 변경하여 시각적 피로도 감소
         let countDisplay = currentCount 
-            ? `<span style="color: var(--daily-green); font-size: 18px; font-weight: 800;">${currentCount}</span><span style="font-size: 12px; color: #8E8E93; margin-left: 3px;">개</span>` 
-            : `<span style="color: var(--error); font-size: 12px; font-weight: 700;">미입력</span>`;
+            ? `<span style="color: var(--daily-green); font-size: 18px; font-weight: 800; font-family: 'Montserrat', sans-serif;">${currentCount}</span><span style="font-size: 11px; color: #8E8E93; margin-left: 3px;">개</span>` 
+            : `<span style="color: #8E8E93; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">미입력</span>`;
         
         html += `
-        <div style="background: rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <div style="font-size: 13px; color: #fff;">
-                <span style="color: #8E8E93; margin-right: 8px; font-weight:500;">[${catNames[item.category] || '기타'}]</span> ${item.name}
+        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            
+            <div style="flex: 1; min-width: 0; padding-right: 15px; line-height: 1.4;">
+                <span style="color: #8E8E93; font-size: 11px; font-weight:600; margin-right: 4px; display: inline-block;">[${catNames[item.category] || '기타'}]</span> 
+                <span style="font-size: 13.5px; color: #fff; font-weight: 600; word-break: keep-all; display: inline;">${item.name}</span>
             </div>
-            <div style="display: flex; align-items: center; gap: 12px;">
+            
+            <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
                 <div>${countDisplay}</div>
-                <button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--error); padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">삭제</button>
+                <button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(255, 69, 58, 0.1)'" onmouseout="this.style.background='rgba(255, 69, 58, 0.05)'">삭제</button>
             </div>
         </div>`;
     });
@@ -10216,17 +10222,22 @@ window.mo_showGraduation = function(partnerName) {
 
             // 6. 도넛 차트 그리기 (마진율 조종석)
             const canvas = document.getElementById('mo-fin-donut-chart');
-            if(canvas) {
+            const emptyMsg = document.getElementById('mo-fin-empty-msg');
+            const chartZone = document.getElementById('mo-fin-chart-zone');
+
+            if(canvas && emptyMsg && chartZone) {
                 if(window.moFinChart) window.moFinChart.destroy();
                 const ctx = canvas.getContext('2d');
                 
+                // 🌟 [팀장 픽스] 데이터가 하나도 없으면 차트 구역을 닫고 안내문을 켭니다.
                 if(totalRevenue === 0 && totalFixedCost === 0 && totalVariableCost === 0) {
-                     window.moFinChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: { labels: ['데이터 없음'], datasets: [{ data: [1], backgroundColor: ['#2C2C2E'], borderWidth: 0 }] },
-                        options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { display: false }, tooltip: { enabled: false } } }
-                    });
+                    emptyMsg.style.display = 'block';
+                    chartZone.style.display = 'none';
                     return;
+                } else {
+                    // 데이터가 생기면 안내문을 끄고 차트 구역을 엽니다!
+                    emptyMsg.style.display = 'none';
+                    chartZone.style.display = 'block';
                 }
 
                 // 적자일 경우 도넛 차트가 꼬이지 않게 순이익 영역은 0으로 방어
@@ -10899,6 +10910,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // 시트 안의 스크롤이 맨 위쪽(0)일 때만 '당겨서 닫기' 발동! (글 읽으려고 스크롤 내릴 땐 방해 안 함)
             if (sheet.scrollTop <= 5) { 
                 startY = e.touches[0].clientY;
+                currentY = startY; // 🌟 [핵심 픽스] 이전 스와이프 위치(유령 데이터)를 현재 위치로 강제 리셋!
                 isDragging = true;
                 sheet.style.transition = 'none'; // 손가락에 쫀득하게 붙게 하려고 애니메이션 끄기
             }
@@ -10930,11 +10942,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 고무줄 튕기듯 제자리 폼으로 원상복구 시키고
                 sheet.style.transform = ''; 
                 
-                // 각 시트에 맞는 닫기 버튼(함수)을 대신 눌러줌
+               // 각 시트에 맞는 닫기 버튼(함수)을 대신 눌러줌
                 if(sheet.id === 'calendar-sheet' && typeof toggleCalendarSheet === 'function') toggleCalendarSheet();
                 else if(sheet.id === 'quest-sheet' && typeof toggleQuestSheet === 'function') toggleQuestSheet();
-                // 🌟 [팀장 픽스] 새로 만든 인사 명부 제어판(바텀 시트)도 스와이프 다운 시 닫히도록 엔진에 추가!
                 else if(sheet.id === 'staff-ctrl-sheet' && typeof mo_closeStaffControl === 'function') mo_closeStaffControl();
+                // 🌟 [신규 추가] 재고 현황 & 마스터 백과사전 바텀 시트 스와이프 닫기 연결!
+                else if(sheet.id === 'stock-status-sheet' && typeof mo_closeStockStatusSheet === 'function') mo_closeStockStatusSheet();
+                else if(sheet.id === 'stock-master-sheet' && typeof mo_closeStockMasterSheet === 'function') mo_closeStockMasterSheet();
             } else {
                 // 살짝 내리다 말았으면 제자리로 팅~ 하고 복구
                 sheet.style.transform = ''; 
@@ -11850,6 +11864,38 @@ window.triggerQAData = async function() {
         await AlignModal.alert("🚀 [3개월 시뮬레이션 완료]\n총 4명의 디자이너가 활약한 90일 치의 데이터가 성공적으로 적재되었습니다.\n(컬러, 펌, 클리닉 색상을 모두 확인해 보세요!)", "풀로드 완성");
         location.reload();
     }
+};
+
+// 🌟 [임시 테스트용] 재무 대시보드 도넛 차트 강제 오픈 마법사
+window.injectDummyFinanceData = function() {
+    const today = new Date();
+    const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+    
+    // 1. 가상의 '이번 달 매출 및 인건비' 데이터를 금고에 강제로 찔러넣습니다.
+    let salesData = JSON.parse(localStorage.getItem('alignSalesData')) || [];
+    salesData.push({
+        date: `${currentMonthStr}-15`,
+        name: '더미 디자이너',
+        gross: 15000000, // 가상 매출: 1,500만 원
+        profit: 5000000  // 가상 인건비 지급액: 500만 원
+    });
+    localStorage.setItem('alignSalesData', JSON.stringify(salesData));
+
+    // 2. 가상의 '지출 내역'을 화면 입력창에 자동으로 타이핑해줍니다.
+    const rentEl = document.getElementById('fin-exp-rent');
+    const utilEl = document.getElementById('fin-exp-util');
+    const markEl = document.getElementById('fin-exp-marketing');
+    const matEl = document.getElementById('fin-exp-material');
+
+    if(rentEl) rentEl.value = "1,500,000";
+    if(utilEl) utilEl.value = "300,000";
+    if(markEl) markEl.value = "500,000";
+    if(matEl) matEl.value = "1,200,000";
+
+    // 3. 차트 계산기를 강제로 돌려서 닫혀있던 공간을 열어젖힙니다!
+    if(typeof mo_calcFinance === 'function') mo_calcFinance();
+    
+    if(typeof app !== 'undefined' && app.toast) app.toast("더미 데이터 주입 완료! 차트가 열립니다 📊");
 };
 
 
