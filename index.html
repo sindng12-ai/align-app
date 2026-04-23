@@ -1223,9 +1223,9 @@ input, textarea {
         }
 
 /* 🌟 [스와이프 제스처 엔진] OPERATION 결재 전용 스타일 */
-        .swipe-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.5); }
-        .swipe-bg { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; z-index: 1; }
-        .swipe-bg-left { background: rgba(50, 215, 75, 0.2); color: var(--daily-green); height: 100%; display: flex; align-items: center; padding-left: 25px; font-weight: 800; font-size: 13px; width: 50%; justify-content: flex-start; }
+        /* 🌟 [팀장 픽스] flex-shrink: 0; 을 추가하여 아무리 좁은 공간에 갇혀도 카드가 절대 위아래로 찌그러지지 않게 락(Lock)을 겁니다! */
+        .swipe-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 16px; margin-bottom: 12px; border: 1px solid rgba(255,255,255,0.06); background: rgba(0,0,0,0.5); flex-shrink: 0; }
+        .swipe-bg { position: absolute; inset: 0; display: flex; justify-content: space-between; align-items: center; z-index: 1; }        .swipe-bg-left { background: rgba(50, 215, 75, 0.2); color: var(--daily-green); height: 100%; display: flex; align-items: center; padding-left: 25px; font-weight: 800; font-size: 13px; width: 50%; justify-content: flex-start; }
         .swipe-bg-right { background: rgba(255, 69, 58, 0.2); color: var(--error); height: 100%; display: flex; align-items: center; padding-right: 25px; font-weight: 800; font-size: 13px; width: 50%; justify-content: flex-end; }
         .swipe-front { position: relative; background: #1C1C1E; width: 100%; z-index: 2; transition: transform 0.3s cubic-bezier(0.2, 1, 0.2, 1); padding: 18px; border-radius: 16px; box-sizing: border-box; }
         .swipe-front.swiping { transition: none; }
@@ -1700,19 +1700,18 @@ input, textarea {
                     </div>
                 </div> </div> <div id="mo-page-oper" class="mo-page">
                 
-                <div style="display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 20px;">
-                    <div class="align-panel-red" style="margin-bottom: 0;">
+                <div class="align-panel-red" style="margin-bottom: 0;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <span style="font-size: 14px; font-weight: 800; color: var(--error);">🚨 통합 미결재 서류함</span>
+                            <span style="font-size: 14px; font-weight: 800; color: var(--error);">통합 미결재 서류함</span>
                             <button onclick="mo_renderPendingOrders(); mo_renderExpReports();" style="background: transparent; border: 1px solid rgba(255,69,58,0.5); color: var(--error); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">새로고침</button>
                         </div>
                         
-                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">📦 파트너 비품 발주 요청</div>
-                        <div id="mo-pending-orders-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;"></div>
+                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">파트너 비품 발주 요청</div>
+                        <div id="mo-pending-orders-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 420px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;"></div>
                         
                         <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-bottom: 20px;">
                             <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('mo-completed-orders-wrap'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
-                                <span style="font-size: 12px; font-weight: 700; color: #8E8E93;">✅ 최근 발주 승인 내역 (최대 5건)</span>
+                                <span style="font-size: 12px; font-weight: 700; color: #8E8E93;">최근 발주 승인 내역 (최대 5건)</span>
                                 <span style="font-size: 10px; color: #5C6370;">펼치기 ▼</span>
                             </div>
                             <div id="mo-completed-orders-wrap" style="display: none; margin-top: 10px; animation: fadeUp 0.3s ease;">
@@ -1720,8 +1719,8 @@ input, textarea {
                             </div>
                         </div>
 
-                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">⚠️ 유통기한 임박 신고 센터</div>
-                        <div id="mo-exp-report-list" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px;">유통기한 임박 신고 센터</div>
+                        <div id="mo-exp-report-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;"></div>
                     </div>
                 </div>
 
@@ -8231,8 +8230,8 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                                         <div style="display: flex; align-items: center; gap: 6px;"><span style="font-size: 10px; color: #8E8E93; opacity: 0.4;">FROM</span><span style="font-weight: 600; color: #8E8E93; font-size: 12px;">${order.user}</span></div>
                                         <div style="font-size: 10px; color: #5C6370; opacity: 0.8;">${order.date}</div>
                                     </div>
-                                    <div style="font-size: 11px; font-weight: 700; color: #8E8E93; letter-spacing: -0.3px; display: flex; align-items: center; gap: 4px;">
-                                        좌우로 스와이프 <span style="font-size: 14px; animation: pulse 1.5s infinite;">👉</span>
+                                    <div style="font-size: 10px; font-weight: 800; color: #5C6370; letter-spacing: 1px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 6px;">
+                                        SWIPE <span style="font-size: 14px; color: var(--accent-gold);">⟷</span>
                                     </div>
                                 </div>
                             </div>
@@ -8360,8 +8359,8 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                                 <div style="font-weight: 700; color: var(--error); margin-bottom: 4px;">${item.item}</div>
                                 <div style="font-size: 11px; color: #8E8E93;">신고자: <span style="color:var(--daily-green); font-weight:600;">${item.user}</span> | ${item.date.split(' ')[0]}</div>
                             </div>
-                            <div style="font-size: 11px; font-weight: 700; color: #8E8E93; letter-spacing: -0.3px; display: flex; align-items: center; gap: 4px;">
-                                스와이프 <span style="font-size: 14px; animation: pulse 1.5s infinite;">👉</span>
+                            <div style="font-size: 10px; font-weight: 800; color: #5C6370; letter-spacing: 1px; font-family: 'Montserrat', sans-serif; display: flex; align-items: center; gap: 6px;">
+                                SWIPE <span style="font-size: 14px; color: var(--accent-gold);">⟷</span>
                             </div>
                         </div>
                     </div>
