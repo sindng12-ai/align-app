@@ -1676,7 +1676,7 @@ input, textarea {
                             <button onclick="mo_renderPendingOrders(); mo_renderExpReports();" style="background: transparent; border: 1px solid rgba(255,69,58,0.5); color: var(--error); padding: 4px 8px; border-radius: 6px; font-size: 10px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">새로고침</button>
                         </div>
                         
-                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">파트너 비품 발주 요청</div>
+                        <div style="font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 8px;">비품 발주 요청</div>
                         <div id="mo-pending-orders-list" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; max-height: 420px; overflow-y: auto; padding-right: 5px; -webkit-overflow-scrolling: touch;"></div>
                         
                         <div style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; margin-bottom: 20px;">
@@ -1728,13 +1728,26 @@ input, textarea {
                     <button onclick="injectDummyFinanceData()" style="margin-top: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">🧪 차트 애니메이션 테스트</button>
                 </div>
                 
-                <div id="mo-fin-chart-zone" style="display: none; position: relative; height: 180px; width: 100%; margin-top: 20px; animation: fadeUp 0.5s ease;"><canvas id="mo-fin-donut-chart"></canvas></div>
+                <div id="mo-fin-chart-zone" style="display: none; margin-top: 25px; animation: fadeUp 0.4s ease;">
+                    <div style="width: 100%; height: 10px; background: rgba(0,0,0,0.5); border-radius: 5px; display: flex; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);">
+                        <div id="fin-bar-net" style="height: 100%; background: var(--accent-gold); width: 0%; transition: width 1s cubic-bezier(0.2, 1, 0.2, 1);"></div>
+                        <div id="fin-bar-labor" style="height: 100%; background: #5C6370; width: 0%; transition: width 1s cubic-bezier(0.2, 1, 0.2, 1); border-left: 1px solid rgba(0,0,0,0.3);"></div>
+                        <div id="fin-bar-fixed" style="height: 100%; background: #3A3A3C; width: 0%; transition: width 1s cubic-bezier(0.2, 1, 0.2, 1); border-left: 1px solid rgba(0,0,0,0.3);"></div>
+                        <div id="fin-bar-var" style="height: 100%; background: #1C1C1E; width: 0%; transition: width 1s cubic-bezier(0.2, 1, 0.2, 1); border-left: 1px solid rgba(0,0,0,0.3);"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 14px; padding: 0 4px;">
+                        <div id="fin-legend-net" style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #fff; font-weight: 600; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:var(--accent-gold); box-shadow: 0 0 5px rgba(212,175,55,0.5);"></span>순수익 <span id="fin-pct-net" style="color:var(--accent-gold); margin-left:2px; font-family:'Montserrat', sans-serif;">0%</span></div>
+                        <div id="fin-legend-labor" style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8E8E93; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:#5C6370;"></span>인건비 <span id="fin-pct-labor" style="color:#5C6370; margin-left:2px; font-family:'Montserrat', sans-serif;">0%</span></div>
+                        <div id="fin-legend-fixed" style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8E8E93; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:#3A3A3C;"></span>고정비 <span id="fin-pct-fixed" style="color:#5C6370; margin-left:2px; font-family:'Montserrat', sans-serif;">0%</span></div>
+                        <div id="fin-legend-var" style="display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8E8E93; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'"><span style="display:inline-block; width:8px; height:8px; border-radius:2px; background:#1C1C1E; border: 1px solid rgba(255,255,255,0.1);"></span>변동비 <span id="fin-pct-var" style="color:#5C6370; margin-left:2px; font-family:'Montserrat', sans-serif;">0%</span></div>
+                    </div>
+                </div>
             </div>
 
                 <div class="align-panel" style="padding-bottom: 20px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <span style="font-size: 15px; font-weight: 800; color: #fff;">💸 직원 페이롤 (인건비) 정산</span>
-                        <button onclick="mo_renderFinanceList();" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #E8E8ED; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">명단 동기화</button>
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">직원 페이롤 (인건비) 정산</span>
+                        <button onclick="mo_renderFinanceList(); if(typeof app !== 'undefined') app.toast('정산 명단이 최신화되었습니다.');" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15); color: #E8E8ED; padding: 6px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">명단 동기화</button>
                     </div>
                     <div style="font-size: 11px; color: #8E8E93; margin-bottom: 20px;">정산할 직원을 선택하세요. (기본급/인센티브 자동 합산)</div>
                     
@@ -1745,70 +1758,125 @@ input, textarea {
 
                 <div class="align-panel">
                     <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="const d = document.getElementById('mo-fin-expense-panel'); d.style.display = d.style.display === 'none' ? 'flex' : 'none';">
-                        <span style="font-size: 15px; font-weight: 800; color: #fff;">📉 매장 지출 (고정비/변동비) 입력</span>
+                        <span style="font-size: 15px; font-weight: 800; color: #fff;">매장 지출 (고정비/변동비) 입력</span>
                         <span style="font-size: 12px; color: #8E8E93;">펼치기 ▼</span>
                     </div>
                     <div id="mo-fin-expense-panel" style="display: none; flex-direction: column; gap: 10px; margin-top: 20px; animation: fadeUp 0.3s ease;">
-                        <label class="m-input-item" style="margin:0; padding: 14px 15px;"><div class="m-item-info"><div class="m-item-label" style="font-size:12px;">월 임대료</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="fin-exp-rent" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div></label>
-                        <label class="m-input-item" style="margin:0; padding: 14px 15px;"><div class="m-item-info"><div class="m-item-label" style="font-size:12px;">관리비/공과금</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="fin-exp-util" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div></label>
-                        <label class="m-input-item" style="margin:0; padding: 14px 15px;"><div class="m-item-info"><div class="m-item-label" style="font-size:12px;">마케팅/광고비</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="fin-exp-marketing" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div></label>
-                        <label class="m-input-item" style="margin:0; padding: 14px 15px;"><div class="m-item-info"><div class="m-item-label" style="font-size:12px;">재료/비품/주차비</div></div><div class="m-item-input-wrapper"><input type="text" inputmode="numeric" id="fin-exp-material" class="m-item-input num-format" placeholder="자동 합산+수동 수정" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div></label>
-                        <button onclick="if(typeof mo_saveFinanceExpenses === 'function') mo_saveFinanceExpenses();" style="width: 100%; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1); padding: 14px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 5px; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">지출 내역 안전 저장</button>
+                        
+                        <label class="m-input-item" style="margin:0; padding: 14px 15px;">
+                            <div class="m-item-info" style="width: 40%;"><div class="m-item-label" style="font-size:12px;">월 임대료</div></div>
+                            <div class="m-item-input-wrapper" style="width: 60%;"><input type="text" inputmode="numeric" id="fin-exp-rent" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div>
+                        </label>
+                        
+                        <label class="m-input-item" style="margin:0; padding: 14px 15px;">
+                            <div class="m-item-info" style="width: 40%;"><div class="m-item-label" style="font-size:12px;">관리비/공과금</div></div>
+                            <div class="m-item-input-wrapper" style="width: 60%;"><input type="text" inputmode="numeric" id="fin-exp-util" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div>
+                        </label>
+                        
+                        <label class="m-input-item" style="margin:0; padding: 14px 15px;">
+                            <div class="m-item-info" style="width: 40%;"><div class="m-item-label" style="font-size:12px;">마케팅/광고비</div></div>
+                            <div class="m-item-input-wrapper" style="width: 60%;"><input type="text" inputmode="numeric" id="fin-exp-marketing" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div>
+                        </label>
+                        
+                        <label class="m-input-item" style="margin:0; padding: 14px 15px;">
+                            <div class="m-item-info" style="width: 40%;"><div class="m-item-label" style="font-size:12px;">재료/비품/기타</div></div>
+                            <div class="m-item-input-wrapper" style="width: 60%;"><input type="text" inputmode="numeric" id="fin-exp-material" class="m-item-input num-format" placeholder="0" oninput="if(typeof mo_calcFinance === 'function') mo_calcFinance();"><span class="m-item-unit">원</span></div>
+                        </label>
+                        
+                        <button onclick="if(typeof mo_saveFinanceExpenses === 'function') mo_saveFinanceExpenses();" style="width: 100%; background: #2C2C2E; color: #E8E8ED; border: 1px solid rgba(255,255,255,0.1); padding: 16px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 13px; margin-top: 5px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: 0.2s;" onmousedown="this.style.transform='scale(0.98)'; this.style.background='rgba(255,255,255,0.1)';" onmouseup="this.style.transform='scale(1)'; this.style.background='#2C2C2E';">지출 내역 안전 저장</button>
                     </div>
                 </div>
 
-                <div style="width: 100%; box-sizing: border-box; background: rgba(10, 10, 15, 0.8); border: 1px solid rgba(212,175,55,0.4); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <div style="font-size: 14px; font-weight: 800; color: var(--accent-gold); display: flex; align-items: center; gap: 6px;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                            AI CFO MENTOR
+                <div style="background: linear-gradient(145deg, rgba(30,28,24,1) 0%, rgba(10,10,12,1) 100%); border: 1px solid rgba(212,175,55,0.15); padding: 25px 20px; border-radius: 16px; margin-bottom: 20px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                    
+                    <div style="position: absolute; top: -40px; right: -40px; width: 120px; height: 120px; background: rgba(212,175,55,0.1); filter: blur(40px); border-radius: 50%; pointer-events: none;"></div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; position: relative; z-index: 1;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="background: rgba(212,175,55,0.1); color: var(--accent-gold); width: 26px; height: 26px; display: flex; justify-content: center; align-items: center; border-radius: 8px; font-size: 14px; font-weight: 800; border: 1px solid rgba(212,175,55,0.2);">₩</span>
+                            <span style="font-size: 14px; font-weight: 800; color: var(--accent-gold); font-family: 'Montserrat', sans-serif; letter-spacing: 1px;">AI CFO MENTOR</span>
                         </div>
-                        <button id="mo-cfo-btn" onclick="if(typeof mo_callAICfo === 'function') mo_callAICfo();" style="background: var(--accent-gold); color: #000; border: none; padding: 6px 12px; border-radius: 6px; font-weight: 800; font-size: 11px; cursor: pointer; box-shadow: 0 2px 8px rgba(212,175,55,0.4);">재무 컨설팅 받기</button>
+                        
+                        <button id="mo-cfo-btn" onclick="if(typeof mo_callAICfo === 'function') mo_callAICfo();" style="background: var(--accent-gold); color: #000; border: none; padding: 7px 14px; border-radius: 6px; font-size: 11.5px; font-weight: 800; cursor: pointer; box-shadow: 0 4px 10px rgba(212,175,55,0.25); transition: 0.3s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">재무 컨설팅 받기</button>
                     </div>
-                    <div id="mo-cfo-report" style="font-size: 13px; color: #E8E8ED; line-height: 1.6; word-break: keep-all; min-height: 60px;">
+                    
+                    <div id="mo-cfo-report" style="color: #E8E8ED; font-size: 13.5px; line-height: 1.7; word-break: keep-all; min-height: 60px; position: relative; z-index: 1;">
                         지출 내역을 입력하고 컨설팅 버튼을 누르면 AI가 이번 달 세금 방어 및 통장 쪼개기 가이드를 브리핑합니다.
                     </div>
                 </div>
 
-                <div class="align-panel-red">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; cursor: pointer;" onclick="const d = document.getElementById('mo-tax-guide-panel'); d.style.display = d.style.display === 'none' ? 'grid' : 'none';">
-                        <span style="font-size: 14px; font-weight: 800; color: #fff;">🚨 TAX & SCHEDULE (세무 일정)</span>
-                        <span style="font-size: 11px; font-weight: 600; color: var(--error); background: rgba(255, 69, 58, 0.1); padding: 4px 8px; border-radius: 4px;">가이드 보기 ▼</span>
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; cursor: pointer;" onclick="const d = document.getElementById('mo-tax-guide-panel'); const icon = this.querySelector('.tax-arr'); if(d.style.display === 'none') { d.style.display = 'grid'; icon.style.transform = 'rotate(180deg)'; } else { d.style.display = 'none'; icon.style.transform = 'rotate(0deg)'; }">
+                        <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                            
+                            <span style="font-size: 14px; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">TAX & SCHEDULE</span>
+                        </div>
+                        
+                        <div style="display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; flex-shrink: 0; transition: 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                            <span style="font-size: 11px; font-weight: 700; color: #E8E8ED; white-space: nowrap;">가이드 보기</span>
+                            <span class="tax-arr" style="font-size: 10px; color: #8B949E; transition: transform 0.3s ease; display: inline-block;">▼</span>
+                        </div>
                     </div>
+
                     <div id="mo-tax-guide-panel" style="display: none; grid-template-columns: 1fr; gap: 8px;">
+                        
                         <div style="background: rgba(0,0,0,0.4); border-radius: 8px; border-left: 3px solid var(--accent-gold); cursor: pointer; transition: 0.2s;" onclick="const d = this.querySelector('.tax-detail'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
                             <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;">
-                                <div style="font-size: 13px; color: #fff; font-weight: 600;">매월 10일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">원천세 신고 및 납부</span></div>
-                                <div style="font-size: 11px; color: var(--accent-gold); font-weight: 700;">매월 필수 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
+                                <div style="font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">매월 10일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">원천세 신고</span></div>
+                                <div style="font-size: 11px; color: var(--accent-gold); font-weight: 700; flex-shrink: 0; white-space: nowrap;">매월 필수 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
                             </div>
-                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px;">
-                                <span style="color: #fff; font-weight: 600;">💡 원천세란?</span><br>직원(4대보험 가입자, 3.3% 프리랜서) 급여를 지급할 때 떼어둔 세금을 매장 이름으로 국가에 납부하는 날입니다.<br><br>
+                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px; word-break: keep-all;">
+                                <span style="color: #fff; font-weight: 600;">💡 원천세란?</span><br>직원(4대보험 파트너, 3.3% 디자이너) 급여를 지급할 때 떼어둔 세금을 매장 이름으로 국가에 납부하는 날입니다.<br><br>
                                 <span style="color: var(--accent-gold); font-weight: 600;">📋 준비 사항 (세무대리인 전달용)</span><br>• 전월 직원별 최종 급여 정산 대장<br>• 신규 입사자/퇴사자 명단 및 신분증 사본
                             </div>
                         </div>
+
+                        <div style="background: rgba(0,0,0,0.4); border-radius: 8px; border-left: 3px solid #0A84FF; cursor: pointer; transition: 0.2s;" onclick="const d = this.querySelector('.tax-detail'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                            <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">매월 말일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">지급명세서 제출</span></div>
+                                <div style="font-size: 11px; color: #0A84FF; font-weight: 700; flex-shrink: 0; white-space: nowrap;">매월 필수 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
+                            </div>
+                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px; word-break: keep-all;">
+                                <span style="color: #fff; font-weight: 600;">💡 간이지급명세서란?</span><br>3.3% 프리랜서 디자이너에게 수당을 지급했다는 상세 내역을 국가에 매월 보고하는 절차입니다.<br><br>
+                                <span style="color: #ff453a; font-size: 11px;">※ 기한(말일)을 하루라도 넘기면 지급액의 일정 비율이 가산세(벌금)로 부과되므로 각별히 주의해야 합니다.</span>
+                            </div>
+                        </div>
+
                         <div style="background: rgba(0,0,0,0.4); border-radius: 8px; border-left: 3px solid var(--daily-green); cursor: pointer; transition: 0.2s;" onclick="const d = this.querySelector('.tax-detail'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
                             <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;">
-                                <div style="font-size: 13px; color: #fff; font-weight: 600;">1월 / 7월 25일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">부가가치세 신고</span></div>
-                                <div style="font-size: 11px; color: var(--daily-green); font-weight: 700;">반기 1회 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
+                                <div style="font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">1월 / 7월 25일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">부가세 신고</span></div>
+                                <div style="font-size: 11px; color: var(--daily-green); font-weight: 700; flex-shrink: 0; white-space: nowrap;">반기 1회 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
                             </div>
-                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px;">
+                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px; word-break: keep-all;">
                                 <span style="color: #fff; font-weight: 600;">💡 부가가치세란?</span><br>미용실 총매출에 포함된 부가세(10%)를 정산하여 납부하는, 1년 중 가장 큰 목돈이 나가는 세금입니다.<br><br>
                                 <span style="color: var(--daily-green); font-weight: 600;">📋 준비 사항</span><br>• 카드/현금영수증 외 순수 계좌이체 매출 내역<br>• 종이 세금계산서 받은 내역 (재료비, 월세 등)<br>
-                                <span style="color: #ff453a; font-size: 11px;">※ 부가세 달을 대비해 평소 매출의 일정 비율을 통장에 비축해 두는 것이 안전합니다.</span>
+                                <span style="color: #ff453a; font-size: 11px;">※ 부가세 달을 대비해 평소 매출의 10% 정도를 별도 통장에 비축해 두는 것이 안전합니다.</span>
                             </div>
                         </div>
+
+                        <div style="background: rgba(0,0,0,0.4); border-radius: 8px; border-left: 3px solid #FF9F0A; cursor: pointer; transition: 0.2s;" onclick="const d = this.querySelector('.tax-detail'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
+                            <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">매년 2월 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">정직원 연말정산</span></div>
+                                <div style="font-size: 11px; color: #FF9F0A; font-weight: 700; flex-shrink: 0; white-space: nowrap;">연 1회 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
+                            </div>
+                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px; word-break: keep-all;">
+                                <span style="color: #fff; font-weight: 600;">💡 연말정산이란?</span><br>4대보험이 가입된 정직원(파트너, 매니저 등)들의 1년 치 근로소득세를 정산하여 2월 급여에 환급 또는 추가 징수하는 달입니다.<br><br>
+                                <span style="color: #FF9F0A; font-weight: 600;">📋 준비 사항</span><br>• 정직원들에게 1월 중순 경 '홈택스 연말정산 간소화 PDF 파일' 제출 안내
+                            </div>
+                        </div>
+
                         <div style="background: rgba(0,0,0,0.4); border-radius: 8px; border-left: 3px solid var(--error); cursor: pointer; transition: 0.2s;" onclick="const d = this.querySelector('.tax-detail'); d.style.display = d.style.display === 'none' ? 'block' : 'none';">
                             <div style="padding: 12px 15px; display: flex; justify-content: space-between; align-items: center;">
-                                <div style="font-size: 13px; color: #fff; font-weight: 600;">5월 31일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">종합소득세 신고</span></div>
-                                <div style="font-size: 11px; color: var(--error); font-weight: 700;">연 1회 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
+                                <div style="font-size: 13px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 10px;">5월 31일 <span style="font-size: 11px; color: #8E8E93; margin-left: 6px; font-weight: 400;">종합소득세 신고</span></div>
+                                <div style="font-size: 11px; color: var(--error); font-weight: 700; flex-shrink: 0; white-space: nowrap;">연 1회 <span style="font-size: 9px; color:#8E8E93; margin-left: 4px;">▼</span></div>
                             </div>
-                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px;">
-                                <span style="color: #fff; font-weight: 600;">💡 종합소득세란?</span><br>1년 동안 발생한 미용실의 '순이익(매출-지출)'에 대해 원장님이 납부하는 최종 세금입니다. 매장 소속 3.3% 프리랜서 디자이너들도 5월에 각자 별도로 신고해야 합니다.<br><br>
-                                <span style="color: var(--error); font-weight: 600;">📋 준비 사항</span><br>• 사업용 신용카드 외 지출 내역 (경조사 등)<br>• 각종 대출 이자 상환 내역 및 기부금 영수증<br>• 프리랜서 디자이너들에게 5월 종소세 신고 안내
+                            <div class="tax-detail" style="display: none; padding: 0 15px 15px 15px; font-size: 12px; color: #AEAEB2; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 10px; word-break: keep-all;">
+                                <span style="color: #fff; font-weight: 600;">💡 종합소득세란?</span><br>1년 동안 발생한 미용실의 '순이익(매출-지출)'에 대해 원장님이 납부하는 최종 세금입니다.<br><br>
+                                <span style="color: var(--error); font-weight: 600;">📋 준비 사항</span><br>• 사업용 신용카드 외 지출 내역 (경조사 등)<br>• 각종 대출 이자 상환 내역 및 기부금 영수증<br>
+                                <span style="color: #ff453a; font-size: 11px;">※ 매장 소속 3.3% 프리랜서 디자이너들도 5월에 각자 별도로 신고해야 함을 안내해 주세요.</span>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </div> </div> </div>
 
             </div>
 
@@ -1828,75 +1896,86 @@ input, textarea {
                         <button onclick="m_addQuest()" style="background: var(--daily-green); color: #000; border: none; padding: 14px; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(50,215,75,0.2);">+ 새 퀘스트 전 직원 배포</button>
                     </div>
                     
-                    <button id="admin-quest-toggle-btn" onclick="toggleAdminQuestList()" style="width: 100%; background: rgba(50, 215, 75, 0.1); border: 1px dashed rgba(50, 215, 75, 0.4); color: var(--daily-green); padding: 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;">
-                        📂 배포된 퀘스트 목록 보기 ▼
+                    <button id="admin-quest-toggle-btn" onclick="toggleAdminQuestList()" style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #fff; padding: 14px; border-radius: 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 6px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
+                        배포된 퀘스트 목록 보기 ▼
                     </button>
 
                     <div id="admin-quest-list" style="display: none; flex-direction: column; gap: 8px; margin-top: 15px;"></div>
                 </div>
 
                 <div class="align-panel-gold">
-                    <div style="font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 10px;">🔥 디자이너 퀘스트 커스텀</div>
-                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">라운지의 불꽃(🔥) 버튼 메뉴와 명예의 전당 타이틀을 실시간으로 변경합니다.</div>
+                    <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: var(--accent-gold); margin-bottom: 10px; letter-spacing: 0.5px;">디자이너 퀘스트 커스텀</div>
+                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 20px; line-height: 1.5; word-break: keep-all;">디자이너 라운지의 퀵 액션 메뉴와 명예의 전당 랭킹 타이틀을 실시간으로 동기화합니다.</div>
                     
-                    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 25px;">
                         <div>
-                            <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">1번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="mo-q-emoji-1" value="💳" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
-                                <input type="text" id="mo-q-title-1" value="N페이 결제" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
+                            <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--accent-gold); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px;">MISSION 01 <span style="font-family: 'Pretendard', sans-serif; font-weight: 500; color: #5C6370; font-size: 10px; margin-left: 4px;">(아이콘 / 타이틀)</span></div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="mo-q-emoji-1" value="💳" style="width: 50px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
+                                <input type="text" id="mo-q-title-1" value="N페이 결제" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 10px; font-size: 13px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
                             </div>
                         </div>
                         <div>
-                            <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">2번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="mo-q-emoji-2" value="💬" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
-                                <input type="text" id="mo-q-title-2" value="리뷰 / 답글" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
+                            <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--accent-gold); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px;">MISSION 02 <span style="font-family: 'Pretendard', sans-serif; font-weight: 500; color: #5C6370; font-size: 10px; margin-left: 4px;">(아이콘 / 타이틀)</span></div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="mo-q-emoji-2" value="💬" style="width: 50px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
+                                <input type="text" id="mo-q-title-2" value="리뷰 / 답글" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 10px; font-size: 13px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
                             </div>
                         </div>
                         <div>
-                            <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">3번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="mo-q-emoji-3" value="📸" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
-                                <input type="text" id="mo-q-title-3" value="B/A 촬영" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
+                            <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--accent-gold); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px;">MISSION 03 <span style="font-family: 'Pretendard', sans-serif; font-weight: 500; color: #5C6370; font-size: 10px; margin-left: 4px;">(아이콘 / 타이틀)</span></div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="mo-q-emoji-3" value="📸" style="width: 50px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
+                                <input type="text" id="mo-q-title-3" value="B/A 촬영" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 10px; font-size: 13px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
                             </div>
                         </div>
                         <div>
-                            <div style="font-size: 10px; color: #8E8E93; margin-bottom: 4px;">4번 미션 (이모지 / 이름)</div>
-                            <div style="display: flex; gap: 8px;">
-                                <input type="text" id="mo-q-emoji-4" value="🗓️" style="width: 45px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 8px; font-size: 16px; outline: none;">
-                                <input type="text" id="mo-q-title-4" value="다음예약 픽스" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 8px; font-size: 13px; outline: none;">
+                            <div style="font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--accent-gold); font-weight: 700; margin-bottom: 6px; letter-spacing: 1px;">MISSION 04 <span style="font-family: 'Pretendard', sans-serif; font-weight: 500; color: #5C6370; font-size: 10px; margin-left: 4px;">(아이콘 / 타이틀)</span></div>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="text" id="mo-q-emoji-4" value="🗓️" style="width: 50px; flex-shrink: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; text-align: center; border-radius: 10px; font-size: 16px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
+                                <input type="text" id="mo-q-title-4" value="다음예약 픽스" style="flex: 1; min-width: 0; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 14px; border-radius: 10px; font-size: 13px; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; this.style.boxShadow='0 0 10px rgba(212,175,55,0.2)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">
                             </div>
                         </div>
                     </div>
-                    <button onclick="sys_saveQuests()" style="width: 100%; background: var(--accent-gold); color: #000; border: none; padding: 12px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; box-shadow: 0 4px 10px rgba(212,175,55,0.2);">미션 배포하기 🚀</button>
+                    <button onclick="sys_saveQuests()" style="width: 100%; background: linear-gradient(135deg, var(--accent-gold) 0%, #AA8721 100%); color: #050507; border: none; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 14px; letter-spacing: 0.5px; box-shadow: 0 10px 25px rgba(212,175,55,0.3); transition: 0.2s;" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">설정 저장 및 배포하기</button>
                 </div>
 
                 <div class="align-panel">
-                    <div style="font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 10px;">✅ 데일리 루틴 체크리스트 커스텀</div>
-                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">직원들이 퇴근 전 작성하는 데일리 로그의 3가지 핵심 점검 항목을 매장의 주간 목표에 맞게 변경하세요.</div>
+                    <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: 0.5px;">DAILY ROUTINE CHECKLIST</div>
+                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 20px; line-height: 1.5; word-break: keep-all;">직원들이 퇴근 전 작성하는 데일리 로그의 3가지 핵심 점검 항목을 매장의 주간 목표에 맞게 변경하세요.</div>
                     
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-                        <input type="text" id="mo-chk-1" value="오늘 시술한 고객의 차트(레시피) 작성을 100% 완료했나요?" placeholder="체크리스트 1번 문항" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 6px; font-size: 12px;">
-                        <input type="text" id="mo-chk-2" value="오늘 30분 이상 개인 트레이닝 또는 스터디를 진행했나요?" placeholder="체크리스트 2번 문항" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 6px; font-size: 12px;">
-                        <input type="text" id="mo-chk-3" value="내일 예약 고객 확인 및 근무 구역(경대/트롤리) 마감 청소를 완료했나요?" placeholder="체크리스트 3번 문항" style="background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 12px; border-radius: 6px; font-size: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;">
+                        <div style="position: relative;">
+                            <div style="position: absolute; top: 13px; left: 14px; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 800; color: var(--daily-green);">01</div>
+                            <textarea id="mo-chk-1" placeholder="체크리스트 1번 문항" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 11px 12px 12px 36px; border-radius: 10px; font-size: 12.5px; outline: none; transition: 0.3s; resize: none; font-family: 'Pretendard', sans-serif; line-height: 1.4; word-break: keep-all; height: 46px; overflow: hidden;" onfocus="this.style.borderColor='var(--daily-green)'; this.style.boxShadow='0 0 10px rgba(50,215,75,0.15)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">오늘 시술한 고객의 차트(레시피) 작성을 100% 완료했나요?</textarea>
+                        </div>
+                        <div style="position: relative;">
+                            <div style="position: absolute; top: 13px; left: 14px; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 800; color: var(--daily-green);">02</div>
+                            <textarea id="mo-chk-2" placeholder="체크리스트 2번 문항" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 11px 12px 12px 36px; border-radius: 10px; font-size: 12.5px; outline: none; transition: 0.3s; resize: none; font-family: 'Pretendard', sans-serif; line-height: 1.4; word-break: keep-all; height: 46px; overflow: hidden;" onfocus="this.style.borderColor='var(--daily-green)'; this.style.boxShadow='0 0 10px rgba(50,215,75,0.15)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">오늘 30분 이상 개인 트레이닝 또는 스터디를 진행했나요?</textarea>
+                        </div>
+                        <div style="position: relative;">
+                            <div style="position: absolute; top: 13px; left: 14px; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 800; color: var(--daily-green);">03</div>
+                            <textarea id="mo-chk-3" placeholder="체크리스트 3번 문항" style="width: 100%; box-sizing: border-box; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 11px 12px 12px 36px; border-radius: 10px; font-size: 12.5px; outline: none; transition: 0.3s; resize: none; font-family: 'Pretendard', sans-serif; line-height: 1.4; word-break: keep-all; height: 46px; overflow: hidden;" onfocus="this.style.borderColor='var(--daily-green)'; this.style.boxShadow='0 0 10px rgba(50,215,75,0.15)';" onblur="this.style.borderColor='rgba(255,255,255,0.1)'; this.style.boxShadow='none';">내일 예약 고객 확인 및 근무 구역(경대/트롤리) 마감 청소를 완료했나요?</textarea>
+                        </div>
                     </div>
-                    <button onclick="sys_saveChecklist()" style="width: 100%; background: #333; color: #fff; border: 1px solid #555; padding: 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 13px;">체크리스트 적용하기</button>
+                    <button onclick="sys_saveChecklist()" style="width: 100%; background: rgba(50, 215, 75, 0.08); color: var(--daily-green); border: 1px solid rgba(50, 215, 75, 0.3); padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 10px rgba(50, 215, 75, 0.1);" onmousedown="this.style.transform='scale(0.98)'; this.style.background='rgba(50, 215, 75, 0.15)';" onmouseup="this.style.transform='scale(1)'; this.style.background='rgba(50, 215, 75, 0.08)';">체크리스트 적용하기</button>
                 </div>
 
                 <div class="align-panel">
-                    <div style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 15px;">데이터 백업 및 열람</div>
-                    <button onclick="m_showLastMonthHistory()" style="width: 100%; background: #1C1C1E; border: 1px solid rgba(255,255,255,0.1); color: #E8E8ED; padding: 20px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; letter-spacing: 1px;">
+                    <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: #fff; margin-bottom: 10px; letter-spacing: 0.5px;">DATA ARCHIVE & HISTORY</div>
+                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">매장의 과거 결산 기록과 명예의 전당 히스토리를 열람합니다.</div>
+                    <button onclick="m_showLastMonthHistory()" style="width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: #E8E8ED; padding: 16px; border-radius: 12px; font-size: 13px; font-weight: 700; cursor: pointer; transition: 0.2s; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" onmousedown="this.style.transform='scale(0.98)'" onmouseup="this.style.transform='scale(1)'">
                         지난달 기록 보기 (월별 히스토리)
                     </button>
                 </div>
 
-                <div class="align-panel-red" style="border-style: dashed; margin-bottom: 0;">
-                    <div style="font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 10px;">⏱️ 스마트 월말 정산 및 마감 (Safe-Closing)</div>
-                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 15px; line-height: 1.5; word-break: keep-all;">
-                        특정 월(Month)의 데이터만 핀셋으로 뽑아내어 정산 엑셀 파일로 백업하고, 해당 월의 기록만 안전하게 금고에서 비웁니다. (새로운 달의 데이터는 섞이거나 삭제되지 않습니다.)
+                <div style="background: rgba(255, 69, 58, 0.03); border: 1px solid rgba(255, 69, 58, 0.2); border-radius: 16px; padding: 25px 20px; margin-bottom: 0; box-shadow: inset 0 0 20px rgba(255, 69, 58, 0.02);">
+                    <div style="font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 800; color: var(--error); margin-bottom: 10px; letter-spacing: 0.5px;">SMART SAFE-CLOSING</div>
+                    <div style="font-size: 11.5px; color: #A0AAB5; margin-bottom: 18px; line-height: 1.6; word-break: keep-all;">
+                        특정 월(Month)의 데이터만 핀셋으로 뽑아내어 <br>정산 <strong style="color:#fff;">엑셀(CSV) 파일로 백업</strong>하고, <br>해당 월의 기록만 안전하게 <strong style="color:var(--error);">영구 마감(삭제)</strong> 처리합니다.<br>
+                        <span style="font-size: 10.5px; color: #8E8E93; margin-top: 4px; display: inline-block;">※ 새로운 달의 진행 중인 데이터는 섞이거나 삭제되지 않습니다.</span>
                     </div>
-                    <button onclick="sys_smartMonthlyClose()" style="width: 100%; background: rgba(255,69,58,0.1); color: var(--error); border: 1px solid rgba(255,69,58,0.3); padding: 14px; border-radius: 6px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s;">특정 월(Month) 안전 마감하기</button>
+                    <button onclick="sys_smartMonthlyClose()" style="width: 100%; background: rgba(255, 69, 58, 0.1); color: var(--error); border: 1px solid rgba(255, 69, 58, 0.3); padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 15px rgba(255, 69, 58, 0.15);" onmousedown="this.style.transform='scale(0.98)'; this.style.background='rgba(255, 69, 58, 0.15)';" onmouseup="this.style.transform='scale(1)'; this.style.background='rgba(255, 69, 58, 0.1)';">특정 월(Month) 안전 마감 실행</button>
                 </div>
             </div> </div> </div> 
 
@@ -4502,26 +4581,19 @@ function d_reset() {
        // ==========================================
         // 🌟 [스마트 당월 매칭 & 본인 확인] 잔상 데이터 완벽 제거
         // ==========================================
-        const lastPayroll = db.get('alignLastPayrollForMonthly', null);
+        let payrollHistory = db.get('alignLastPayrollForMonthly', []);
+        if (!Array.isArray(payrollHistory)) {
+            payrollHistory = payrollHistory ? [payrollHistory] : []; // 하위 호환성 방어
+        }
         
-        // 🔑 황금열쇠 장착
         let currentUser = localStorage.getItem('alignCurrentUser');
-
-        let isMyData = false;
+        const today = new Date();
+        const currentMonthStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+        
+        // 🌟 [단칸방 버그 픽스] 수많은 서류철 중, 내 이름표가 달린 이번 달 찐 데이터만 정확하게 핀셋 추출!
+        const lastPayroll = payrollHistory.find(p => p.name === currentUser && p.date && p.date.startsWith(currentMonthStr));
 
         if (lastPayroll) {
-            const today = new Date();
-            const currentMonthStr = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
-            const payrollMonth = lastPayroll.date ? lastPayroll.date.substring(0, 7) : currentMonthStr;
-
-            const isNameMatched = !lastPayroll.name || !currentUser || (lastPayroll.name === currentUser);
-
-            if (isNameMatched && payrollMonth === currentMonthStr) {
-                isMyData = true;
-            }
-        }
-
-        if (isMyData) {
             if(lastPayroll.service > 0) document.getElementById('m-base-rev').value = lastPayroll.service.toLocaleString('ko-KR');
             if(lastPayroll.premium > 0) document.getElementById('m-prem-rev').value = lastPayroll.premium.toLocaleString('ko-KR');
             if(lastPayroll.product > 0) document.getElementById('m-prod-rev').value = lastPayroll.product.toLocaleString('ko-KR');
@@ -5874,10 +5946,12 @@ function pr_setMode(mode) {
         function calculatePayroll() {
             let displayName = '';
             let saveName = '';
-            // 오피스에서 연 건지 체크하여 이름 유지
-            if(document.getElementById('payroll-close-btn')) {
-                let titleSpan = document.querySelector('#view-payroll .page-title span');
-                saveName = titleSpan ? titleSpan.innerText : '직원';
+            
+            // 🌟 [팀장의 수술 1: 신분 도용 버그 픽스] 
+            // 경영자 오피스에서 들어왔을 경우, 상단 타이틀에 적힌 '직원 이름표'를 정확하게 떼어옵니다!
+            let titleSpan = document.querySelector('#view-payroll .page-title span');
+            if(titleSpan && titleSpan.innerText !== 'PAYROLL') {
+                saveName = titleSpan.innerText.trim();
                 displayName = `${saveName} 님의`;
             } else {
                 const myName = document.getElementById('v-set-name') ? document.getElementById('v-set-name').value.trim() : '';
@@ -5885,6 +5959,7 @@ function pr_setMode(mode) {
                 saveName = myName || '디자이너';
                 displayName = myTitle ? `${myName} ${myTitle}님의` : `${myName} 디자이너님의`;
             }
+            
             document.getElementById('receipt-title').innerText = `${displayName} 급여 명세서`;
 
             // 공제 항목들 가져오기
@@ -5900,13 +5975,27 @@ function pr_setMode(mode) {
             // 💡 투트랙 공용 함수 호출하여 점판 수당 계산
             const productBonus = getTwoTrackProductBonus();
 
+            // 🌟 [팀장의 수술 2: 매출 블랙홀 버그 픽스] 
+            // 기본급 모드든 인센티브 모드든 상관없이, 매장 총매출은 무조건 합산하도록 전원(Scope)을 밖으로 꺼냈습니다!
+            let shopTotalSales = 0;
+            
+            let cartTotal = 0;
+            if(window.pr_currentCart) window.pr_currentCart.forEach(i => cartTotal += i.price);
+            let manualProductRev = pr_parse('pCard') + pr_parse('pNpay') + pr_parse('pCash') + pr_parse('pTrans') + pr_parse('pEtc') + pr_parse('pPoint');
+
+            let serviceRev = pr_parse('sCard') + pr_parse('sNpay') + pr_parse('sCash') + pr_parse('sTrans') + pr_parse('sEtc') + pr_parse('sPoint');
+            let premiumRev = pr_parse('tkCard') + pr_parse('tkNpay') + pr_parse('tkCash') + pr_parse('tkTrans') + pr_parse('tkEtc') + pr_parse('tkPoint') + 
+                             pr_parse('mCard') + pr_parse('mNpay') + pr_parse('mCash') + pr_parse('mTrans') + pr_parse('mEtc') + pr_parse('mPoint');
+            let productRev = manualProductRev + cartTotal;
+
+            shopTotalSales = serviceRev + premiumRev + productRev;
+
             if (pr_mode === 'base') {
                 const baseSalary = pr_parse('pr-base-val');
                 const crossTicketRate = pr_parse('pr-set-tRate') / 100;
-                // 🌟 [팀장의 수술] 기본급 모드용 교차 수당 단독 계산!
                 const externalTicketBonus = (pr_parse('oT') - pr_parse('mT')) * crossTicketRate;
 
-                // 🌟 총수당에 교차 수당을 합산! (본인권 차감이 더 크면 알아서 마이너스 됨)
+                // 직원에게 지급할 총수당
                 gross = baseSalary + productBonus + externalTicketBonus;
                 net = gross - totalDeductions;
 
@@ -5920,7 +6009,6 @@ function pr_setMode(mode) {
                     resP.parentElement.style.display = 'flex';
                 }
                 
-                // 🌟 영수증에 '교차 정산액' 줄도 표시되도록 밖으로 꺼내줌
                 let resE = document.getElementById('resE');
                 if(resE) {
                     resE.innerText = formatNumber(Math.round(externalTicketBonus)) + ' 원';
@@ -5935,16 +6023,14 @@ function pr_setMode(mode) {
                 const mRateCard = pr_parse('pr-set-mRate') / 100;
                 const mRateCash = pr_parse('pr-set-mRateCash') / 100;
                 const crossTicketRate = pr_parse('pr-set-tRate') / 100;
-                const pointRecogRate = pr_parse('pr-set-pntRate') / 100; // 🪙 포인트 인정 비율 로드!
+                const pointRecogRate = pr_parse('pr-set-pntRate') / 100;
 
                 const calcBonusSplit = (prefix, rateCard, rateCash) => {
                     const cardAndNpay = pr_parse(prefix + 'Card') + pr_parse(prefix + 'Npay');
                     const cashTotal = pr_parse(prefix + 'Cash') + pr_parse(prefix + 'Trans') + pr_parse(prefix + 'Etc');
-                    const pointTotal = pr_parse(prefix + 'Point'); // 🪙 입력된 포인트 로드!
+                    const pointTotal = pr_parse(prefix + 'Point'); 
 
-                    // 카드는 수수료 떼고 카드요율 적용
                     const cardBonus = cardAndNpay * (1 - cardFeeRate) * rateCard;
-                    // 현금과 포인트(인정비율 깎은 후)는 수수료 없이 현금요율 적용
                     const cashPointBonus = (cashTotal + (pointTotal * pointRecogRate)) * rateCash;
 
                     return cardBonus + cashPointBonus;
@@ -5955,6 +6041,7 @@ function pr_setMode(mode) {
                 const membershipBonus = calcBonusSplit('m', mRateCard, mRateCash);
                 const externalTicketBonus = (pr_parse('oT') - pr_parse('mT')) * crossTicketRate;
 
+                // 직원에게 지급할 총수당
                 gross = serviceBonus + ticketBonus + membershipBonus + productBonus + externalTicketBonus;
                 net = gross - totalDeductions;
 
@@ -5968,19 +6055,9 @@ function pr_setMode(mode) {
                 document.getElementById('resE').innerText = formatNumber(Math.round(externalTicketBonus)) + ' 원';
             }
 
-            // 🌟 4대 보험 자동 합산용 모터 함수 (calculatePayroll 밖, 전역에 위치해도 좋습니다만 관리를 위해 안에 둠)
-            window.pr_calcInsuranceTotal = function() {
-                const np = pr_parse('ins-np'); const hi = pr_parse('ins-hi');
-                const ei = pr_parse('ins-ei'); const wc = pr_parse('ins-wc');
-                const total = np + hi + ei + wc;
-                const totalInput = document.getElementById('insurance');
-                if(totalInput) totalInput.value = total > 0 ? formatNumber(total) : '';
-            };
-
-            // 영수증에 공제 내역 채워넣기 (4대 보험 분기 처리)
+            // 영수증에 공제 내역 채워넣기 
             document.getElementById('resDeductTax').innerText = formatNumber(Math.round(deductTax)) + ' 원';
             
-            // 🌟 4대 보험 상세 내역 입력 여부 확인
             const ins_np = pr_parse('ins-np'); const ins_hi = pr_parse('ins-hi');
             const ins_ei = pr_parse('ins-ei'); const ins_wc = pr_parse('ins-wc');
             const hasInsDetail = (ins_np + ins_hi + ins_ei + ins_wc) > 0;
@@ -5988,7 +6065,6 @@ function pr_setMode(mode) {
             const insRow = document.getElementById('resDeductIns');
             if (insRow) {
                 if (hasInsDetail) {
-                    // 세부 내역이 있으면 멋지게 나열
                     insRow.innerHTML = `
                         <div style="font-weight: 600; color: #fff; text-align: right;">${formatNumber(Math.round(deductInsurance))} 원</div>
                         <div style="font-size: 11px; color: #5C6370; margin-top: 6px; text-align: right; line-height: 1.6;">
@@ -5999,7 +6075,6 @@ function pr_setMode(mode) {
                         </div>
                     `;
                 } else {
-                    // 세부 내역 없으면 예전처럼 총액만 1줄 표시
                     insRow.innerText = formatNumber(Math.round(deductInsurance)) + ' 원';
                 }
             }
@@ -6011,82 +6086,59 @@ function pr_setMode(mode) {
             document.getElementById('resDeduct').innerText = formatNumber(Math.round(totalDeductions)) + ' 원';
             document.getElementById('resNet').innerText = formatNumber(Math.round(net)) + ' 원';
 
-            // 🌟 [코드 다이어트] 최신 db 엔진 적용
             let savedData = db.get('alignSalesData', []);
-            
-            let shopTotalSales = 0;
-            let serviceRev = 0, premiumRev = 0, productRev = 0;
 
-            // 🌟 [팀장의 수리] 장바구니 총액 계산 (공통)
-            let cartTotal = 0;
-            if(window.pr_currentCart) window.pr_currentCart.forEach(i => cartTotal += i.price);
-            
-            // 수동 점판 추가 입력액
-            let manualProductRev = pr_parse('pCard') + pr_parse('pNpay') + pr_parse('pCash') + pr_parse('pTrans') + pr_parse('pEtc') + pr_parse('pPoint');
-
-            if (pr_mode === 'base') {
-                // 수동 입력액 + 장바구니 총액을 더합니다!
-                productRev = manualProductRev + cartTotal;
-                shopTotalSales = productRev;
-            } else {
-                // 🟢 샵 전체 매출액에 N페이와 포인트까지 100% 누락 없이 합산!
-                serviceRev = pr_parse('sCard') + pr_parse('sNpay') + pr_parse('sCash') + pr_parse('sTrans') + pr_parse('sEtc') + pr_parse('sPoint');
-                premiumRev = pr_parse('tkCard') + pr_parse('tkNpay') + pr_parse('tkCash') + pr_parse('tkTrans') + pr_parse('tkEtc') + pr_parse('tkPoint') + 
-                             pr_parse('mCard') + pr_parse('mNpay') + pr_parse('mCash') + pr_parse('mTrans') + pr_parse('mEtc') + pr_parse('mPoint');
-                
-                // 🌟 수동 입력액 + 장바구니 총액을 더합니다! (기존 Math.max 덮어쓰기 로직 폐기)
-                productRev = manualProductRev + cartTotal;
-
-                shopTotalSales = serviceRev + premiumRev + productRev;
-            }
-
-           // 💡 2. 먼슬리 프로가 꺼내 쓸 수 있도록 3가지 매출액과 '정확한 이름표' 보관!
-            let currentUserForSave = localStorage.getItem('alignCurrentUser'); // 🔑 황금열쇠 장착
-
-            // 🌟 [페이롤 타임머신 엔진] 날짜 꼬리표 세팅
-            const prManualDate = document.getElementById('pr-manual-date')?.value; // "YYYY-MM" 형태
+            // 🌟 페이롤 타임머신 날짜 세팅
+            let currentUserForSave = localStorage.getItem('alignCurrentUser'); 
+            const prManualDate = document.getElementById('pr-manual-date')?.value; 
             const dTime2 = new Date();
-            
-            // 1. 선택한 달이 있으면 적용, 없으면 이번 달
             const currentMonthStr = prManualDate ? prManualDate : `${dTime2.getFullYear()}-${String(dTime2.getMonth() + 1).padStart(2, '0')}`;
-            
-            // 2. 저장용 날짜 꼬리표 (과거 달 선택 시 강제 01일 편입)
             const fixedDate2 = prManualDate ? `${currentMonthStr}-01` : `${currentMonthStr}-${String(dTime2.getDate()).padStart(2, '0')}`;
-            
-            // 3. Monthly Pro 연동을 위한 ISO 시간 규격 맞춤
             const isoDateForMonthly = prManualDate ? new Date(`${currentMonthStr}-01T12:00:00Z`).toISOString() : new Date().toISOString();
 
-            localStorage.setItem('alignLastPayrollForMonthly', JSON.stringify({
+            // 🌟 [단칸방 버그 픽스] 단일 객체가 아닌 여러 명의 서류를 담을 수 있는 배열(Array)로 금고를 확장합니다!
+            let payrollHistory = JSON.parse(localStorage.getItem('alignLastPayrollForMonthly')) || [];
+            if (!Array.isArray(payrollHistory)) payrollHistory = []; // 구형 데이터 호환용 방어
+
+            const newPayrollData = {
                 service: serviceRev,
                 premium: premiumRev,
                 product: productRev,
-                name: currentUserForSave,               
+                name: saveName, 
                 date: isoDateForMonthly
-            }));
+            };
 
-            // 🌟 선택된 달(또는 이번 달)에 해당하는 내 이름의 데이터가 있는지 찾고 덮어쓰기!
+            // 🌟 이 직원의 이번 달 기록이 이미 서류철에 있는지 찾고 덮어쓰기!
+            const existPayrollIdx = payrollHistory.findIndex(p => p.name === saveName && p.date.startsWith(currentMonthStr));
+            if (existPayrollIdx > -1) {
+                payrollHistory[existPayrollIdx] = newPayrollData;
+            } else {
+                payrollHistory.push(newPayrollData);
+            }
+            localStorage.setItem('alignLastPayrollForMonthly', JSON.stringify(payrollHistory));
+
+            // 🌟 직원의 찐 이름표(saveName)를 기준으로 금고 기록을 찾고 덮어쓰기!
             const existingIdx = savedData.findIndex(r => r.date.startsWith(currentMonthStr) && r.name === saveName);
             
             const newRecord = { 
                 date: fixedDate2, 
-                name: saveName, 
-                gross: shopTotalSales,    
-                profit: Math.round(gross) 
+                name: saveName, // 🌟 오류를 일으키던 이름표 완전 정상화!
+                gross: shopTotalSales,    // 🌟 기본급 모드여도 시술+회원권+점판이 완벽히 합산된 진짜 매장 총매출!
+                profit: Math.round(gross),
+                payMode: pr_mode 
             };
 
             if (existingIdx > -1) {
-                savedData[existingIdx] = newRecord; // 기존 이번 달 기록 덮어쓰기
+                savedData[existingIdx] = newRecord; 
             } else {
-                savedData.push(newRecord); // 새로 추가
+                savedData.push(newRecord); 
             }
             
-            // 🌟 [코드 다이어트] 최신 db 엔진 적용
             db.set('alignSalesData', savedData);
             
             const receipt = document.getElementById('payroll-receipt');
             receipt.style.display = 'block';
             
-            // 🌟 [추가] 명세서가 뜨면서 캡처 버튼도 짠! 하고 나타나게 켭니다.
             const actionGroup = document.getElementById('pr-action-group');
             if(actionGroup) actionGroup.style.display = 'flex';
 
@@ -6290,10 +6342,10 @@ function pr_setMode(mode) {
                 } else {
                     const appFrame = document.getElementById('app-frame');
                     if(appFrame) {
-                        appFrame.style.opacity = '1';
-                        appFrame.style.display = 'flex'; 
+                        app.goHome(); // 🌟 [잔상 픽스] 불을 켜기(display: flex) '전'에 미리 홈 화면으로 세팅을 끝냅니다!
                         
-                        app.goHome(); // 홈 화면 렌더링
+                        appFrame.style.display = 'flex'; 
+                        appFrame.style.opacity = '1';
                         
                         // 🌟 CSS에서 강제로 기절(opacity:0)시켜둔 하단 바를 메인 뷰와 함께 깨움!
                         if(nav) {
@@ -6481,12 +6533,16 @@ function pr_setMode(mode) {
             if(!listEl) return;
             const quests = getQuests();
             listEl.innerHTML = quests.map(q => `
-                <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); padding: 15px 15px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <div style="font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 4px;">${q.title} <span style="color: var(--daily-green); font-size: 11px;">(+${q.exp} EXP)</span></div>
-                        <div style="font-size: 11px; color: #8E8E93;">${q.desc}</div>
+                <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); padding: 16px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 4px;">
+                    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0;">
+                        <div style="font-size: 13.5px; font-weight: 700; color: #fff; word-break: keep-all; line-height: 1.4;">${q.title}</div>
+                        <div style="font-size: 11.5px; color: #8E8E93; display: flex; align-items: center; flex-wrap: wrap; gap: 6px;">
+                            <span style="word-break: keep-all;">${q.desc}</span>
+                            <span style="color: rgba(255,255,255,0.15);">|</span>
+                            <span style="color: var(--daily-green); font-weight: 700; white-space: nowrap;">+${q.exp} EXP</span>
+                        </div>
                     </div>
-                    <button onclick="m_deleteQuest('${q.id}')" style="background: transparent; border: 1px solid rgba(255,69,58,0.3); color: var(--error); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer;">삭제</button>
+                    <button onclick="m_deleteQuest('${q.id}')" style="flex-shrink: 0; white-space: nowrap; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #AEAEB2; padding: 10px 14px; border-radius: 8px; font-size: 11.5px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(255,69,58,0.15)'; this.style.color='#ff453a'; this.style.borderColor='rgba(255,69,58,0.3)';" onmouseout="this.style.background='rgba(255,255,255,0.05)'; this.style.color='#AEAEB2'; this.style.borderColor='rgba(255,255,255,0.1)';">삭제</button>
                 </div>
             `).join('');
         };
@@ -6823,7 +6879,7 @@ window.mo_hardDeleteStaff = async function(targetName) {
             let historyData = JSON.parse(localStorage.getItem('alignHistoryData') || '[]');
             
             if(historyData.length === 0) {
-                alert("아직 앱에 저장된 지난달 마감 기록이 없습니다.\n(월말 마감을 하면 기록이 하나씩 쌓입니다!)");
+                AlignModal.alert("아직 앱에 저장된 지난달 마감 기록이 없습니다.<br><span style='font-size:11px; color:#8E8E93;'>※ 월말 마감을 진행하면 기록이 자동으로 쌓입니다.</span>", "아카이브 비어있음");
                 return;
             }
 
@@ -6832,24 +6888,47 @@ window.mo_hardDeleteStaff = async function(targetName) {
             const month = parseInt(lastHistory.month.slice(4), 10);
             const dateStr = `${year}년 ${month}월`;
 
+            // 🌟 하이엔드 아카이브 팝업 UI (평균객단가, 성장률 TOP, 베스트 파트너 추가)
             const historyMessage = `
-            ===== ✨ [${dateStr} 얼라인 아카이브 역사] =====
+                <div style="font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 10px;">
+                    ${dateStr} 매장 결산 아카이브
+                </div>
+                
+                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                    <div style="flex:1; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+                        <div style="font-size: 10.5px; color: #8E8E93; margin-bottom: 4px;">총 매장 매출액</div>
+                        <div style="font-size: 16px; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif;">${(lastHistory.totalGross||0).toLocaleString()} <span style="font-size: 11px; font-weight: 400; font-family: 'Pretendard', sans-serif;">원</span></div>
+                    </div>
+                    <div style="flex:1; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+                        <div style="font-size: 10.5px; color: #8E8E93; margin-bottom: 4px;">매장 평균 객단가</div>
+                        <div style="font-size: 16px; font-weight: 800; color: var(--accent-gold); font-family: 'Montserrat', sans-serif;">${(lastHistory.avgTicket||0).toLocaleString()} <span style="font-size: 11px; font-weight: 400; font-family: 'Pretendard', sans-serif;">원</span></div>
+                    </div>
+                </div>
 
-            🏦 총 매장 매출액
-               👉 [${lastHistory.totalGross.toLocaleString()} 원]
+                <div style="display: flex; flex-direction: column; gap: 8px; text-align: left; padding: 0 5px;">
+                    <div style="background: rgba(212,175,55,0.05); border-left: 3px solid var(--accent-gold); padding: 12px; border-radius: 0 8px 8px 0; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 12px; color: var(--accent-gold); font-weight: 700;">🏆 명예의 전당 1위</div>
+                        <div style="font-size: 14px; font-weight: 700; color: #fff;">${lastHistory.topDesigner} <span style="font-size: 11px; color: #8E8E93; font-weight: 400; margin-left: 4px;">(${Math.floor((lastHistory.topGross||0)/10000).toLocaleString()}만원)</span></div>
+                    </div>
+                    
+                    <div style="background: rgba(10, 132, 255, 0.05); border-left: 3px solid #0A84FF; padding: 12px; border-radius: 0 8px 8px 0; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 12px; color: #5AC8FA; font-weight: 700;">📈 전월 대비 성장 TOP</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">${lastHistory.growthTop || '-'}</div>
+                    </div>
 
-            🏆 명예의 전당 1등 (TOP Designer)
-               👉 [${lastHistory.topDesigner}]님 (${lastHistory.topGross.toLocaleString()}원)
+                    <div style="background: rgba(50, 215, 75, 0.05); border-left: 3px solid var(--daily-green); padding: 12px; border-radius: 0 8px 8px 0; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 12px; color: var(--daily-green); font-weight: 700;">🌱 이달의 베스트 파트너</div>
+                        <div style="font-size: 14px; font-weight: 600; color: #fff;">${lastHistory.bestPartner || '-'}</div>
+                    </div>
 
-            🥈 명예의 전당 2등 (Runner-up)
-               👉 [${lastHistory.runnerUpDesigner}]님
-
-            ==============================
-            지난달의 멋진 역사를 기록으로 남겨두었습니다. 
-            이번 달도 파이팅하세요!
+                    <div style="background: rgba(255,255,255,0.02); border-left: 3px solid rgba(255,255,255,0.2); padding: 10px 12px; border-radius: 0 8px 8px 0; display: flex; justify-content: space-between; align-items: center;">
+                        <div style="font-size: 11px; color: #8E8E93; font-weight: 700;">🥈 명예의 전당 2위</div>
+                        <div style="font-size: 12.5px; font-weight: 600; color: #E8E8ED;">${lastHistory.runnerUpDesigner}</div>
+                    </div>
+                </div>
             `;
 
-            alert(historyMessage);
+            AlignModal.alert(historyMessage, "월간 히스토리");
         };
 
 // 🌟 [개조 완료] 파트너 성장 게이지 바 (구 레이더 차트 폐기)
@@ -8633,7 +8712,10 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             // 🌟 [신규] 페이롤 -> 오피스로 돌아가는 브릿지
             window.mo_closePayroll = function() {
                 const appFrame = document.getElementById('app-frame');
-                if(appFrame) appFrame.style.display = 'none';
+                if(appFrame) {
+                    appFrame.style.display = 'none';
+                    app.goHome(); // 🌟 [잔상 픽스] 앱이 안 보이는 틈을 타 뒤에서 몰래 홈 화면으로 뷰(View)를 리셋합니다!
+                }
                 
                 const nav = document.getElementById('global-nav');
                 if(nav) {
@@ -9916,13 +9998,14 @@ window.mo_renderQuestRanking = function() {
             
             if(list.style.display === 'none' || forceOpen === true) {
                 list.style.display = 'flex';
-                btn.innerHTML = `📂 배포된 퀘스트 목록 닫기 ▲ (${quests.length}개)`;
+                btn.innerHTML = `배포된 퀘스트 목록 닫기 ▲ <span style="color: var(--daily-green); margin-left: 4px;">(${quests.length}개)</span>`;
                 if(typeof m_renderQuestAdmin === 'function') m_renderQuestAdmin();
             } else {
                 list.style.display = 'none';
-                btn.innerHTML = `📂 배포된 퀘스트 목록 보기 ▼ (${quests.length}개)`;
+                btn.innerHTML = `배포된 퀘스트 목록 보기 ▼ <span style="color: var(--daily-green); margin-left: 4px;">(${quests.length}개)</span>`;
             }
         };
+
 
         // 🌟 새 퀘스트 추가 시, 배포 즉시 아코디언을 자동으로 열어주는 스마트 연동
         const originalAdminAddQuest = window.m_addQuest;
@@ -9989,54 +10072,69 @@ window.mo_renderQuestRanking = function() {
             }
         };
 
-// 🔔 [방탄 엔진] 알림 토글 및 자동 닫기 통합
+// 🔔 [방탄 엔진] 알림 토글 및 자동 닫기 통합 (이모지 완전 박멸 버전)
 function mo_clickNotification(e) {
     if (e) {
         e.preventDefault();
-        e.stopPropagation(); // 🛡️ 클릭 신호가 밖으로 새나가지 않게 꽉 잡습니다.
+        e.stopPropagation(); 
     }
 
     const dropdown = document.getElementById('mo-noti-dropdown');
-    // 현재 진짜로 화면에 보이는지 정확하게 체크
     const isHidden = !dropdown.style.display || dropdown.style.display === 'none';
 
     if (isHidden) {
         let status = typeof mo_updateNotification === 'function' ? mo_updateNotification() : {total:0};
-        const securityLogs = JSON.parse(localStorage.getItem('alignSecurityAlerts')) || []; // 🛡️ 보안 로그 호출
+        const securityLogs = JSON.parse(localStorage.getItem('alignSecurityAlerts')) || [];
         const container = document.getElementById('noti-list-container');
         
         let html = '';
 
-        // 1. 보안 알림부터 먼저 렌더링 (빨간색 강조)
+        // 1. 보안 알림 (RED ALERT) - 이모지 제거 및 텍스트 럭셔리화
         securityLogs.forEach(log => {
             html += `
                 <div class="noti-item" style="border-left: 3px solid #ff453a;">
-                    <div class="noti-title" style="color: #ff453a;">${log.title}</div>
-                    <div class="noti-desc">${log.desc}</div>
+                    <div class="noti-title" style="color: #ff453a; font-family: 'Montserrat', sans-serif; letter-spacing: 1px; font-size: 11px;">SECURITY ALERT</div>
+                    <div class="noti-desc" style="margin-top: 4px;">${log.desc}</div>
                 </div>`;
         });
 
-        // 2. 기존 결재 알림 렌더링
+        // 2. 일반 행정 알림 (ADMIN NOTI)
         if (status.total > 0) {
-            if (status.orders > 0) html += `<div class="noti-item" onclick="switchMoTab('oper')"><div class="noti-title">📦 비품 발주 대기</div><div class="noti-desc">${status.orders}건의 발주 승인이 대기 중입니다.</div></div>`;
-            if (status.reports > 0) html += `<div class="noti-item" onclick="switchMoTab('oper')"><div class="noti-title">⚠️ 유통기한 신고</div><div class="noti-desc">${status.reports}건의 리포트가 접수되었습니다.</div></div>`;
-            if (status.edu > 0) html += `<div class="noti-item" onclick="switchMoTab('hr')"><div class="noti-title">🎓 교육 이수 승인</div><div class="noti-desc">${status.edu}건의 교육 승인 요청이 있습니다.</div></div>`;
+            if (status.orders > 0) {
+                html += `
+                    <div class="noti-item" onclick="switchMoTab('oper')" style="border-left: 3px solid var(--accent-gold);">
+                        <div class="noti-title" style="font-family: 'Montserrat', sans-serif; letter-spacing: 1px; font-size: 11px;">ORDER PENDING</div>
+                        <div class="noti-desc" style="margin-top: 4px;">${status.orders}건의 비품 발주 승인이 대기 중입니다.</div>
+                    </div>`;
+            }
+            if (status.reports > 0) {
+                html += `
+                    <div class="noti-item" onclick="switchMoTab('oper')" style="border-left: 3px solid var(--error);">
+                        <div class="noti-title" style="font-family: 'Montserrat', sans-serif; letter-spacing: 1px; font-size: 11px;">EXPIRY REPORT</div>
+                        <div class="noti-desc" style="margin-top: 4px;">${status.reports}건의 유통기한 신고가 접수되었습니다.</div>
+                    </div>`;
+            }
+            if (status.edu > 0) {
+                html += `
+                    <div class="noti-item" onclick="switchMoTab('hr')" style="border-left: 3px solid var(--edu-blue);">
+                        <div class="noti-title" style="font-family: 'Montserrat', sans-serif; letter-spacing: 1px; font-size: 11px;">EDUCATION AUDIT</div>
+                        <div class="noti-desc" style="margin-top: 4px;">${status.edu}건의 교육 이수 승인 요청이 있습니다.</div>
+                    </div>`;
+            }
         }
 
-        container.innerHTML = html || '<div class="noti-empty">새로운 알림이 없습니다.</div>';
+        container.innerHTML = html || '<div class="noti-empty" style="font-family: \'Montserrat\', sans-serif; letter-spacing: 1px; font-size: 11px; opacity: 0.5;">NO NEW NOTIFICATIONS</div>';
 
-        // 2. [열기]
         dropdown.style.display = 'flex';
         
-        // 3. [외부 클릭 감시] 즉시 실행 방지를 위해 지연 등록
         setTimeout(() => {
             window.addEventListener('click', mo_forceCloseNoti, { once: true });
         }, 50);
     } else {
-        // [닫기]
         mo_forceCloseNoti();
     }
 }
+
 
 // 🛡️ [강제 종료] 어디를 누르든 알림창을 확실히 닫아주는 함수
 function mo_forceCloseNoti(e) {
@@ -10213,61 +10311,58 @@ window.mo_showGraduation = function(partnerName) {
             // 4. 대망의 순수익 계산
             const netProfit = totalRevenue - totalLaborCost - totalFixedCost - totalVariableCost;
 
-            // 5. 화면 텍스트 업데이트
+            // 5. 화면 텍스트 업데이트 (소수점 박멸 유지)
             const netProfitEl = document.getElementById('mo-fin-net-profit');
             if(netProfitEl) {
-                netProfitEl.innerHTML = `${netProfit.toLocaleString()} <span style="font-size: 16px; font-weight: 400; color: #8E8E93;">원</span>`;
+                netProfitEl.innerHTML = `${Math.floor(netProfit).toLocaleString('ko-KR')} <span style="font-size: 16px; font-weight: 400; color: #8E8E93;">원</span>`;
                 netProfitEl.style.color = netProfit >= 0 ? '#fff' : 'var(--error)';
             }
 
-            // 6. 도넛 차트 그리기 (마진율 조종석)
-            const canvas = document.getElementById('mo-fin-donut-chart');
+            // 🌟 6. [하이엔드 개조] 도넛 차트 버리고 순수 CSS 가로 막대 애니메이션 쏘기!
             const emptyMsg = document.getElementById('mo-fin-empty-msg');
             const chartZone = document.getElementById('mo-fin-chart-zone');
 
-            if(canvas && emptyMsg && chartZone) {
-                if(window.moFinChart) window.moFinChart.destroy();
-                const ctx = canvas.getContext('2d');
-                
-                // 🌟 [팀장 픽스] 데이터가 하나도 없으면 차트 구역을 닫고 안내문을 켭니다.
+            if(emptyMsg && chartZone) {
+                // 데이터가 하나도 없으면 차트 구역 닫기
                 if(totalRevenue === 0 && totalFixedCost === 0 && totalVariableCost === 0) {
                     emptyMsg.style.display = 'block';
                     chartZone.style.display = 'none';
                     return;
                 } else {
-                    // 데이터가 생기면 안내문을 끄고 차트 구역을 엽니다!
                     emptyMsg.style.display = 'none';
                     chartZone.style.display = 'block';
                 }
 
-                // 적자일 경우 도넛 차트가 꼬이지 않게 순이익 영역은 0으로 방어
+                // 적자일 경우 게이지가 꼬이지 않게 순이익은 0으로 취급하여 총합 계산
                 const displayNetProfit = netProfit > 0 ? netProfit : 0;
+                const totalSum = displayNetProfit + totalLaborCost + totalFixedCost + totalVariableCost;
 
-                window.moFinChart = new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['순수익', '인건비', '고정비', '변동(재료)비'],
-                        datasets: [{
-                            data: [displayNetProfit, totalLaborCost, totalFixedCost, totalVariableCost],
-                            backgroundColor: [
-                                '#D4AF37', // 순수익 (골드)
-                                '#FF453A', // 인건비 (레드)
-                                '#0A84FF', // 고정비 (블루)
-                                '#FF9F0A'  // 변동비 (오렌지)
-                            ],
-                            borderWidth: 2, borderColor: '#050507', hoverOffset: 5
-                        }]
-                    },
-                    options: {
-                        responsive: true, maintainAspectRatio: false, cutout: '75%',
-                        plugins: {
-                            legend: { position: 'right', labels: { color: '#E8E8ED', font: { family: 'Pretendard', size: 11 }, usePointStyle: true, pointStyle: 'circle' } },
-                            tooltip: { callbacks: { label: (ctx) => ` ${ctx.label}: ${ctx.raw.toLocaleString()}원` } }
-                        }
-                    }
-                });
+                // 각 항목별 비율(%) 계산 (0으로 나누기 방어)
+                const pctNet = totalSum > 0 ? (displayNetProfit / totalSum) * 100 : 0;
+                const pctLabor = totalSum > 0 ? (totalLaborCost / totalSum) * 100 : 0;
+                const pctFixed = totalSum > 0 ? (totalFixedCost / totalSum) * 100 : 0;
+                const pctVar = totalSum > 0 ? (totalVariableCost / totalSum) * 100 : 0;
+
+                // 🚀 화면 렌더링 (0.05초 뒤에 Width를 줘서 부드럽게 차오르는 애니메이션 발동)
+                setTimeout(() => {
+                    document.getElementById('fin-bar-net').style.width = `${pctNet}%`;
+                    document.getElementById('fin-bar-labor').style.width = `${pctLabor}%`;
+                    document.getElementById('fin-bar-fixed').style.width = `${pctFixed}%`;
+                    document.getElementById('fin-bar-var').style.width = `${pctVar}%`;
+
+                    document.getElementById('fin-pct-net').innerText = `${Math.round(pctNet)}%`;
+                    document.getElementById('fin-pct-labor').innerText = `${Math.round(pctLabor)}%`;
+                    document.getElementById('fin-pct-fixed').innerText = `${Math.round(pctFixed)}%`;
+                    document.getElementById('fin-pct-var').innerText = `${Math.round(pctVar)}%`;
+                    
+                    // 🌟 [마이크로 햅틱 추가] 각 범례 칩 클릭 시 정확한 금액 토스트 브리핑!
+                    document.getElementById('fin-legend-net').onclick = () => app.toast(`💰 이번 달 예상 순수익: <b style="color:var(--accent-gold); font-size: 14px;">${Math.floor(displayNetProfit).toLocaleString('ko-KR')}원</b>`);
+                    document.getElementById('fin-legend-labor').onclick = () => app.toast(`💸 총 인건비 지급액: <b style="color:#fff; font-size: 14px;">${Math.floor(totalLaborCost).toLocaleString('ko-KR')}원</b>`);
+                    document.getElementById('fin-legend-fixed').onclick = () => app.toast(`🏢 고정비 (임대료 등): <b style="color:#fff; font-size: 14px;">${Math.floor(totalFixedCost).toLocaleString('ko-KR')}원</b>`);
+                    document.getElementById('fin-legend-var').onclick = () => app.toast(`🧴 변동비 (재료비 등): <b style="color:#fff; font-size: 14px;">${Math.floor(totalVariableCost).toLocaleString('ko-KR')}원</b>`);
+                }, 50);
             }
-        };
+        }; // mo_calcFinance 끝나는 곳
 
         // 지출 내용 저장
         window.mo_saveFinanceExpenses = function() {
@@ -10286,14 +10381,22 @@ window.mo_showGraduation = function(partnerName) {
         window.mo_callAICfo = async function() {
             const btn = document.getElementById('mo-cfo-btn');
             const reportEl = document.getElementById('mo-cfo-report');
+            
+            // 🌟 [팀장 픽스] 버튼을 누르는 순간, 뚱뚱한 골드 버튼이 '투명 뱃지'로 스르륵 변신합니다!
             btn.innerText = "분석 중...";
             btn.style.pointerEvents = 'none';
-            reportEl.innerHTML = '<span class="pulse" style="color: var(--accent-gold);">AI CFO가 직원 구성과 세무 데이터를 정밀 분석하고 있습니다...</span>';
+            btn.style.background = 'transparent';
+            btn.style.color = 'var(--accent-gold)';
+            btn.style.border = '1px solid rgba(212,175,55,0.4)';
+            btn.style.boxShadow = 'none';
+            btn.classList.add('pulse');
+
+            reportEl.innerHTML = '<span class="pulse" style="color: var(--accent-gold);">✨ AI CFO가 직원 구성과 세무 데이터를 정밀 분석하고 있습니다...</span>';
 
             let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || [];
             let designerCount = 0; let partnerCount = 0;
             profiles.forEach(p => {
-                if (p.isHidden) return; // 🚨 [보안 픽스] AI 분석 전송 시 퇴사자는 인원수 카운트에서 완벽히 배제!
+                if (p.isHidden) return; // 🚨 [보안 픽스] 퇴사자는 인원수 카운트에서 배제!
                 
                 if(p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴')) partnerCount++;
                 else if(!p.title.includes('원장') && !p.title.includes('대표')) designerCount++;
@@ -10304,8 +10407,22 @@ window.mo_showGraduation = function(partnerName) {
             const salesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
             const currentSales = salesData.filter(s => s.date && s.date.startsWith(currentMonthStr));
 
-            let totalRevenue = 0; let totalLaborCost = 0;
-            currentSales.forEach(s => { totalRevenue += s.gross || 0; totalLaborCost += s.profit || 0; });
+            let totalRevenue = 0; 
+            let totalLaborCost = 0;
+            let totalBaseSalary = 0; // 🌟 4대보험 적용 기본급 통
+            let totalIncSalary = 0;  // 🌟 3.3% 프리랜서 인센티브 통
+
+            currentSales.forEach(s => { 
+                totalRevenue += s.gross || 0; 
+                totalLaborCost += s.profit || 0; 
+                
+                // 🌟 [데이터 분리 대수술 2] 금고에 달린 꼬리표를 보고 돈을 쪼개서 담습니다!
+                if(s.payMode === 'base') {
+                    totalBaseSalary += s.profit || 0;
+                } else {
+                    totalIncSalary += s.profit || 0; // 과거 호환성을 위해 꼬리표가 없어도 인센티브로 취급
+                }
+            });
 
             const rent = parseInt(document.getElementById('fin-exp-rent')?.value.replace(/,/g, '') || 0);
             const util = parseInt(document.getElementById('fin-exp-util')?.value.replace(/,/g, '') || 0);
@@ -10314,21 +10431,38 @@ window.mo_showGraduation = function(partnerName) {
             
             const netProfit = totalRevenue - totalLaborCost - rent - util - marketing - material;
 
-            const promptText = `너는 최고 수준의 미용실 전문 재무/세무 컨설턴트(CFO)야.
-원장님의 이번 달 재무 데이터는 다음과 같아.
+            // 🌟 [팀장의 방어막 추가] 데이터가 아예 없으면 AI 호출 컷트! API 비용 방어!
+            if (totalRevenue === 0 && (rent + util + marketing + material) === 0) {
+                btn.innerText = "재무 컨설팅 받기";
+                btn.style.pointerEvents = 'auto';
+                btn.classList.remove('pulse');
+                reportEl.innerHTML = "지출 내역을 입력하고 컨설팅 버튼을 누르면 AI가 이번 달 세금 방어 및 통장 쪼개기 가이드를 브리핑합니다.";
+                if(typeof app !== 'undefined' && app.toast) app.toast("분석할 데이터가 없습니다. 먼저 직원 정산이나 지출 내역을 입력해 주세요! ");
+                return; // 여기서 함수 강제 종료!
+            }
+
+            // 🌟 [하이엔드 프롬프트 최종본] 쪼개진 인건비 팩트를 직접 주입!
+            const promptText = `너는 대한민국 하이엔드 뷰티 살롱의 수석 재무/세무 컨설턴트(CFO)다.
+원장님의 이번 달 재무 데이터 팩트는 다음과 같다.
 - 총매출: ${totalRevenue.toLocaleString()}원
-- 총 인건비 지급액: ${totalLaborCost.toLocaleString()}원 
-  (※ 현재 매장 직원 구성: 프리랜서 디자이너 ${designerCount}명, 정직원 파트너(인턴) ${partnerCount}명)
-- 고정비(임대료/공과금/마케팅): ${(rent + util + marketing).toLocaleString()}원
+- 총 인건비: ${totalLaborCost.toLocaleString()}원 
+  (※ 세부 내역: 3.3% 프리랜서 수당 ${totalIncSalary.toLocaleString()}원 / 4대보험 정직원 기본급 ${totalBaseSalary.toLocaleString()}원)
+  (※ 현재 매장 직원 구성: 3.3% 프리랜서 디자이너 ${designerCount}명, 4대보험 파트너(인턴) ${partnerCount}명)
+- 고정비(임대료/공과금/마케팅 등): ${(rent + util + marketing).toLocaleString()}원
 - 변동비(재료비/기타): ${material.toLocaleString()}원
 - 현재 1차 계산된 순수익: ${netProfit.toLocaleString()}원
 
-[분석 규칙]
-1. 정중하고 프로페셔널한 '살롱 언어(하십시오체/해요체)'를 사용할 것. 이모지는 2~3개만 사용.
-2. 현재 매장의 직원 구성을 분석해 줘. 디자이너(3.3% 사업소득)와 파트너(4대보험 및 퇴직금 대상자)의 세무/노무적 차이를 명확히 짚어줄 것.
-3. 원장님의 1차 순수익에서 부가세(10%) 방어 통장과, 파트너 퇴직금 충당금(있는 경우)으로 대략 얼마를 빼두어야(통장 쪼개기) 안전할지 수치로 가이드 해 줄 것.
-4. 마지막으로 통장 쪼개기가 끝난 후 원장님이 이번 달에 마음 편히 집으로 가져가거나 재투자해도 되는 '진짜 순수익(Net Income)'이 얼마쯤 될지 제시하며 응원해 줘.
-5. <br> 태그와 <b> 태그를 적절히 써서 3~4문단으로 가독성 좋게 작성할 것.`;
+[절대 준수 규칙]
+1. 이모지(Emoji)는 단 하나도 절대 사용하지 마라.
+2. 전달된 데이터 수치 외에 임의로 숫자를 과장하거나 축하 멘트를 하지 마라. 오직 팩트 기반으로 냉철하고 객관적으로 브리핑하라.
+3. 정중하고 무게감 있는 비즈니스 톤(하십시오체)을 엄격히 유지하라.
+4. 브리핑 순서:
+   - 1문단: 이번 달 총매출과 1차 순수익 결과 요약
+   - 2문단: 제공된 세부 내역을 바탕으로, 3.3% 프리랜서 수당(종합소득세 대비)과 4대보험 정직원 기본급(퇴직금/4대보험료 대비)의 비율을 진단하고 세무 리스크 관리 조언
+   - 3문단: 원장님의 1차 순수익에서 부가세 방어용 충당금과 퇴직금/세금 예비용으로 각각 얼마를 분리해 두어야 할지 구체적 금액(통장 쪼개기) 가이드
+   - 4문단: 통장 분리 후 원장님이 순수하게 확보한 '최종 예상 세후 순수익(Net Income)' 수치 제시
+5. 가독성을 위해 문단 사이에는 줄바꿈(엔터)을 딱 2번씩만 넣어라. (<br> 같은 HTML 태그 절대 사용 금지)
+6. 핵심 키워드나 중요한 금액 부분은 반드시 <b style="color: var(--accent-gold);">텍스트</b> 형태로 HTML 태그를 씌워 시각적으로 돋보이게 하라.`;
 
             const pKeyObj = JSON.parse(localStorage.getItem('vl_user_settings') || '{}');
             const sKeyObj = JSON.parse(localStorage.getItem('alignSystemSettings') || '{}');
@@ -10336,10 +10470,20 @@ window.mo_showGraduation = function(partnerName) {
             if (pKeyObj && pKeyObj.apiKey && pKeyObj.apiKey.trim() !== "") apiKey = pKeyObj.apiKey.trim();
             else if (sKeyObj && sKeyObj.apiKey && sKeyObj.apiKey.trim() !== "") apiKey = sKeyObj.apiKey.trim();
 
-            // 🌟 [오토-리트라이 엔진] CFO 기능에도 똑같이 적용
             let maxRetries = 2;
             let attempt = 0;
             let success = false;
+
+            // 🌟 분석이 끝났을 때 버튼을 다시 황금색으로 원상복구 시키는 헬퍼 함수
+            const restoreButton = () => {
+                btn.innerText = "재무 컨설팅 받기";
+                btn.style.pointerEvents = 'auto';
+                btn.style.background = 'var(--accent-gold)';
+                btn.style.color = '#000';
+                btn.style.border = 'none';
+                btn.style.boxShadow = '0 4px 10px rgba(212,175,55,0.25)';
+                btn.classList.remove('pulse');
+            };
 
             while (attempt <= maxRetries && !success) {
                 try {
@@ -10369,7 +10513,7 @@ window.mo_showGraduation = function(partnerName) {
                 } catch (error) {
                     if (error.message === "RETRY_NEEDED" && attempt < maxRetries) {
                         attempt++;
-                        reportEl.innerHTML = `<span style="color: var(--warning);">✨ 구글 서버 혼잡으로 우회 접속 중입니다... (${attempt}/2)</span>`;
+                        reportEl.innerHTML = `<span class="pulse" style="color: var(--warning);">✨ 구글 서버 혼잡으로 우회 접속 중입니다... (${attempt}/2)</span>`;
                         await new Promise(resolve => setTimeout(resolve, 3500));
                         continue;
                     }
@@ -10384,8 +10528,8 @@ window.mo_showGraduation = function(partnerName) {
                 }
             }
             
-            btn.innerText = "재무 컨설팅 받기";
-            btn.style.pointerEvents = 'auto';
+            // 🌟 분석이 완전히 종료(성공/실패)되면 버튼 폼을 원래대로 복구합니다.
+            restoreButton();
         };
 
 
@@ -11197,7 +11341,7 @@ window.v_resetData = async function() {
 };
 
 window.m_resetShopData = async function() {
-            if(await AlignModal.confirm("🚨 경고: 매장 전체의 이번 달 매출과 시술 기록을 0원으로 초기화하시겠습니까?\n(초기화 전, 이번 달 데이터가 엑셀 파일로 자동 다운로드되며 앱 내 '지난달 기록'에 영구 저장됩니다!)", "매장 전체 초기화")) {
+            if(await AlignModal.confirm("경고: 매장 전체의 이번 달 매출과 시술 기록을 0원으로 초기화하시겠습니까?<br>(초기화 전, 이번 달 데이터가 엑셀 파일로 자동 다운로드되며 앱 내 '지난달 기록'에 영구 저장됩니다!)", "매장 전체 초기화")) {
                 try {
                     // 🌟 [코드 다이어트] 방탄 db 엔진으로 매출/통계 로드
                     let salesData = db.get('alignSalesData', []);
@@ -11266,7 +11410,7 @@ window.m_resetShopData = async function() {
 };
 
 window.mo_resetSystemSettings = async function() {
-    if(await AlignModal.confirm("🚨 경고: 모든 브랜드 설정이 완전히 초기화됩니다. 정말 진행하시겠습니까?", "시스템 초기화")) {
+    if(await AlignModal.confirm("경고: 모든 브랜드 설정이 완전히 초기화됩니다. 정말 진행하시겠습니까?", "시스템 초기화")) {
         if(await AlignModal.confirm("정말로 모든 데이터를 삭제하고 처음 상태로 되돌릴까요?", "최종 경고")) {
             localStorage.removeItem('alignSystemSettings'); 
             localStorage.removeItem('alignEduManuals');     
@@ -11280,32 +11424,40 @@ window.sys_smartMonthlyClose = async function() {
     let d = new Date(); d.setMonth(d.getMonth() - 1); 
     let suggestMonth = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`; 
 
-    let targetMonth = await AlignModal.prompt("마감 처리할 '연도-월'을 입력하세요.\n해당 월의 데이터만 백업 후 삭제됩니다.\n(입력 예시: 2026-03)", suggestMonth, "월말 마감 (Safe-Closing)");
+    let targetMonth = await AlignModal.prompt("마감 처리할 '연도-월'을 입력하세요.<br>해당 월의 데이터만 백업 후 삭제됩니다.<br><br>(입력 예시: 2026-04)", suggestMonth, "월말 마감 (Safe-Closing)");
     
     if(!targetMonth || !targetMonth.match(/^\d{4}-\d{2}$/)) {
         if(targetMonth !== null) AlignModal.alert("올바른 형식(YYYY-MM)으로 입력되지 않아 마감을 취소합니다.", "마감 취소");
         return;
     }
 
-    let confirmClose = await AlignModal.confirm(`🚨 [경고] 정말 [ ${targetMonth} ] 월의 데이터를 마감하시겠습니까?\n\n※ 해당 월의 모든 기록이 역사관(Snapshot)으로 이동하며 현재 장부는 비워집니다.`, "최종 확인");
-            if(!confirmClose) return;
+    let confirmClose = await AlignModal.confirm(`[경고] 정말 [ ${targetMonth} ] 월의 데이터를 마감하시겠습니까?<br><br>※ 6개 구역으로 정리된 통합 엑셀(CSV)이 다운로드되며, 앱 내 장부는 비워집니다.`, "최종 확인");
+    if(!confirmClose) return;
 
-            // 🌟 [코드 다이어트] 방탄 db 엔진으로 5대 데이터 안전하게 로드
-            let salesData = db.get('alignSalesData', []);
-            let monthlyStats = db.get('alignMonthlyStats', []);
-            let historyData = db.get('alignHistoryData', []);
-            let dailyRecords = db.get('vl_daily_records', []);
-            let questData = db.get('vl_quests', []);
+    // 1. 모든 금고 데이터 로드
+    let salesData = db.get('alignSalesData', []);
+    let monthlyStats = db.get('alignMonthlyStats', []);
+    let historyData = db.get('alignHistoryData', []);
+    let dailyRecords = db.get('vl_daily_records', []);
+    let questData = db.get('vl_quests', []);
+    let manitoLog = db.get('alignManitoLog', []);
+    let orders = db.get('alignPendingOrders', []);
+    let expenses = db.get('alignFinanceExpenses', {rent:0, util:0, marketing:0, material:0});
 
-            let salesToKeep = salesData.filter(s => !s.date.startsWith(targetMonth));
+    // 2. 남길 데이터와 마감(백업)할 데이터 핀셋 분리
+    let salesToKeep = salesData.filter(s => !s.date.startsWith(targetMonth));
     let salesToBackup = salesData.filter(s => s.date.startsWith(targetMonth));
     let statsToKeep = monthlyStats.filter(s => !s.date.startsWith(targetMonth));
+    let statsToBackup = monthlyStats.filter(s => s.date.startsWith(targetMonth)); 
     let dailyToKeep = dailyRecords.filter(r => !r.date.startsWith(targetMonth));
+    let dailyToBackup = dailyRecords.filter(r => r.date.startsWith(targetMonth));
     let questsToKeep = questData.filter(q => !q.date.startsWith(targetMonth));
 
+    // 🌟 [히스토리 브레인 연산] 
     let monthTotalGross = salesToBackup.reduce((sum, s) => sum + (s.gross || 0), 0);
-    
-    // 🌟 [팀장 픽스] 마감할 때 해당 월의 1등, 2등 디자이너도 색출하여 함께 박제합니다!
+    let monthTotalCust = statsToBackup.reduce((sum, s) => sum + (s.totalCust || 0), 0);
+    let avgTicket = monthTotalCust > 0 ? Math.round(monthTotalGross / monthTotalCust) : 0;
+
     let rankMap = {};
     salesToBackup.forEach(s => { rankMap[s.name] = (rankMap[s.name] || 0) + s.gross; });
     let sortedRank = Object.entries(rankMap).sort(([,a],[,b]) => b - a);
@@ -11313,83 +11465,143 @@ window.sys_smartMonthlyClose = async function() {
     let topGross = sortedRank[0] ? sortedRank[0][1] : 0;
     let runnerUpDesigner = sortedRank[1] ? sortedRank[1][0] : "없음";
 
+    // 📈 성장률 TOP 계산 (전월 데이터 비교)
+    let growthTop = "없음";
+    let prevMonthObj = new Date(targetMonth + "-01");
+    prevMonthObj.setMonth(prevMonthObj.getMonth() - 1);
+    let prevMonthStr = `${prevMonthObj.getFullYear()}-${String(prevMonthObj.getMonth() + 1).padStart(2, '0')}`;
+    let prevSales = salesData.filter(s => s.date.startsWith(prevMonthStr));
+    let prevRankMap = {};
+    prevSales.forEach(s => { prevRankMap[s.name] = (prevRankMap[s.name] || 0) + s.gross; });
+    
+    let maxGrowthRate = -999;
+    Object.keys(rankMap).forEach(name => {
+        let cur = rankMap[name];
+        let prev = prevRankMap[name] || 0;
+        if(prev > 0) {
+            let rate = ((cur - prev) / prev) * 100;
+            if(rate > maxGrowthRate) { maxGrowthRate = rate; growthTop = name; }
+        } else if (cur > 0 && prev === 0) {
+            if(100 > maxGrowthRate) { maxGrowthRate = 100; growthTop = name + " (신규진입)"; }
+        }
+    });
+
+    // 🌱 이달의 베스트 파트너 계산 (가장 많은 칭찬을 받은 사람)
+    let pMap = {};
+    manitoLog.forEach(log => { pMap[log.to] = (pMap[log.to] || 0) + 1; });
+    let sortedPartners = Object.entries(pMap).sort(([,a],[,b]) => b - a);
+    let bestPartner = sortedPartners[0] ? sortedPartners[0][0] : "없음";
+
     let historyMonthKey = targetMonth.replace('-', '');
     let existHistory = historyData.find(h => h.month === historyMonthKey);
+    let currentMonthHistory = { 
+        month: historyMonthKey, 
+        totalGross: monthTotalGross,
+        avgTicket: avgTicket,
+        topDesigner: topDesigner,
+        topGross: topGross,
+        runnerUpDesigner: runnerUpDesigner,
+        growthTop: growthTop,
+        bestPartner: bestPartner
+    };
             
-            if(existHistory) { 
-                existHistory.totalGross = monthTotalGross; 
-                existHistory.topDesigner = topDesigner;
-                existHistory.topGross = topGross;
-                existHistory.runnerUpDesigner = runnerUpDesigner;
-            } else { 
-                historyData.push({ 
-                    month: historyMonthKey, 
-                    totalGross: monthTotalGross,
-                    topDesigner: topDesigner,
-                    topGross: topGross,
-                    runnerUpDesigner: runnerUpDesigner
-                }); 
-            }
+    if(existHistory) Object.assign(existHistory, currentMonthHistory);
+    else historyData.push(currentMonthHistory); 
+    
+    historyData.sort((a,b) => b.month - a.month); 
 
-            if(salesToBackup.length > 0) {
-                // 🌟 [코드 다이어트] 스냅샷 데이터도 db 엔진으로 안전하게 처리
-                let snapshot = db.get('alignMonthlySnapshot', []);
-                let sIdx = snapshot.findIndex(s => s.month === targetMonth);
-                let currentMonthData = monthlyStats.filter(s => s.date.startsWith(targetMonth));
-                
-                if(sIdx > -1) snapshot[sIdx] = { month: targetMonth, data: currentMonthData };
-                else snapshot.push({ month: targetMonth, data: currentMonthData });
-                
-                db.set('alignMonthlySnapshot', snapshot.slice(-12)); 
-            }
-
-            let dailyToBackup = dailyRecords.filter(r => r.date.startsWith(targetMonth));
-    let statsToBackup = monthlyStats.filter(s => s.date.startsWith(targetMonth)); 
-
+    // 🌟 [핵심] 6구역 분리형 통합 엑셀(CSV) 렌더링 시작!
     if(salesToBackup.length > 0 || dailyToBackup.length > 0 || statsToBackup.length > 0) {
-        let csvContent = "\uFEFF=== [매출 결산 (Payroll)] ===\n날짜,담당자,매출액,수익\n";
-        salesToBackup.forEach(row => { csvContent += `${row.date},${row.name},${row.gross},${row.profit}\n`; });
+        let csvContent = "\uFEFF"; // 한글 깨짐 방지 장갑
         
-        csvContent += "\n=== [시술 통계 (Monthly Pro)] ===\n날짜,담당자,총시술매출,멤버십매출,제품매출,총접객,순수방문,지정고객,신규고객,총예약,컷,남성펌,여성펌,컬러,클리닉,드라이,AS,제품판매수,근무일수\n";
+        csvContent += "=================================================\n";
+        csvContent += `[1] 매장 재무 결산 (Payroll) - ${targetMonth}\n`;
+        csvContent += "=================================================\n";
+        csvContent += "날짜,담당자,총매출액,최종지급인건비(수익)\n";
+        salesToBackup.forEach(row => { csvContent += `${row.date},${row.name},${row.gross},${row.profit}\n`; });
+        csvContent += "\n\n";
+
+        csvContent += "=================================================\n";
+        csvContent += `[2] 시술 및 영업 통계 (Monthly Pro)\n`;
+        csvContent += "=================================================\n";
+        csvContent += "날짜,담당자,총시술매출,멤버십매출,점판매출,총접객,순수방문,지정고객,신규고객,총예약,컷,남성펌,여성펌,컬러,클리닉,드라이,AS,제품판매수,근무일수\n";
         statsToBackup.forEach(row => {
             csvContent += `${row.date},${row.name},${row.totalRev || 0},${row.membershipRev || 0},${row.productRev || 0},${row.totalCust || 0},${row.pureCust || 0},${row.fanCust || 0},${row.newCust || 0},${row.totalRsv || 0},${row.cut || 0},${row.permM || 0},${row.permF || 0},${row.color || 0},${row.clinic || 0},${row.dry || 0},${row.as || 0},${row.productCount || 0},${row.workDays || 0}\n`;
         });
+        csvContent += "\n\n";
 
-        csvContent += "\n=== [일일 성장 기록 (Daily Log)] ===\n날짜,담당자,당일매출,총접객,지정고객,사용슬롯,진단등급\n";
+        csvContent += "=================================================\n";
+        csvContent += `[3] 일일 성장 기록 (Daily Log)\n`;
+        csvContent += "=================================================\n";
+        csvContent += "날짜,담당자,당일매출,총접객,지정고객,사용슬롯,진단등급\n";
         dailyToBackup.forEach(row => {
             csvContent += `${row.date},${row.name},${row.revenue || 0},${row.total || 0},${row.nom || 0},${row.slots || 0},${row.grade || ''}\n`;
         });
+        csvContent += "\n\n";
 
+        csvContent += "=================================================\n";
+        csvContent += `[4] 매장 고정/변동 지출 내역 (Expenses)\n`;
+        csvContent += "=================================================\n";
+        csvContent += "지출항목,금액(원)\n";
+        csvContent += `월 임대료,${String(expenses.rent).replace(/,/g,'')}\n`;
+        csvContent += `관리비/공과금,${String(expenses.util).replace(/,/g,'')}\n`;
+        csvContent += `마케팅/광고비,${String(expenses.marketing).replace(/,/g,'')}\n`;
+        csvContent += `재료/비품/기타,${String(expenses.material).replace(/,/g,'')}\n`;
+        csvContent += "\n\n";
+
+        csvContent += "=================================================\n";
+        csvContent += `[5] 파트너 업무 및 칭찬 장부 (HR & Partner)\n`;
+        csvContent += "=================================================\n";
+        csvContent += "칭찬일시,보낸사람,베스트파트너(받은사람),칭찬키워드\n";
+        manitoLog.forEach(row => { csvContent += `${row.date},${row.from},${row.to},${row.keyword}\n`; });
+        csvContent += "\n\n";
+
+        csvContent += "=================================================\n";
+        csvContent += `[6] 비품 발주 승인 내역 (Completed Orders)\n`;
+        csvContent += "=================================================\n";
+        csvContent += "승인일자,신청자,카테고리,품목명,승인수량(개)\n";
+        let completedOrders = orders.filter(o => o.status === 'completed');
+        completedOrders.forEach(o => {
+            o.items.forEach(i => {
+                let catName = { chemical: '약제', retail: '점판', supply: '소모품', service: '서비스' }[i.category] || '기타';
+                csvContent += `${o.completeDate || o.date},${o.user},${catName},${i.name},${i.qty}\n`;
+            });
+        });
+
+        // 파일 다운로드 브릿지
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = `Align_${targetMonth}_월말결산_백업.csv`;
-        
+        link.download = `Align_${targetMonth}_월말결산_통합백업.csv`;
         link.style.visibility = 'hidden';
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-            } else {
-                await AlignModal.alert(`[ ${targetMonth} ] 월에 해당하는 백업할 데이터가 없어 마감을 취소합니다.`, "마감 취소");
-                return; 
-            }
 
-            // 🌟 [코드 다이어트] 남은 데이터들을 db 금고에 안전하게 덮어쓰기
-            db.set('alignHistoryData', historyData);
-            db.set('alignSalesData', salesToKeep);
-            db.set('alignMonthlyStats', statsToKeep);
-            db.set('vl_daily_records', dailyToKeep);
-            db.set('vl_quests', questsToKeep);
-            
-            // 단순 텍스트 삭제는 기존 removeItem 유지
-            localStorage.removeItem('alignManitoLog');
+    } else {
+        await AlignModal.alert(`[ ${targetMonth} ] 월에 해당하는 백업 데이터가 없어 마감을 취소합니다.`, "마감 취소");
+        return; 
+    }
 
-            await AlignModal.alert(`✅ [ ${targetMonth} ] 마감이 완벽하게 처리되었습니다.\n엑셀 다운로드와 데이터 백업이 완료되었습니다.`, "마감 완료");
+    // 🌟 안전하게 남은 데이터 덮어쓰고 쓰레기통 비우기
+    db.set('alignHistoryData', historyData);
+    db.set('alignSalesData', salesToKeep);
+    db.set('alignMonthlyStats', statsToKeep);
+    db.set('vl_daily_records', dailyToKeep);
+    db.set('vl_quests', questsToKeep);
     
+    // 매월 리셋되어야 하는 장부 소각
+    localStorage.removeItem('alignManitoLog');
+    let pendingOrders = orders.filter(o => o.status === 'pending');
+    db.set('alignPendingOrders', pendingOrders); // 대기 중인 발주만 살려둠
+
+    await AlignModal.alert(`[ ${targetMonth} ] 마감이 완벽하게 처리되었습니다.\n6개 구역 엑셀 다운로드와 데이터 백업이 완료되었습니다.`, "마감 완료");
+
     if(typeof loadRealData === 'function') loadRealData();
     if(typeof window.renderManagerCharts === 'function') window.renderManagerCharts(); 
     location.reload(); 
 };
+
 
 // 4. 👥 경영자 오피스 직원 제어 구역
 window.mo_resetStaffPassword = async function() {
