@@ -935,22 +935,13 @@
 /* 🔔 [최종] 스마트 알림 럭셔리 집도 완료 */
 .notification-dropdown {
     position: absolute !important;
-    /* 1. 높이: 대시보드 지표를 절대 가리지 않도록 충분히 내립니다 (60px -> 85px) */
     top: 85px !important; 
-
-    /* 2. 위치: 벨 아이콘과 정렬하되, 오른쪽 여백을 여유 있게 줍니다 (10px -> 15px) */
     right: 15px !important; 
-
-    /* 3. 너비: 텍스트가 줄바꿈되지 않도록 충분히 넓힙니다 (280px -> 300px) */
     width: 300px; 
-
-    /* 4. 내부 레이아웃: 모든 내용을 수직으로 정렬하고 중앙으로 모읍니다 */
     display: none; 
     flex-direction: column;
-    z-index: 10000; /* 모든 화면보다 가장 위에! */
+    z-index: 10000; 
     overflow: hidden;
-
-    /* 5. 프리미엄 디자인: 유리 효과와 그림자를 강화합니다 */
     background: rgba(28, 28, 30, 0.98); 
     backdrop-filter: blur(20px); 
     border: 1px solid rgba(212, 175, 55, 0.4); 
@@ -961,9 +952,9 @@
 
 /* 알림 헤더 (가로 정렬 완료) */
 .noti-header {
-    padding: 18px 20px;
+    
+    padding: 15px 20px;  
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    /* 🛡️ [핵심] 가로축으로 양끝 정렬합니다 */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1017,19 +1008,6 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* 알림 헤더 */
-.noti-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
 
 .noti-header h3 {
     font-size: 14px; color: #fff; margin: 0; font-weight: 600;
@@ -1341,11 +1319,11 @@ input, textarea {
 <div id="manager-room" style="display: none; position: fixed; inset: 0; background: #050507; z-index: 9999; box-sizing: border-box; font-family: 'Pretendard', sans-serif;">
         
         <div class="mo-header-wrap">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 5px;">
-                <div onclick="triggerQAData()" style="display: flex; flex-direction: column; flex: 1; max-width: calc(100% - 160px); min-width: 0; cursor: pointer; white-space: normal !important; overflow: visible !important;">
-                    <div class="app-brand-title" style="font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 900; color: var(--accent-gold); letter-spacing: 1.5px; line-height: 1.2; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100%; display: block;">ALIGN</div>
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; color: #8E8E93; font-weight: 700; letter-spacing: 3px; margin-top: 3px; white-space: nowrap;">DIRECTOR</div>
-                </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 5px;">
+        <div style="display: flex; flex-direction: column; flex: 1; max-width: calc(100% - 160px); min-width: 0; white-space: normal !important; overflow: visible !important;">
+        <div class="app-brand-title" style="font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 900; color: var(--accent-gold); letter-spacing: 1.5px; line-height: 1.2; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100%; display: block;">ALIGN</div>
+            <div style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; color: #8E8E93; font-weight: 700; letter-spacing: 3px; margin-top: 3px; white-space: nowrap;">DIRECTOR</div>
+        </div>
                 
                 <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
                     <div id="mo-noti-bell" onclick="mo_clickNotification(event)" style="position: relative; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'" onmouseleave="this.style.transform='scale(1)'">
@@ -1730,9 +1708,8 @@ input, textarea {
                 <div style="font-size: 32px; font-weight: 800; color: #fff; font-family: 'Montserrat', sans-serif; letter-spacing: -1px; margin-bottom: 10px;" id="mo-fin-net-profit">0 <span style="font-size: 16px; font-weight: 400; color: #8E8E93;">원</span></div>
                 
                 <div id="mo-fin-empty-msg" style="font-size: 11.5px; color: #5C6370; padding-bottom: 10px; line-height: 1.5; word-break: keep-all; text-align: center;">
-                    직원 정산 및 지출 내역을 입력하시면<br>순수익 도넛 차트가 활성화됩니다.<br>
-                    <button onclick="injectDummyFinanceData()" style="margin-top: 15px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">🧪 차트 애니메이션 테스트</button>
-                </div>
+    직원 정산 및 지출 내역을 입력하시면<br>순수익 도넛 차트가 활성화됩니다.<br>
+    </div>
                 
                 <div id="mo-fin-chart-zone" style="display: none; margin-top: 25px; animation: fadeUp 0.4s ease;">
                     <div style="width: 100%; height: 10px; background: rgba(0,0,0,0.5); border-radius: 5px; display: flex; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05);">
@@ -3816,6 +3793,52 @@ const app = {
         }
     };
 
+    // 👇 [수정 시작: 무한 스크롤 만능 엔진 (AlignPaginator) 추가]
+    const AlignPaginator = {
+        observers: {},
+        setup: function(containerId, dataArray, renderFn, chunkSize = 20) {
+            if(this.observers[containerId]) this.observers[containerId].disconnect();
+            const container = document.getElementById(containerId);
+            if(!container) return;
+
+            let currentPage = 1;
+            
+            const renderChunk = (page) => {
+                const start = (page - 1) * chunkSize;
+                const end = start + chunkSize;
+                const chunk = dataArray.slice(start, end);
+                
+                if(chunk.length === 0) return;
+
+                const html = renderFn(chunk);
+                const oldSentinel = document.getElementById(`sentinel-${containerId}`);
+                if(oldSentinel) oldSentinel.remove();
+
+                if(page === 1) container.innerHTML = html;
+                else container.insertAdjacentHTML('beforeend', html);
+
+                // 아직 남은 데이터가 있다면 바닥에 투명 센서 부착
+                if(end < dataArray.length) {
+                    const sentinel = document.createElement('div');
+                    sentinel.id = `sentinel-${containerId}`;
+                    sentinel.style.height = '10px'; // 투명 센서
+                    container.appendChild(sentinel);
+
+                    const observer = new IntersectionObserver((entries) => {
+                        if(entries[0].isIntersecting) {
+                            currentPage++;
+                            renderChunk(currentPage);
+                        }
+                    }, { root: container, threshold: 0.1 });
+                    
+                    observer.observe(sentinel);
+                    this.observers[containerId] = observer;
+                }
+            };
+            renderChunk(1);
+        }
+    };
+
 // ==========================================
         // 🔐 [복구] GATE & PIN PAD 출입 통제소 로직
         // ==========================================
@@ -4106,24 +4129,45 @@ const app = {
                 }
             });
 
-            // AI 인사이트 로직
+           // 👇 [수정 시작: AI 인사이트 & 페이스메이커 융합 엔진]
             const insightEl = document.getElementById('h-insight-text');
             if(!insightEl) return;
             
+            // 🏃‍♂️ 1. 페이스메이커 모터 가동 (남은 목표 및 일수 계산)
+            const s = db.get('vl_user_settings', {});
+            const goalRev = s.goalRev || 10000000;
+            const currentMonthData = getMonthlyRevenue(); // 현재까지 총매출
+            const currentRev = currentMonthData.totalRev;
+            
+            const todayDate = new Date();
+            const lastDay = new Date(todayDate.getFullYear(), todayDate.getMonth() + 1, 0).getDate(); // 이번 달 마지막 날
+            const remainDays = lastDay - todayDate.getDate(); // 남은 일수
+            const remainRev = Math.max(0, goalRev - currentRev); // 남은 목표액
+            
+            let paceMsg = "";
+            if (remainRev === 0 && currentRev > 0) {
+                paceMsg = "🎉 목표 조기 달성!";
+            } else if (remainDays > 0) {
+                const dailyPace = Math.ceil(remainRev / remainDays); // 하루 권장 할당량
+                paceMsg = `목표까지 D-${remainDays}, 하루 ${Math.floor(dailyPace/10000).toLocaleString()}만 원 페이스!`;
+            } else {
+                paceMsg = `마지막 날! 라스트 스퍼트!`;
+            }
+
+            // 데이터가 1개 이하일 때는 페이스메이커만 출력
             if(records.length < 2) {
-                insightEl.innerText = "오늘의 데이터를 기록하고 첫 번째 분석을 받아보세요.";
+                insightEl.innerHTML = `<span style="color:var(--accent-gold); font-weight:700; margin-right:6px;">[${paceMsg}]</span> 오늘의 데이터를 기록하고 첫 분석을 받아보세요.`;
                 return;
             }
 
+            // 🧠 2. 기존 AI 인사이트 진단
             const todayRec = records[records.length - 1];
             const yestRec = records[records.length - 2];
             
             const todayPrc = todayRec.total > 0 ? (todayRec.revenue / todayRec.total) : 0;
             const yestPrc = yestRec.total > 0 ? (yestRec.revenue / yestRec.total) : 0;
-            
             const todayFan = todayRec.total > 0 ? (todayRec.nom / todayRec.total) : 0;
             const yestFan = yestRec.total > 0 ? (yestRec.nom / yestRec.total) : 0;
-            
             const todayLeak = todayRec.totalRsv > 0 ? ((todayRec.totalRsv - todayRec.total) / todayRec.totalRsv) : 0;
 
             let msg = "안정적인 흐름을 유지하고 있습니다. 오늘도 화이팅!";
@@ -4131,14 +4175,15 @@ const app = {
             if (todayPrc > yestPrc * 1.15) {
                 msg = "직전 근무일 객단가가 평소보다 훌륭했습니다. 프리미엄 제안이 통했네요!";
             } else if (todayLeak === 0 && todayRec.totalRsv > 0) {
-                msg = "가장 최근 기록에서 예약 누수가 0건이었습니다. 완벽한 퀄리티 컨트롤입니다!";
+                msg = "최근 기록에서 예약 누수 0건! 완벽한 퀄리티 컨트롤입니다.";
             } else if (todayFan > 0.5 && yestFan > 0.5) {
-                msg = "이틀 연속 지정률 50% 이상 유지! 당신의 팬덤이 단단해지고 있습니다.";
+                msg = "이틀 연속 지정률 50% 이상 유지! 팬덤이 단단해지고 있습니다.";
             } else if (todayRec.revenue > yestRec.revenue * 1.2) {
                 msg = "최근 매출이 직전 대비 크게 상승했습니다. 폭발적인 성장 페이스입니다!";
             }
 
-            insightEl.innerText = msg;
+            // 🤝 3. 페이스메이커와 진단 멘트의 하이엔드 융합 출력
+            insightEl.innerHTML = `<span style="color:var(--accent-gold); font-weight:700; margin-right:6px;">[${paceMsg}]</span> <span style="color:#E8E8ED; font-weight:400;">${msg}</span>`;      
         }
 
 function h_updateGreeting() {
@@ -7924,8 +7969,11 @@ window.mo_selectRadarStaff = function(index) {
                 return;
             }
             
+            // 👇 [수정 시작: 드롭다운 렌더링 과부하 방지 (최대 50개까지만 표시)]
             let html = '';
-            list.forEach(item => {
+            let displayList = list.slice(0, 50); 
+            displayList.forEach(item => {
+            
                 // 💡 누를 때 하얀 글래스 불빛이 스며드는 깔끔한 클릭 효과
                 html += `<div onclick="p_selectDropdownItem('${item.name}')" style="padding: 14px 16px; font-size: 13px; color: #E8E8ED; border-bottom: 1px solid rgba(255,255,255,0.05); cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(255,255,255,0.1)'; this.style.color='#fff';" onmouseup="this.style.background='transparent'; this.style.color='#E8E8ED';" onmouseleave="this.style.background='transparent'; this.style.color='#E8E8ED';">${item.name}</div>`;
             });
@@ -8049,7 +8097,9 @@ window.mo_selectRadarStaff = function(index) {
             const container = document.getElementById('p-cart-list');
             if(!container) return;
 
-            let cart = JSON.parse(localStorage.getItem('alignOrderCart')) || [];
+            // 👇 [수정 시작: 구형 JSON.parse 대신 방탄 db 엔진 적용]
+            let cart = db.get('alignOrderCart', []);
+           
             if(cart.length === 0) {
                 container.innerHTML = `<div style="color: #5C6370; font-size: 12px; text-align: center;">장바구니가 비어있습니다.</div>`;
                 return;
@@ -8082,9 +8132,11 @@ window.mo_selectRadarStaff = function(index) {
 
         // 3. 장바구니 품목 삭제
         window.p_removeFromCart = function(id) {
-            let cart = JSON.parse(localStorage.getItem('alignOrderCart')) || [];
+            // 👇 [수정 시작: 방탄 db 엔진으로 저장/불러오기 일괄 교체]
+            let cart = db.get('alignOrderCart', []);
             cart = cart.filter(item => item.id !== id);
-            localStorage.setItem('alignOrderCart', JSON.stringify(cart));
+            db.set('alignOrderCart', cart);
+       
             p_renderCart();
         };
 
@@ -8092,14 +8144,15 @@ window.mo_selectRadarStaff = function(index) {
 
         // 🌟 [여기에 쏙!] 파트너 라운지: 장바구니에 담긴 물품들 최종 발주 신청하기
         window.p_submitOrder = function() {
-            let cart = JSON.parse(localStorage.getItem('alignOrderCart')) || [];
+            // 👇 [수정 시작: db 엔진 적용]
+            let cart = db.get('alignOrderCart', []);
             if(cart.length === 0) {
-                alert("장바구니가 비어있습니다. <br>품목을 먼저 담아주세요!");
+                alert("장바구니가 비어있습니다. \n품목을 먼저 담아주세요!");
                 return;
             }
 
             const currentUser = localStorage.getItem('alignCurrentUser') || '알 수 없음';
-            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            let orders = db.get('alignPendingOrders', []);
             
             // 발주서(영수증 형태) 생성
             orders.push({
@@ -8110,8 +8163,9 @@ window.mo_selectRadarStaff = function(index) {
                 date: new Date().toLocaleString()
             });
             
-            // 경영자 오피스로 전송 (로컬 스토리지 저장)
-            localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
+            // 경영자 오피스로 전송 (방탄 db 엔진으로 저장)
+            db.set('alignPendingOrders', orders);
+            // 👆 [수정 끝]
             
             // 파트너 장바구니 비우기 및 화면 새로고침
             localStorage.removeItem('alignOrderCart');
@@ -8198,32 +8252,40 @@ if(window.mo_currentMasterFilter !== 'all') { // 1. 조건문 수정
                 return;
             }
 
-            // 🏗️ 4. 화면 렌더링 시작
+            // 👇 [수정 시작: 무한 스크롤 엔진 적용을 위한 렌더링 로직 개조]
             const catNames = { chemical: '약제', retail: '점판', supply: '소모품', service: '서비스' };
-            let html = '';
             
-            master.forEach(item => {
-                // 가격 정보를 예쁘게 포맷팅 (값이 없으면 0으로 표시)
-                const costDisp = (item.cost || 0).toLocaleString();
-                const priceDisp = (item.price || 0).toLocaleString();
+            // 템플릿 공장 생성
+            const renderItems = (items) => {
+                return items.map(item => {
+                    const costDisp = (item.cost || 0).toLocaleString();
+                    const priceDisp = (item.price || 0).toLocaleString();
+                    return `
+                    <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin-bottom: 8px;">
+                        <div style="min-width: 0;"> 
+                            <div style="font-size: 13px; color: #fff; font-weight: 600; display: flex; align-items: flex-start; gap: 6px;">
+                                <span style="color: #8E8E93; font-weight: 400; flex-shrink: 0;">[${catNames[item.category] || '기타'}]</span> 
+                                <span style="word-break: keep-all; overflow-wrap: break-word;">${item.name}</span>
+                            </div>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+                                <div style="font-size: 11px; color: #8E8E93; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">입고: <span style="color: #ff453a; font-weight: 600;">${costDisp}원</span></div>
+                                <div style="font-size: 11px; color: #8E8E93; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">판매: <span style="color: #32d74b; font-weight: 600;">${priceDisp}원</span></div>
+                            </div>
+                        </div>
+                        <button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--error); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; flex-shrink: 0;">삭제</button>
+                    </div>`;
+                }).join('');
+            };
 
-                html += `
-                <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; margin-bottom: 8px;">
-                    <div style="min-width: 0;"> 
-                        <div style="font-size: 13px; color: #fff; font-weight: 600; display: flex; align-items: flex-start; gap: 6px;">
-                            <span style="color: #8E8E93; font-weight: 400; flex-shrink: 0;">[${catNames[item.category] || '기타'}]</span> 
-                            <span style="word-break: keep-all; overflow-wrap: break-word;">${item.name}</span>
-                        </div>
-                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
-                            <div style="font-size: 11px; color: #8E8E93; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">입고: <span style="color: #ff453a; font-weight: 600;">${costDisp}원</span></div>
-                            <div style="font-size: 11px; color: #8E8E93; background: rgba(0,0,0,0.3); padding: 4px 8px; border-radius: 4px;">판매: <span style="color: #32d74b; font-weight: 600;">${priceDisp}원</span></div>
-                        </div>
-                    </div>
-                    <button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--error); padding: 8px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; flex-shrink: 0;">삭제</button>
-                </div>`;
-            });
-            list.innerHTML = html;
+            // 엔진 연결 (한 번에 20개씩 렌더링)
+            if (typeof AlignPaginator !== 'undefined') {
+                AlignPaginator.setup('mo-master-list', master, renderItems, 20);
+            } else {
+                list.innerHTML = renderItems(master);
+            }      
         };
+
+
       // 3. 실시간 매장 재고 현황판 화면에 그리기 (검색 엔진 탑재판)
 window.mo_renderStockStatus = function() {
     const container = document.getElementById('mo-stock-status-list');
@@ -8244,37 +8306,42 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         master = master.filter(item => item.name.toLowerCase().includes(keyword));
     }
 
-    // 🛡️ 3. 예외 처리 (데이터가 없을 때)
+   // 🛡️ 3. 예외 처리 (데이터가 없을 때)
     if(master.length === 0) {
         container.innerHTML = `<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">${keyword ? '검색 결과가 없습니다.' : '표시할 데이터가 없습니다.'}</div>`;
         return;
     }
 
-    // 🏗️ 4. 리스트 렌더링 (여기서부터는 기존의 html += 코드를 그대로 쓰시면 됩니다)
+    // 👇 [수정 시작: 무한 스크롤 엔진(AlignPaginator) 현황판 적용]
     const catNames = { chemical: '약제', retail: '점판', supply: '소모품', service: '서비스' };
-    let html = '';
-    master.forEach(item => {
-        let currentCount = stockRecords[item.id];
-        // 🌟 [팀장 픽스] 미입력 텍스트를 에러(Red)에서 차분한 다크 그레이 뱃지로 변경하여 시각적 피로도 감소
-        let countDisplay = currentCount 
-            ? `<span style="color: var(--daily-green); font-size: 18px; font-weight: 800; font-family: 'Montserrat', sans-serif;">${currentCount}</span><span style="font-size: 11px; color: #8E8E93; margin-left: 3px;">개</span>` 
-            : `<span style="color: #8E8E93; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">미입력</span>`;
-        
-        html += `
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+    
+    const renderStatusItems = (items) => {
+        return items.map(item => {
+            let currentCount = stockRecords[item.id];
+            let countDisplay = currentCount 
+                ? `<span style="color: var(--daily-green); font-size: 18px; font-weight: 800; font-family: 'Montserrat', sans-serif;">${currentCount}</span><span style="font-size: 11px; color: #8E8E93; margin-left: 3px;">개</span>` 
+                : `<span style="color: #8E8E93; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px;">미입력</span>`;
             
-            <div style="flex: 1; min-width: 0; padding-right: 15px; line-height: 1.4;">
-                <span style="color: #8E8E93; font-size: 11px; font-weight:600; margin-right: 4px; display: inline-block;">[${catNames[item.category] || '기타'}]</span> 
-                <span style="font-size: 13.5px; color: #fff; font-weight: 600; word-break: keep-all; display: inline;">${item.name}</span>
-            </div>
-            
-            <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
-                <div>${countDisplay}</div>
-                <button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(255, 69, 58, 0.1)'" onmouseout="this.style.background='rgba(255, 69, 58, 0.05)'">삭제</button>
-            </div>
-        </div>`;
-    });
-    container.innerHTML = html;
+            return `
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 14px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <div style="flex: 1; min-width: 0; padding-right: 15px; line-height: 1.4;">
+                    <span style="color: #8E8E93; font-size: 11px; font-weight:600; margin-right: 4px; display: inline-block;">[${catNames[item.category] || '기타'}]</span> 
+                    <span style="font-size: 13.5px; color: #fff; font-weight: 600; word-break: keep-all; display: inline;">${item.name}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
+                    <div>${countDisplay}</div>
+                    <button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmouseover="this.style.background='rgba(255, 69, 58, 0.1)'" onmouseout="this.style.background='rgba(255, 69, 58, 0.05)'">삭제</button>
+                </div>
+            </div>`;
+        }).join('');
+    };
+
+    if (typeof AlignPaginator !== 'undefined') {
+        AlignPaginator.setup('mo-stock-status-list', master, renderStatusItems, 20);
+    } else {
+        container.innerHTML = renderStatusItems(master);
+    }
+   
 };
 
      
@@ -8284,7 +8351,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             const container = document.getElementById('p-completed-orders-list');
             if(!container) return;
 
-            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            // 👇 [수정 시작: 파트너 영수증 렌더링 방탄 db 엔진 적용]
+            let orders = db.get('alignPendingOrders', []);
+   
             const currentUser = localStorage.getItem('alignCurrentUser');
             let completedOrders = orders.filter(o => o.status === 'completed' && o.user === currentUser);
 
@@ -8334,13 +8403,14 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
 // 🌟 내역 직접 삭제 엔진 (유지)
         window.p_deleteCompletedOrder = async function(orderId) {
             if(!await AlignModal.confirm("이 승인 완료 내역을 리스트에서 삭제하시겠습니까?", "기록 삭제")) return;
-            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            // 👇 [수정 시작: 파트너 영수증 삭제 방탄 db 엔진 적용]
+            let orders = db.get('alignPendingOrders', []);
             orders = orders.filter(o => o.id !== orderId);
-            localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
-            
+            db.set('alignPendingOrders', orders);
+                        
             p_renderCompletedOrders();
             if(typeof mo_renderPendingOrders === 'function') mo_renderPendingOrders(); // 오피스도 동시 연동
-            if(typeof app !== 'undefined' && app.toast) app.toast("내역이 깔끔하게 삭제되었습니다. 🗑️");
+            if(typeof app !== 'undefined' && app.toast) app.toast("내역이 깔끔하게 삭제되었습니다.");
         };
 
 
@@ -8348,7 +8418,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         window.mo_renderPendingOrders = function() {
             const container = document.getElementById('mo-pending-orders-list');
             const compContainer = document.getElementById('mo-completed-orders-list');
-            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            // 👇 [수정 시작: 구형 JSON.parse 폐기 및 방탄 db 엔진 적용]
+            let orders = db.get('alignPendingOrders', []);
+     
             
             // 1. 대기열(원장님 미승인) 그리기
             if(container) {
@@ -8448,7 +8520,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
 
         // 🌟 오피스: 발주 확인(완료) 처리하기 (+ 5건 영수증 보관 & 자동 소각 엔진)
         window.mo_completeOrder = function(orderId) {
-            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            // 👇 [수정 시작: 방탄 db 엔진 적용]
+            let orders = db.get('alignPendingOrders', []);
+            // 👆 [수정 끝]
             let orderIndex = orders.findIndex(o => o.id === orderId);
             
             if(orderIndex !== -1) {
@@ -8467,7 +8541,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             completed = completed.slice(0, 5);
             
             orders = [...pending, ...completed];
-            localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
+            // 👇 [수정 시작: 방탄 db 엔진으로 저장]
+            db.set('alignPendingOrders', orders);
+      
             
             mo_renderPendingOrders(); // 오피스 화면 새로고침
             if(typeof p_renderCompletedOrders === 'function') p_renderCompletedOrders(); // 파트너 화면도 즉시 동기화
@@ -8480,10 +8556,11 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             const container = document.getElementById('mo-exp-report-list');
             if(!container) return;
 
-            let reports = JSON.parse(localStorage.getItem('alignExpReports')) || [];
-            // '승인'이나 '취소'가 안 된 순수한 대기 상태만 필터링
-            let pendingReports = reports.filter(r => r.status !== 'approved' && r.status !== 'rejected'); 
+            // 👇 [수정 시작: 방탄 db 엔진 적용]
+            let reports = db.get('alignExpReports', []);
 
+            // '승인'이나 '취소'가 안 된 순수한 대기 상태만 필터링
+            let pendingReports = reports.filter(r => r.status !== 'approved' && r.status !== 'rejected');
             if(pendingReports.length === 0) {
                 container.innerHTML = '<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">대기 중인 신고 내역이 없습니다.</div>';
                 return;
@@ -8518,29 +8595,32 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
 
         // 🌟 [추가된 기능] 신고 취소(반려) 하기
         window.mo_rejectExpReport = function(reportId) {
-            let reports = JSON.parse(localStorage.getItem('alignExpReports')) || [];
+            // 👇 [수정 시작: 반려 처리 방탄 db 엔진 적용]
+            let reports = db.get('alignExpReports', []);
             let reportIndex = reports.findIndex(r => r.id === reportId);
             if(reportIndex !== -1) {
                 reports[reportIndex].status = 'rejected'; // '취소됨'으로 상태 변경
-                localStorage.setItem('alignExpReports', JSON.stringify(reports));
+                db.set('alignExpReports', reports);
             }
+  
             mo_renderExpReports(); // 화면 즉시 새로고침
             if(typeof app !== 'undefined' && app.toast) app.toast("해당 신고가 취소되었습니다.");
         };
 
         // 🌟 오피스: 신고 승인 & 파트너에게 EXP 쏘기
         window.mo_approveExpReport = function(reportId, userName, rewardExp) {
-            let reports = JSON.parse(localStorage.getItem('alignExpReports')) || [];
+            // 👇 [수정 시작: 승인 처리 및 파트너 경험치 지급 방탄 db 엔진 적용]
+            let reports = db.get('alignExpReports', []);
             let reportIndex = reports.findIndex(r => r.id === reportId);
             if(reportIndex !== -1) {
                 reports[reportIndex].status = 'approved';
-                localStorage.setItem('alignExpReports', JSON.stringify(reports));
+                db.set('alignExpReports', reports);
             }
 
             const pKey = 'alignPartnerData_' + userName;
-            let pData = JSON.parse(localStorage.getItem(pKey)) || { exp: 0, level: 1, todayQuests: {}, lastDate: '' };
+            let pData = db.get(pKey, { exp: 0, level: 1, todayQuests: {}, lastDate: '' });
             pData.exp += rewardExp;
-            localStorage.setItem(pKey, JSON.stringify(pData));
+            db.set(pKey, pData);
 
             mo_renderExpReports();
             if(typeof app !== 'undefined' && app.toast) app.toast(`${userName}님에게 ${rewardExp} EXP가 지급되었습니다!`);
@@ -8550,12 +8630,14 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
         // 👆 [SWIPE GESTURE ENGINE] 스와이프 결재 네이티브 물리 엔진
         // =========================================================
         window.mo_rejectOrder = function(orderId) {
-            let orders = JSON.parse(localStorage.getItem('alignPendingOrders')) || [];
+            // 👇 [수정 시작: 반려 로직에도 방탄 db 엔진 적용]
+            let orders = db.get('alignPendingOrders', []);
             let orderIndex = orders.findIndex(o => o.id === orderId);
             if(orderIndex !== -1) {
                 orders[orderIndex].status = 'rejected';
-                localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
+                db.set('alignPendingOrders', orders);
             }
+
             mo_renderPendingOrders();
             if(typeof app !== 'undefined' && app.toast) app.toast("해당 발주 건이 반려되었습니다.");
         };
@@ -8783,30 +8865,35 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                 if(master.length === 0) {
                     container.innerHTML = `<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 30px 0;">${keyword ? '검색 결과가 없습니다.' : '등록된 제품이 없습니다.'}</div>`;
                 } else {
+         
                     const catNames = { chemical: '약제', retail: '점판', supply: '소모품', service: '서비스' };
-                    let html = '';
-                    master.forEach(item => {
-                        let currentCount = stockRecords[item.id] || ''; 
-                        
-                        html += `
-                        <div style="background: rgba(255,255,255,0.02); padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                            
-                            <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; margin-right: 10px;">
-                                <span style="color: var(--daily-green); font-weight: 800; font-size: 10px; letter-spacing: 0.5px;">[${catNames[item.category] || '기타'}]</span> 
-                                <span style="font-size: 13.5px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</span>
-                            </div>
-                            
-                            <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
-                                <div style="display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
-                                    <button onclick="p_adjustStock('${item.id}', -1)" style="background: transparent; border: none; color: #8E8E93; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
-                                    <input type="number" id="p-stock-input-${item.id}" value="${currentCount}" placeholder="0" class="hide-spinner" style="width: 32px; background: transparent; border: none; color: #fff; text-align: center; font-size: 14px; font-weight: 800; outline: none; padding: 0;">
-                                    <button onclick="p_adjustStock('${item.id}', 1)" style="background: transparent; border: none; color: #8E8E93; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                    
+                    const renderPartnerStock = (items) => {
+                        return items.map(item => {
+                            let currentCount = stockRecords[item.id] || ''; 
+                            return `
+                            <div style="background: rgba(255,255,255,0.02); padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; margin-right: 10px;">
+                                    <span style="color: var(--daily-green); font-weight: 800; font-size: 10px; letter-spacing: 0.5px;">[${catNames[item.category] || '기타'}]</span> 
+                                    <span style="font-size: 13.5px; color: #fff; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</span>
                                 </div>
-                                <button onclick="p_saveStockRecord('${item.id}')" style="background: rgba(50,215,75,0.1); color: var(--daily-green); border: 1px solid rgba(50,215,75,0.3); padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(50,215,75,0.2)'" onmouseup="this.style.background='rgba(50,215,75,0.1)'">저장</button>
-                            </div>
-                        </div>`;
-                    });
-                    container.innerHTML = html;
+                                <div style="display: flex; align-items: center; gap: 8px; flex-shrink: 0;">
+                                    <div style="display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden;">
+                                        <button onclick="p_adjustStock('${item.id}', -1)" style="background: transparent; border: none; color: #8E8E93; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;">-</button>
+                                        <input type="number" id="p-stock-input-${item.id}" value="${currentCount}" placeholder="0" class="hide-spinner" style="width: 32px; background: transparent; border: none; color: #fff; text-align: center; font-size: 14px; font-weight: 800; outline: none; padding: 0;">
+                                        <button onclick="p_adjustStock('${item.id}', 1)" style="background: transparent; border: none; color: #8E8E93; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center;">+</button>
+                                    </div>
+                                    <button onclick="p_saveStockRecord('${item.id}')" style="background: rgba(50,215,75,0.1); color: var(--daily-green); border: 1px solid rgba(50,215,75,0.3); padding: 8px 12px; border-radius: 8px; font-weight: 700; font-size: 11px; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(50,215,75,0.2)'" onmouseup="this.style.background='rgba(50,215,75,0.1)'">저장</button>
+                                </div>
+                            </div>`;
+                        }).join('');
+                    };
+
+                    if (typeof AlignPaginator !== 'undefined') {
+                        AlignPaginator.setup('p-stock-list', master, renderPartnerStock, 20);
+                    } else {
+                        container.innerHTML = renderPartnerStock(master);
+                    }           
                 }
             }
         };
@@ -8865,9 +8952,9 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             if(filteredItems.length === 0) {
                 listDiv.innerHTML = '<div style="color: #8E8E93; text-align: center; margin-top: 50px;">등록된 제품이 없습니다.</div>';
             } else {
-                let html = '';
-                filteredItems.forEach(item => {
-                    html += `
+                // 👇 [수정 시작: 무한 스크롤 엔진(AlignPaginator) 페이롤 POS 창 적용]
+                const renderPosItems = (items) => {
+                    return items.map(item => `
                     <div onclick="pr_openPayModal('${item.id}', '${item.name}', ${item.price}, ${item.cost})" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s;">
                         <div>
                             <div style="color: #fff; font-size: 14px; font-weight: 700; margin-bottom: 4px;">${item.name}</div>
@@ -8876,9 +8963,14 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
                         <div style="color: var(--daily-green); font-size: 15px; font-weight: 800;">
                             ${(item.price || 0).toLocaleString()}원
                         </div>
-                    </div>`;
-                });
-                listDiv.innerHTML = html;
+                    </div>`).join('');
+                };
+
+                if (typeof AlignPaginator !== 'undefined') {
+                    AlignPaginator.setup('pr-pos-list', filteredItems, renderPosItems, 20);
+                } else {
+                    listDiv.innerHTML = renderPosItems(filteredItems);
+                }      
             }
             document.getElementById('pr-pos-modal').style.display = 'flex';
         };
@@ -9029,18 +9121,30 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             }
 
             if(mList) {
-                mList.innerHTML = manuals.length === 0 ? `<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">해당 레벨의 커리큘럼이 없습니다.</div>` 
-                : manuals.map(m => `
-                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; margin-right: 15px;">
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="background: rgba(50,215,75,0.1); color: var(--daily-green); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 800;">${m.level.split(' ')[0]}</span> 
-                            <span style="font-size: 10.5px; color: #8E8E93; font-family:'Montserrat', sans-serif; font-weight: 600;">+${m.exp || 100} EXP</span>
-                        </div>
-                        <div style="font-size: 13.5px; font-weight: 600; color: #E8E8ED; line-height: 1.4; word-break: keep-all;">${m.title}</div>
-                    </div>
-                    <button onclick="mo_deleteEduManual(${m.id})" style="flex-shrink: 0; background: rgba(255,69,58,0.05); border: 1px solid rgba(255,69,58,0.2); color: var(--error); padding: 10px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(255,69,58,0.15)'" onmouseup="this.style.background='rgba(255,69,58,0.05)'">삭제</button>
-                </div>`).join('');
+                // 👇 [수정 시작: 무한 스크롤 엔진 오피스 커리큘럼 리스트에 이식]
+                if(manuals.length === 0) {
+                    mList.innerHTML = `<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 15px 0;">해당 레벨의 커리큘럼이 없습니다.</div>`;
+                } else {
+                    const renderEduItems = (items) => {
+                        return items.map(m => `
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 16px 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <div style="display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; margin-right: 15px;">
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <span style="background: rgba(50,215,75,0.1); color: var(--daily-green); padding: 3px 6px; border-radius: 4px; font-size: 10px; font-weight: 800;">${m.level.split(' ')[0]}</span> 
+                                    <span style="font-size: 10.5px; color: #8E8E93; font-family:'Montserrat', sans-serif; font-weight: 600;">+${m.exp || 100} EXP</span>
+                                </div>
+                                <div style="font-size: 13.5px; font-weight: 600; color: #E8E8ED; line-height: 1.4; word-break: keep-all;">${m.title}</div>
+                            </div>
+                            <button onclick="mo_deleteEduManual(${m.id})" style="flex-shrink: 0; background: rgba(255,69,58,0.05); border: 1px solid rgba(255,69,58,0.2); color: var(--error); padding: 10px 14px; border-radius: 8px; font-size: 11px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='rgba(255,69,58,0.15)'" onmouseup="this.style.background='rgba(255,69,58,0.05)'">삭제</button>
+                        </div>`).join('');
+                    };
+
+                    if (typeof AlignPaginator !== 'undefined') {
+                        AlignPaginator.setup('mo-edu-master-list', manuals, renderEduItems, 20);
+                    } else {
+                        mList.innerHTML = renderEduItems(manuals);
+                    }
+                } 
             }
 
             // 승인 대기열 그리기 
@@ -9226,12 +9330,13 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
 
 // 🌟 [엔진 A - 업그레이드] 원장님 심사 모달 열기 (교육자 성함 기본값 세팅 추가)
         window.mo_openAuditModal = function(requestId) {
-            const requests = JSON.parse(localStorage.getItem('alignEduRequests')) || [];
+            // 👇 [수정 시작: 교육 심사 모달 오픈 시 방탄 엔진 적용]
+            const requests = db.get('alignEduRequests', []);
             const r = requests.find(item => item.id === requestId);
             if(!r) return;
 
             // 1. 시스템 설정에서 현재 원장님(CEO) 성함을 가져옵니다.
-            const defaultCeo = JSON.parse(localStorage.getItem('alignSystemSettings'))?.ceoName || '희웅';
+            const defaultCeo = db.get('alignSystemSettings', {}).ceoName || '희웅';
 
             // 2. 모달 내 데이터 채우기
             document.getElementById('mo-eval-audit-title').innerText = `${r.userName} 님의 [${r.title}] 심사`;
@@ -9253,22 +9358,24 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             if(!educatorName) { alert("지도 교육자의 성함을 입력해주세요!"); return; }
             if(!masterComment) { alert("파트너를 위한 지도 피드백을 남겨주세요!"); return; }
 
+            // 👇 [수정 시작: 교육 승인 및 경험치 지급 방탄 엔진 적용]
             // 1. 요청서 상태 업데이트 및 '작성된 교육자 이름' 포함 영구 기록
-            let requests = JSON.parse(localStorage.getItem('alignEduRequests')) || [];
+            let requests = db.get('alignEduRequests', []);
             let reqIdx = requests.findIndex(r => r.id === request.id);
             if(reqIdx !== -1) {
                 requests[reqIdx].status = 'approved';
                 requests[reqIdx].masterFeedback = masterComment; 
                 requests[reqIdx].educatorName = educatorName; // 💡 금고에 교육자 이름 저장
                 requests[reqIdx].approvalDate = new Date().toLocaleString();
-                localStorage.setItem('alignEduRequests', JSON.stringify(requests));
+                db.set('alignEduRequests', requests);
             }
 
             // 2. 파트너에게 EXP 보상 지급
             const pKey = 'alignPartnerData_' + request.userName;
-            let pData = JSON.parse(localStorage.getItem(pKey)) || { exp: 0, level: 1 };
+            let pData = db.get(pKey, { exp: 0, level: 1 });
             pData.exp += (request.exp || 100);
-            localStorage.setItem(pKey, JSON.stringify(pData));
+            db.set(pKey, pData);
+           
 
             // 3. 🖨️ 공식 리포트 발행 (업데이트된 장부 데이터를 넘깁니다)
             mo_generateEduReport(requests[reqIdx], masterComment);
@@ -9458,19 +9565,28 @@ if(window.mo_currentStatusFilter !== 'all') { // 3. 조건문 수정
             if(activeList.length === 0) {
                 container.innerHTML = '<div style="color: #5C6370; font-size: 12px; text-align: center; padding: 20px;">모든 교육을 이수하셨습니다! 👍</div>';
             } else {
-                container.innerHTML = activeList.map(m => {                   
-                    let btnHtml = `<button onclick="p_openEvalSheet(${m.id})" style="background: var(--card-bg); border: 1px solid var(--edu-blue); color: var(--edu-blue); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='var(--edu-blue-dim)'" onmouseup="this.style.background='var(--card-bg)'">테스트/평가서 작성</button>`;
-                    if(m.status === 'pending') btnHtml = `<span style="color: #8E8E93; font-size: 12px; padding: 10px 0;">⏳ 원장님 심사 대기 중...</span>`;
+                // 👇 [수정 시작: 무한 스크롤 엔진 파트너 커리큘럼 리스트에 이식]
+                const renderPartnerEdu = (items) => {
+                    return items.map(m => {                   
+                        let btnHtml = `<button onclick="p_openEvalSheet(${m.id})" style="background: var(--card-bg); border: 1px solid var(--edu-blue); color: var(--edu-blue); padding: 10px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; transition: 0.2s;" onmousedown="this.style.background='var(--edu-blue-dim)'" onmouseup="this.style.background='var(--card-bg)'">테스트/평가서 작성</button>`;
+                        if(m.status === 'pending') btnHtml = `<span style="color: #8E8E93; font-size: 12px; padding: 10px 0;">⏳ 원장님 심사 대기 중...</span>`;
 
-                   return `
-                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <div style="display: flex; flex-direction: column; gap: 4px; max-width: 60%;">
-                            <div style="font-size: 10px; color: var(--edu-blue); font-weight: 800; letter-spacing: 0.5px;">${m.level} <span style="color:var(--daily-green); margin-left:4px; font-weight:600;">보상: ${m.exp || 100} EXP</span></div>
-                            <div style="font-size: 13.5px; color: #E8E8ED; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.title}</div>
-                        </div>
-                        <div style="flex-shrink: 0;">${btnHtml}</div>
-                    </div>`;
-                }).join('');
+                       return `
+                        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <div style="display: flex; flex-direction: column; gap: 4px; max-width: 60%;">
+                                <div style="font-size: 10px; color: var(--edu-blue); font-weight: 800; letter-spacing: 0.5px;">${m.level} <span style="color:var(--daily-green); margin-left:4px; font-weight:600;">보상: ${m.exp || 100} EXP</span></div>
+                                <div style="font-size: 13.5px; color: #E8E8ED; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${m.title}</div>
+                            </div>
+                            <div style="flex-shrink: 0;">${btnHtml}</div>
+                        </div>`;
+                    }).join('');
+                };
+
+                if (typeof AlignPaginator !== 'undefined') {
+                    AlignPaginator.setup('p-edu-list', activeList, renderPartnerEdu, 20);
+                } else {
+                    container.innerHTML = renderPartnerEdu(activeList);
+                }  
             }
 
             // 2) 하단 박스: 이수 완료된 교육 렌더링 (레벨별 카테고리 그룹화 엔진)
@@ -10796,6 +10912,14 @@ window.toggleCalendarSheet = function() {
     if(sheet && sheet.classList.contains('show')) {
         sheet.classList.remove('show');
         overlay.classList.remove('show');
+        
+        // 🌟 [팀장의 수술] 달력이 닫힐 때, 화면에 띄워둔 스레드(유령 캐시)를 완벽하게 소각합니다.
+        setTimeout(() => {
+            const contentArea = document.getElementById('cal-focus-content');
+            if(contentArea) contentArea.innerHTML = '';
+            cal_selectedDate = null;
+        }, 300);
+        
     } else if (sheet) {
         cal_loadDailyFocus(); // 🌟 [추가] 달력 열 때 포커스 글씨 불러오기!
         cal_renderCalendar(cal_currentDate.getFullYear(), cal_currentDate.getMonth()); 
@@ -10803,14 +10927,18 @@ window.toggleCalendarSheet = function() {
         overlay.classList.add('show');
     }
 };
-
 window.cal_changeMonth = function(offset) {
     cal_currentDate.setMonth(cal_currentDate.getMonth() + offset);
     cal_selectedDate = null; 
     cal_renderCalendar(cal_currentDate.getFullYear(), cal_currentDate.getMonth());
     const focusArea = document.getElementById('cal-daily-focus');
     if(focusArea) focusArea.style.display = 'none';
+    
+    // 🌟 [팀장의 수술] 달을 넘길 때도 이전 달의 스레드 잔상이 남지 않도록 소각!
+    const contentArea = document.getElementById('cal-focus-content');
+    if(contentArea) contentArea.innerHTML = '';
 };
+
 
 // 🌟 달력 그리기 (흰색 도트 로직 추가)
 window.cal_renderCalendar = function(year, month) {
@@ -10873,14 +11001,27 @@ window.cal_selectDate = function(year, month, d) {
     const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     const displayDate = `${year}년 ${month + 1}월 ${d}일`;
     
-    const allEvents = JSON.parse(localStorage.getItem('alignCalendarDB')) || [];
+    // 🌟 [팀장의 수술] 방탄 DB 엔진 장착 및 다중 락다운(Lock-down) 권한 제어
+    const allEvents = db.get('alignCalendarDB', []);
     const dayEvents = allEvents.filter(e => e.date === dateStr);
 
     const currentUser = localStorage.getItem('alignCurrentUser') || '디자이너';
-    let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
+    let profiles = db.get('alignProfiles', window.alignProfiles || []);
     let pInfo = profiles.find(p => p.name === currentUser);
     let userTitle = pInfo ? pInfo.title : 'DESIGNER';
-    let isDirector = userTitle.toUpperCase().includes('DIRECTOR') || userTitle.includes('원장') || userTitle.includes('대표');
+    
+    // 1. CEO 판독기: 시스템 설정에 등록된 원장님인가?
+    const systemSettings = db.get('alignSystemSettings', {});
+    const isCeoName = (systemSettings.ceoName === currentUser);
+    
+    // 2. 직급 판독기: 마스터급 직급(원장, 대표, 디렉터, 경영자)인가?
+    const isDirectorTitle = userTitle.toUpperCase().includes('DIRECTOR') || userTitle.includes('원장') || userTitle.includes('대표') || userTitle.includes('경영자');
+    
+    // 3. 오피스 판독기: 현재 경영자 오피스 창을 열고 보는 중인가? (VIP 패스)
+    const isManagerRoomOpen = document.getElementById('manager-room') && document.getElementById('manager-room').style.display === 'flex';
+
+    // 👑 [최종 마스터 권한]: 위 3가지 중 하나라도 해당하면 무조건 통제권 획득!
+    let isMaster = isManagerRoomOpen || isCeoName || isDirectorTitle;
 
     let threadsHtml = '';
     if(dayEvents.length === 0) {
@@ -10898,7 +11039,8 @@ window.cal_selectDate = function(year, month, d) {
                 badgeClass = 'partner'; borderColor = 'var(--daily-green)'; avatarStyle = 'color: var(--daily-green); border-color: var(--daily-green); background: rgba(50,215,75,0.05);';
             }
 
-            let deleteBtn = (isDirector || ev.author === currentUser) 
+            // 🌟 [팀장의 수술] 구형 isDirector를 방탄 판독기 'isMaster'로 교체!
+            let deleteBtn = (isMaster || ev.author === currentUser) 
                 ? `<button onclick="cal_deleteEvent(${ev.id}, ${year}, ${month}, ${d})" style="background:transparent; border:none; color:var(--error); font-size:10px; cursor:pointer; margin-left:8px; text-decoration:underline;">삭제</button>` : '';
 
             // 🌟 4색 태그 렌더링
@@ -11037,9 +11179,10 @@ window.cal_addEvent = function(dateStr, year, month, d) {
 
 window.cal_deleteEvent = async function(id, year, month, d) {
     if(await AlignModal.confirm("이 일정을 삭제하시겠습니까?", "일정 삭제")) {
-        let allEvents = JSON.parse(localStorage.getItem('alignCalendarDB')) || [];
+        // 🌟 [팀장의 수술] DB 엔진으로 삭제 및 저장 로직 초압축!
+        let allEvents = db.get('alignCalendarDB', []);
         allEvents = allEvents.filter(e => e.id !== id);
-        localStorage.setItem('alignCalendarDB', JSON.stringify(allEvents));
+        db.set('alignCalendarDB', allEvents);
         cal_selectDate(year, month, d);
     }
 };
@@ -11059,15 +11202,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 터치 시작 (손가락이 화면에 닿았을 때)
         sheet.addEventListener('touchstart', (e) => {
-            // 시트 안의 스크롤이 맨 위쪽(0)일 때만 '당겨서 닫기' 발동! (글 읽으려고 스크롤 내릴 땐 방해 안 함)
-            if (sheet.scrollTop <= 5) { 
-                startY = e.touches[0].clientY;
-                currentY = startY; // 🌟 [핵심 픽스] 이전 스와이프 위치(유령 데이터)를 현재 위치로 강제 리셋!
-                isDragging = true;
-                sheet.style.transition = 'none'; // 손가락에 쫀득하게 붙게 하려고 애니메이션 끄기
+            // 👇 [수정 시작: 달력 스레드 락다운 및 스크롤 위치 센서 완벽 부활!]
+            
+            // 1. 팝업창의 스크롤이 1픽셀이라도 밑으로 내려가 있다면 무조건 창 닫기 차단! (스크롤에만 전념)
+            if (sheet.scrollTop > 5) {
+                isDragging = false;
+                return;
             }
-        }, { passive: true });
+            
+            // 2. 스크롤이 맨 위에 있더라도, 달력 스레드(.thread-container)나 내부 리스트를 만졌다면 차단!
+            const innerScrollArea = e.target.closest('[style*="overflow-y: auto"]:not(.bottom-sheet), [style*="overflow-x: auto"], .scroll-container, .cal-grid, [id*="list"], .thread-container');
+            
+            if (innerScrollArea) {
+                isDragging = false;
+                return;
+            }
 
+            // 3. 맨 위에 있으면서, 안전한 상단 빈 공간이나 손잡이를 잡았을 때만 스와이프 허용!
+            startY = e.touches[0].clientY;
+            currentY = startY; 
+            isDragging = true;
+            sheet.style.transition = 'none'; 
+            // 👆 [수정 끝]
+        }, { passive: true });
+      
         // 터치 이동 (손가락을 끌어내릴 때)
         sheet.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
@@ -11316,10 +11474,11 @@ window.v_resetData = async function() {
         return;
     }
 
-    let salesData = JSON.parse(localStorage.getItem('alignSalesData') || '[]');
-    let statsData = JSON.parse(localStorage.getItem('alignMonthlyStats') || '[]');
-    let dailyRecords = JSON.parse(localStorage.getItem('vl_daily_records') || '[]');
-    let questData = JSON.parse(localStorage.getItem('vl_quests') || '[]'); 
+    // 👇 [수정 시작: 개인 데이터 리셋 방탄 db 엔진 적용]
+    let salesData = db.get('alignSalesData', []);
+    let statsData = db.get('alignMonthlyStats', []);
+    let dailyRecords = db.get('vl_daily_records', []);
+    let questData = db.get('vl_quests', []); 
 
     const filteredSales = salesData.filter(item => {
         const itemMonth = item.date ? item.date.substring(0, 7) : "";
@@ -11501,32 +11660,53 @@ window.sys_smartMonthlyClose = async function() {
     let bestPartner = sortedPartners[0] ? sortedPartners[0][0] : "없음";
 
     let historyMonthKey = targetMonth.replace('-', '');
-    let existHistory = historyData.find(h => h.month === historyMonthKey);
     let currentMonthHistory = { 
-        month: historyMonthKey, 
-        totalGross: monthTotalGross,
-        avgTicket: avgTicket,
-        topDesigner: topDesigner,
-        topGross: topGross,
-        runnerUpDesigner: runnerUpDesigner,
-        growthTop: growthTop,
-        bestPartner: bestPartner
-    };
-            
-    if(existHistory) Object.assign(existHistory, currentMonthHistory);
-    else historyData.push(currentMonthHistory); 
-    
-    historyData.sort((a,b) => b.month - a.month); 
+            month: historyMonthKey, 
+            totalGross: monthTotalGross,
+            avgTicket: avgTicket,
+            topDesigner: topDesigner,
+            topGross: topGross,
+            runnerUpDesigner: runnerUpDesigner,
+            growthTop: growthTop,
+            bestPartner: bestPartner
+        };
+                
+        if(existHistory) Object.assign(existHistory, currentMonthHistory);
+        else historyData.push(currentMonthHistory); 
+        
+        historyData.sort((a,b) => b.month - a.month); 
+        
+        let snapshots = db.get('alignMonthlySnapshot', []);
+        let existingSnapIdx = snapshots.findIndex(s => s.month === targetMonth);
+        
+        let personalSnapData = [];
+        statsToBackup.forEach(stat => {
+            // 🌟 엑셀로 날아가기 전, 개인별 필수 비교 데이터(총매출, 신규, 지정고객 등)만 초경량으로 압축
+            personalSnapData.push({
+                name: stat.name,
+                totalRev: stat.totalRev,
+                newCust: stat.newCust,
+                fanCust: stat.fanCust
+            });
+        });
+        
+        if (existingSnapIdx > -1) {
+            snapshots[existingSnapIdx].data = personalSnapData;
+        } else {
+            snapshots.push({ month: targetMonth, data: personalSnapData });
+        }
+        db.set('alignMonthlySnapshot', snapshots);
 
-    // 🌟 [핵심] 6구역 분리형 통합 엑셀(CSV) 렌더링 시작!
-    if(salesToBackup.length > 0 || dailyToBackup.length > 0 || statsToBackup.length > 0) {
+        // 🌟 [핵심] 6구역 분리형 통합 엑셀(CSV) 렌더링 시작!
+        if(salesToBackup.length > 0 || dailyToBackup.length > 0 || statsToBackup.length > 0) {
         let csvContent = "\uFEFF"; // 한글 깨짐 방지 장갑
         
         csvContent += "=================================================\n";
         csvContent += `[1] 매장 재무 결산 (Payroll) - ${targetMonth}\n`;
         csvContent += "=================================================\n";
         csvContent += "날짜,담당자,총매출액,최종지급인건비(수익)\n";
-        salesToBackup.forEach(row => { csvContent += `${row.date},${row.name},${row.gross},${row.profit}\n`; });
+       
+        salesToBackup.forEach(row => { csvContent += `${row.date},${row.name},${Math.round(row.gross)},${Math.round(row.profit)}\n`; });
         csvContent += "\n\n";
 
         csvContent += "=================================================\n";
@@ -11534,7 +11714,7 @@ window.sys_smartMonthlyClose = async function() {
         csvContent += "=================================================\n";
         csvContent += "날짜,담당자,총시술매출,멤버십매출,점판매출,총접객,순수방문,지정고객,신규고객,총예약,컷,남성펌,여성펌,컬러,클리닉,드라이,AS,제품판매수,근무일수\n";
         statsToBackup.forEach(row => {
-            csvContent += `${row.date},${row.name},${row.totalRev || 0},${row.membershipRev || 0},${row.productRev || 0},${row.totalCust || 0},${row.pureCust || 0},${row.fanCust || 0},${row.newCust || 0},${row.totalRsv || 0},${row.cut || 0},${row.permM || 0},${row.permF || 0},${row.color || 0},${row.clinic || 0},${row.dry || 0},${row.as || 0},${row.productCount || 0},${row.workDays || 0}\n`;
+            csvContent += `${row.date},${row.name},${Math.round(row.totalRev || 0)},${Math.round(row.membershipRev || 0)},${Math.round(row.productRev || 0)},${Math.round(row.totalCust || 0)},${Math.round(row.pureCust || 0)},${Math.round(row.fanCust || 0)},${Math.round(row.newCust || 0)},${Math.round(row.totalRsv || 0)},${Math.round(row.cut || 0)},${Math.round(row.permM || 0)},${Math.round(row.permF || 0)},${Math.round(row.color || 0)},${Math.round(row.clinic || 0)},${Math.round(row.dry || 0)},${Math.round(row.as || 0)},${Math.round(row.productCount || 0)},${Math.round(row.workDays || 0)}\n`;
         });
         csvContent += "\n\n";
 
@@ -11543,8 +11723,9 @@ window.sys_smartMonthlyClose = async function() {
         csvContent += "=================================================\n";
         csvContent += "날짜,담당자,당일매출,총접객,지정고객,사용슬롯,진단등급\n";
         dailyToBackup.forEach(row => {
-            csvContent += `${row.date},${row.name},${row.revenue || 0},${row.total || 0},${row.nom || 0},${row.slots || 0},${row.grade || ''}\n`;
+            csvContent += `${row.date},${row.name},${Math.round(row.revenue || 0)},${Math.round(row.total || 0)},${Math.round(row.nom || 0)},${Math.round(row.slots || 0)},${row.grade || ''}\n`;
         });
+     
         csvContent += "\n\n";
 
         csvContent += "=================================================\n";
@@ -11778,14 +11959,15 @@ window.m_deleteQuest = async function(id) {
 
 window.mo_deleteStockItem = async function(itemId) {
     if(await AlignModal.confirm("이 재고 항목을 리스트에서 완전히 삭제하시겠습니까?", "마스터 항목 삭제")) {
-        let master = JSON.parse(localStorage.getItem('alignStockMaster')) || [];
+        // 👇 [수정 시작: 구형 저장 방식 폐기 및 방탄 db 엔진 적용]
+        let master = db.get('alignStockMaster', []);
         master = master.filter(item => String(item.id) !== String(itemId));
-        localStorage.setItem('alignStockMaster', JSON.stringify(master));
+        db.set('alignStockMaster', master);
 
-        let records = JSON.parse(localStorage.getItem('alignStockRecords')) || {};
+        let records = db.get('alignStockRecords', {});
         if(records[itemId] !== undefined) delete records[itemId];
         else if (records[Number(itemId)] !== undefined) delete records[Number(itemId)];
-        localStorage.setItem('alignStockRecords', JSON.stringify(records));
+        db.set('alignStockRecords', records);
 
         if(typeof mo_renderStockMaster === 'function') mo_renderStockMaster();
         if(typeof mo_renderStockStatus === 'function') mo_renderStockStatus();
@@ -11806,9 +11988,10 @@ window.mo_addStockMaster = async function() {
         if(!await AlignModal.confirm("점판 제품인데 가격이 0원입니다. 그대로 등록할까요?", "확인")) return;
     }
 
-    let master = JSON.parse(localStorage.getItem('alignStockMaster')) || [];
+    // 👇 [수정 시작: 구형 방식(JSON.parse) 폐기 및 방탄 db 엔진(db.get, db.set) 적용]
+    let master = db.get('alignStockMaster', []);
     master.push({ id: 'item_' + Date.now(), category: cat, name: name, cost: cost, price: price });
-    localStorage.setItem('alignStockMaster', JSON.stringify(master));
+    db.set('alignStockMaster', master);
 
     document.getElementById('mo-stock-name').value = ''; 
     document.getElementById('mo-stock-cost').value = ''; 
@@ -11950,173 +12133,6 @@ window.mo_deleteEduRecord = async function(reqId) {
 
             listContainer.innerHTML = html;
         };
-
-
-// 🌪️ [모바일 전용] 3개월(90일) 하드코어 시뮬레이션 풀-가동 엔진 (4인 디자이너)
-let qaClickCount = 0;
-window.triggerQAData = async function() {
-    qaClickCount++;
-    if (qaClickCount >= 5) {
-        qaClickCount = 0; 
-        
-        if (!await AlignModal.confirm("🚨 [3개월 시뮬레이션 모드 - 4인 체제]\n과거 3개월 동안 4명의 디자이너가 영업한 방대한 90일 치 풀-로드(Full-load) 데이터를 생성하시겠습니까?\n(모든 차트의 색상과 4명의 막대그래프를 확인하실 수 있습니다. 기존 데이터는 덮어씌워집니다.)", "시뮬레이터 가동")) return;
-
-        // 🌟 1. 직원 명부 셋업 (디자이너 4명, 파트너 2명)
-        const profiles = [
-            { name: '희웅', title: 'Director', color: 'linear-gradient(135deg, #D4AF37, #8a7123)', text: '#050507', isHidden: false, personalPw: '0000' },
-            { name: '민수', title: 'Senior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
-            { name: '지아', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
-            { name: '은우', title: 'Designer', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }, // 💡 추가 디자이너
-            { name: '유진', title: 'Junior', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }, // 💡 추가 디자이너
-            { name: '지훈', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' },
-            { name: '수진', title: 'Partner', color: '#1C1C1E', text: '#E8E8ED', isHidden: false, personalPw: '0000' }
-        ];
-        localStorage.setItem('alignProfiles', JSON.stringify(profiles));
-
-        let salesData = []; let statsData = []; let dailyRecords = []; let quests = [];
-        let manito = []; let orders = []; let exps = []; let historyData = [];
-
-        // 🌟 2. 3개월(Month) 반복 루프 가동! (m=2: 두 달 전, m=1: 한 달 전, m=0: 이번 달)
-        for (let m = 2; m >= 0; m--) {
-            let targetDate = new Date();
-            targetDate.setMonth(targetDate.getMonth() - m);
-            const year = targetDate.getFullYear();
-            const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-            const lastDay = new Date(year, targetDate.getMonth() + 1, 0).getDate();
-
-            let monthTotalGross = 0;
-
-            // 💡 3. 디자이너 4명의 각기 다른 특성을 가진 영업 데이터 생성
-            const designers = [
-                { name: '민수', type: '올라운더' }, 
-                { name: '지아', type: '컬러마스터' }, 
-                { name: '은우', type: '펌장인' }, 
-                { name: '유진', type: '케어전문' }
-            ];
-
-            designers.forEach(designer => {
-                let tRev = 0, tMem = 0, tProd = 0, tCust = 0, tPure = 0, tFan = 0, tNew = 0, tRsv = 0;
-                let tCut = 0, tPermM = 0, tPermF = 0, tColor = 0, tClinic = 0, tDry = 0, tAs = 0, tProdCnt = 0;
-
-                // 일별(Daily) 반복 루프
-                for(let i = 1; i <= lastDay; i++) {
-                    const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
-                    if(i % 7 === 0) continue; // 7일에 한 번 휴무
-
-                    // 매출 볼륨 설정
-                    let baseGross = 250000 + ((2 - m) * 50000); 
-                    let dailyGross = Math.floor(Math.random() * 350000) + baseGross; 
-                    
-                    let dCust = Math.floor(Math.random() * 6) + 4; // 하루 4~9명
-                    let dPure = dCust;
-                    let dFan = Math.floor(dCust * 0.6); 
-                    let dNew = dCust - dFan;
-                    let dSlots = dCust * 2; 
-
-                    // 💡 [핵심] 디자이너 특성(type)에 따라 4가지 시술 비중을 완전히 다르게 찢어줍니다!
-                    let dCut = 0, dPermM = 0, dPermF = 0, dColor = 0, dClinic = 0;
-                    
-                    if (designer.type === '올라운더') {
-                        dCut = Math.floor(dCust * 0.4); dPermM = Math.floor(dCust * 0.2); dPermF = Math.floor(dCust * 0.1); dColor = Math.floor(dCust * 0.15); dClinic = Math.floor(dCust * 0.15);
-                    } else if (designer.type === '컬러마스터') {
-                        dCut = Math.floor(dCust * 0.2); dPermM = Math.floor(dCust * 0.1); dPermF = 0; dColor = Math.floor(dCust * 0.6); dClinic = Math.floor(dCust * 0.1);
-                    } else if (designer.type === '펌장인') {
-                        dCut = Math.floor(dCust * 0.3); dPermM = Math.floor(dCust * 0.3); dPermF = Math.floor(dCust * 0.3); dColor = 0; dClinic = Math.floor(dCust * 0.1);
-                    } else { // 케어전문
-                        dCut = Math.floor(dCust * 0.2); dPermM = Math.floor(dCust * 0.1); dPermF = Math.floor(dCust * 0.1); dColor = 0; dClinic = Math.floor(dCust * 0.6);
-                    }
-
-                    // 누적 데이터 합산
-                    tRev += dailyGross; tMem += (dailyGross * 0.2); tProd += (dailyGross * 0.08); // 점판 비중 8%로 고정
-                    tCust += dCust; tPure += dPure; tFan += dFan; tNew += dNew; tRsv += (dCust + 1); 
-                    tCut += dCut; tPermM += dPermM; tPermF += dPermF; tColor += dColor; tClinic += dClinic; tProdCnt += Math.floor(Math.random() * 3) + 1; // 하루 1~3개씩 점판 판매
-
-                    dailyRecords.push({ date: dateStr, name: designer.name, revenue: dailyGross, total: dCust, nom: dFan, slots: dSlots, grade: '성장의 불꽃' });
-                    quests.push({ date: dateStr, name: designer.name, q1: Math.floor(Math.random()*3), q2: Math.floor(Math.random()*2), q3: Math.floor(Math.random()*2), q4: Math.floor(Math.random()*3) });
-
-                    let targetPartner = Math.random() > 0.5 ? '지훈' : '수진';
-                    let kw = ['🧴 빛보다 빠른 샴푸', '🧪 센스있는 약터치', '🧹 깔끔한 셋팅/마감', '⏱️ 칼같은 타임 체크'][Math.floor(Math.random()*4)];
-                    manito.unshift({ date: `${month}/${String(i).padStart(2,'0')} 18:00`, from: designer.name, to: targetPartner, keyword: kw });
-                }
-
-                // 월별 결산 저장
-                monthTotalGross += tRev;
-                salesData.push({ date: `${year}-${month}-${lastDay}`, name: designer.name, gross: tRev, profit: tRev * 0.4 });
-                statsData.push({ date: `${year}-${month}-${lastDay}`, name: designer.name, totalRev: tRev, membershipRev: tMem, productRev: tProd, totalCust: tCust, pureCust: tPure, fanCust: tFan, newCust: tNew, totalRsv: tRsv, cut: tCut, permM: tPermM, permF: tPermF, color: tColor, clinic: tClinic, dry: tDry, as: tAs, productCount: tProdCnt, workDays: 25 });
-            });
-
-            // 🌟 과거 달(m=2, m=1)은 History 금고에도 보관하여 꺾은선 차트가 웅장하게 그려지게 함!
-            if (m > 0) {
-                historyData.push({ month: `${year}${month}`, totalGross: monthTotalGross, topDesigner: '민수', topGross: monthTotalGross * 0.3, runnerUpDesigner: '지아' });
-            }
-        } // 3개월 루프 종료
-
-        // 🌟 4. 파트너(지훈, 수진) 성장 및 업무 데이터 세팅 (최근 1달 기준)
-        const d = new Date();
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        
-        ['지훈', '수진'].forEach(partner => {
-            for(let i=1; i<=30; i++) {
-                const dateStr = `${year}-${month}-${String(i).padStart(2, '0')}`;
-                if(i % 7 !== 0) quests.push({ date: dateStr, name: partner, pq1: 1, pq2: 1, pq3: 1 });
-            }
-            const partnerData = { exp: Math.floor(Math.random() * 4000) + 3000, level: Math.floor(Math.random() * 2) + 2, todayQuests: {}, lastDate: `${year}-${month}-30` };
-            localStorage.setItem('alignPartnerData_' + partner, JSON.stringify(partnerData));
-        });
-
-        // 🌟 5. 비품 발주 (결재 센터용)
-        for(let i=25; i<=30; i++) {
-            orders.push({ id: 'ORD_'+i, user: '지훈', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 11:30`, items: [{category: 'chemical', name: '밀본 마지렐 6레벨', qty: 5}, {category: 'retail', name: '아윤채 컬크림', qty: 3}] });
-            exps.push({ id: i, user: '수진', item: '웰라 산화제 9%', status: 'pending', date: `${year}-${month}-${String(i).padStart(2,'0')} 15:00` });
-        }
-
-        // 🌟 6. 금고에 최종 적재
-        localStorage.setItem('alignSalesData', JSON.stringify(salesData));
-        localStorage.setItem('alignMonthlyStats', JSON.stringify(statsData));
-        localStorage.setItem('vl_daily_records', JSON.stringify(dailyRecords));
-        localStorage.setItem('vl_quests', JSON.stringify(quests));
-        localStorage.setItem('alignManitoLog', JSON.stringify(manito.slice(0,30)));
-        localStorage.setItem('alignPendingOrders', JSON.stringify(orders));
-        localStorage.setItem('alignExpReports', JSON.stringify(exps));
-        localStorage.setItem('alignHistoryData', JSON.stringify(historyData));
-
-        await AlignModal.alert("🚀 [3개월 시뮬레이션 완료]\n총 4명의 디자이너가 활약한 90일 치의 데이터가 성공적으로 적재되었습니다.\n(컬러, 펌, 클리닉 색상을 모두 확인해 보세요!)", "풀로드 완성");
-        location.reload();
-    }
-};
-
-// 🌟 [임시 테스트용] 재무 대시보드 도넛 차트 강제 오픈 마법사
-window.injectDummyFinanceData = function() {
-    const today = new Date();
-    const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-    
-    // 1. 가상의 '이번 달 매출 및 인건비' 데이터를 금고에 강제로 찔러넣습니다.
-    let salesData = JSON.parse(localStorage.getItem('alignSalesData')) || [];
-    salesData.push({
-        date: `${currentMonthStr}-15`,
-        name: '더미 디자이너',
-        gross: 15000000, // 가상 매출: 1,500만 원
-        profit: 5000000  // 가상 인건비 지급액: 500만 원
-    });
-    localStorage.setItem('alignSalesData', JSON.stringify(salesData));
-
-    // 2. 가상의 '지출 내역'을 화면 입력창에 자동으로 타이핑해줍니다.
-    const rentEl = document.getElementById('fin-exp-rent');
-    const utilEl = document.getElementById('fin-exp-util');
-    const markEl = document.getElementById('fin-exp-marketing');
-    const matEl = document.getElementById('fin-exp-material');
-
-    if(rentEl) rentEl.value = "1,500,000";
-    if(utilEl) utilEl.value = "300,000";
-    if(markEl) markEl.value = "500,000";
-    if(matEl) matEl.value = "1,200,000";
-
-    // 3. 차트 계산기를 강제로 돌려서 닫혀있던 공간을 열어젖힙니다!
-    if(typeof mo_calcFinance === 'function') mo_calcFinance();
-    
-    if(typeof app !== 'undefined' && app.toast) app.toast("더미 데이터 주입 완료! 차트가 열립니다");
-};
 
 
 </script>
