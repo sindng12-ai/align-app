@@ -6447,71 +6447,61 @@ function pr_setMode(mode) {
             if(typeof p_loadMyVLData === 'function') p_loadMyVLData();
         };
 
-        /* ✨ [타점 1] 렌더링 엔진 (이름, 칭호, 게이지, 로고 색상) */
+        /* ✨ [타점 1] 렌더링 엔진 (이름, 칭호, 게이지, 로고 색상) - 딥 에메랄드 에디션 */
         window.renderPartnerExp = function() {
             const currentUser = localStorage.getItem('alignCurrentUser');
             if(!currentUser) return;
             
-            // 🌟 [코드 다이어트 & 픽스] db 엔진으로 안전하게 로드
             let pData = db.get('alignPartnerData_' + currentUser, { exp: 0, level: 1, todayQuests: {}, lastDate: '' });
-            
-            // 🌟 [NaN 버그 완벽 수리] PC에 설정값이 없어도 1.0으로 강제 방어!
             const savedSettings = db.get('alignSystemSettings', {});
             const trackWeight = parseFloat(savedSettings.growthTrack) || 1.0;
-
             const levelNames = ['🌱', '🌿', '🌳', '🌸', '🍒'];
-            // 박사님의 오리지널 기준값 (2년 철학)
             const baseLevelMax = [3000, 6000, 12000, 18000, 99999]; 
             
             let currentLevel = pData.level || 1;
             let currentExp = pData.exp || 0;
-
-            // 🌟 [핵심] 기준값에 가중치를 곱해 이번 매장 전용 목표치를 생성합니다.
             let targetExp = Math.round((baseLevelMax[currentLevel - 1] || 99999) * trackWeight);
-
             let percent = (currentExp / targetExp) * 100;
             if(percent > 100) percent = 100;
 
-            // 👑 [블랙 라벨 테마 엔진] 레벨 4 이상일 때 골드 테마로 변신!
+            // 💎 [딥 에메랄드 테마 엔진] 다크 배경에 최적화된 명도/채도 적용
             const isBlackLabel = currentLevel >= 4;
-            const themeMain = isBlackLabel ? 'var(--accent-gold)' : 'var(--daily-green)';
-            const themeBorder = isBlackLabel ? 'rgba(212,175,55,0.3)' : 'rgba(50,215,75,0.3)';
+            const themeMain = isBlackLabel ? '#10B981' : 'var(--daily-green)'; // 딥 에메랄드
+            const themeBorder = isBlackLabel ? 'rgba(16, 185, 129, 0.4)' : 'rgba(50,215,75,0.3)';
+            const themeBg = isBlackLabel ? 'rgba(16, 185, 129, 0.05)' : 'rgba(50,215,75,0.05)';
 
-            // 🌟 [추가] 중앙 제어실 금고에서 현재 매장명 꺼내오기 (없으면 ALIGN)
             const currentBrand = savedSettings.brandName || 'ALIGN';
 
-            // 로고 & 로그아웃 버튼 변신
-            const pLogo = document.querySelector('#partner-room > div:first-child > div');
-            const pLogout = document.querySelector('#partner-room > div:first-child > button');
+            const pLogo = document.querySelector('#partner-room > div:first-child > div:first-child');
             if(pLogo) {
-                // 🌟 [JS 렌더링 엔진] 덮어쓸 때도 무조건 '수직 정렬 레터헤드 룩'으로 출력!
                 pLogo.innerHTML = isBlackLabel 
                     ? `<div class="app-brand-title" style="font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 900; color: ${themeMain}; letter-spacing: 1.5px; line-height: 1.2; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100%; display: block;">${currentBrand}</div>
-                       <div style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; color: var(--accent-gold); font-weight: 700; letter-spacing: 3px; margin-top: 3px; white-space: nowrap;">BLACK LABEL 👑</div>` 
+                       <div style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; color: ${themeMain}; font-weight: 700; letter-spacing: 3px; margin-top: 3px; white-space: nowrap;">BLACK LABEL</div>` 
                     : `<div class="app-brand-title" style="font-family: 'Montserrat', sans-serif; font-size: 17px; font-weight: 900; color: ${themeMain}; letter-spacing: 1.5px; line-height: 1.2; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; width: 100%; display: block;">${currentBrand}</div>
                        <div style="font-family: 'Montserrat', sans-serif; font-size: 9.5px; color: #8E8E93; font-weight: 700; letter-spacing: 3px; margin-top: 3px; white-space: nowrap;">PARTNER</div>`;
             }
-            if(pLogout) {
-                pLogout.style.color = themeMain;
-                pLogout.style.borderColor = themeBorder;
-            }
 
-            // 이름, 레벨 텍스트 색상 변신
+            const pHeaderBtns = document.querySelectorAll('#partner-room > div:first-child > div:last-child button');
+            pHeaderBtns.forEach(btn => {
+                btn.style.color = themeMain;
+                btn.style.borderColor = themeBorder;
+                btn.style.background = themeBg;
+            });
+
             if(document.getElementById('p-display-name')) document.getElementById('p-display-name').style.color = themeMain;
             if(document.getElementById('p-title')) {
-                document.getElementById('p-title').innerText = levelNames[currentLevel-1];
+                document.getElementById('p-title').innerHTML = isBlackLabel ? `<span style="color: ${themeMain}; font-weight: 800; letter-spacing: 1px;">PRO PARTNER</span>` : levelNames[currentLevel-1];
                 document.getElementById('p-title').style.color = themeMain;
-                document.getElementById('p-title').style.textShadow = isBlackLabel ? '0 0 10px rgba(212,175,55,0.4)' : 'none';
+                document.getElementById('p-title').style.textShadow = isBlackLabel ? `0 0 10px ${themeBorder}` : 'none';
             }
             if(document.getElementById('p-level')) document.getElementById('p-level').innerText = currentLevel;
             
-            // 승급 대기 상태 & 경험치 바 변신
             const expTextEl = document.getElementById('p-exp-text');
             const expBarEl = document.getElementById('p-exp-bar');
             
             if(expTextEl && expBarEl) {
                 if(percent >= 100 && currentLevel < 5) {
-                    expTextEl.innerHTML = `<span style="color:var(--error); font-weight:800;">👑 원장님 승급 심사 대기 중</span>`;
+                    expTextEl.innerHTML = `<span style="color:var(--error); font-weight:800;">원장님 승급 심사 대기 중</span>`;
                     expBarEl.style.background = 'var(--error)';
                     expBarEl.style.width = '100%';
                 } else {
@@ -6520,8 +6510,9 @@ function pr_setMode(mode) {
                     if(currentLevel >= 5) expTextEl.innerText = `최고 레벨 도달! (${currentExp.toLocaleString()} EXP)`;
                     else expTextEl.innerText = `다음 승급까지 ${remainExp.toLocaleString()} EXP`;
                     
-                    expBarEl.style.background = themeMain; // 테마 색상 적용!
+                    expBarEl.style.background = themeMain; 
                     expBarEl.style.width = `${percent}%`;
+                    expBarEl.style.boxShadow = isBlackLabel ? `0 0 10px ${themeBorder}` : 'none'; 
                 }
             }
         };
@@ -6586,7 +6577,7 @@ function pr_setMode(mode) {
 
        
 
-       /* ✨ [타점 3] 퀘스트 리스트 엔진 (보상 텍스트 & 체크박스 색상 변신) */
+       /* ✨ [타점 3] 퀘스트 리스트 엔진 */
         window.renderPartnerQuestList = function() {
             const list = document.getElementById('p-quest-list');
             if(!list) return;
@@ -6599,9 +6590,9 @@ function pr_setMode(mode) {
             const today = new Date().toLocaleDateString('ko-KR');
             const isToday = (pData.lastDate === today); 
 
-            // 👑 블랙 라벨 테마 로드
+            // 💎 [딥 에메랄드 테마 엔진]
             const isBlackLabel = pData.level >= 4;
-            const themeColor = isBlackLabel ? 'var(--accent-gold)' : 'var(--daily-green)';
+            const themeColor = isBlackLabel ? '#10B981' : 'var(--daily-green)';
 
             const quests = getQuests();
             if(quests.length === 0) {
@@ -7855,8 +7846,8 @@ window.mo_selectRadarStaff = function(index) {
         };
 
 
-/* ✨ [타점 2] 탭 전환 엔진 (버튼 색상 변신) */
-window.p_switchTab = function(tabId) {
+/* ✨ [타점 2] 탭 전환 엔진 */
+        window.p_switchTab = function(tabId) {
             const tabs = ['quest', 'archive', 'inventory'];
             const index = tabs.indexOf(tabId);
             
@@ -7864,9 +7855,10 @@ window.p_switchTab = function(tabId) {
             let pData = JSON.parse(localStorage.getItem('alignPartnerData_' + currentUser)) || { level: 1 };
             const isBlackLabel = pData.level >= 4;
             
-            const themeColor = isBlackLabel ? 'var(--accent-gold)' : 'var(--daily-green)';
-            const themeBg = isBlackLabel ? 'rgba(212, 175, 55, 0.15)' : 'rgba(50, 215, 75, 0.15)';
-            const themeBorder = isBlackLabel ? 'rgba(212, 175, 55, 0.4)' : 'rgba(50, 215, 75, 0.4)';
+            // 💎 [딥 에메랄드 테마 엔진]
+            const themeColor = isBlackLabel ? '#10B981' : 'var(--daily-green)';
+            const themeBg = isBlackLabel ? 'rgba(16, 185, 129, 0.15)' : 'rgba(50, 215, 75, 0.15)';
+            const themeBorder = isBlackLabel ? 'rgba(16, 185, 129, 0.4)' : 'rgba(50, 215, 75, 0.4)';
 
             const highlight = document.getElementById('p-segment-highlight');
             if(highlight) {
