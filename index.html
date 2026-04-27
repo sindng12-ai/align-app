@@ -2078,6 +2078,13 @@ input, textarea {
         <div style="flex-shrink: 0; padding-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <span style="font-size: 18px; font-weight: 800; color: #fff;">실시간 매장 재고 현황</span>
+                <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                    <span style="font-size: 11px; color: #8E8E93; font-weight: 600;">재고 0개 숨기기</span>
+                    <div class="d-toggle-switch" style="transform: scale(0.8); transform-origin: right center; margin: 0;">
+                        <input type="checkbox" id="mo-hide-zero-toggle" onchange="mo_toggleHideZero(this)">
+                        <span class="d-toggle-slider"></span>
+                    </div>
+                </label>
             </div>
             
             <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 5px; -webkit-overflow-scrolling: touch;">
@@ -3573,7 +3580,7 @@ input, textarea {
                     <div style="font-size: 11px; font-weight: 800; color: #000; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
                         <span style="width: 3px; height: 12px; background: #000;"></span> SELF FEEDBACK
                     </div>
-                    <textarea id="p-eval-self-comment" placeholder="이번 교육을 통해 느낀 점이나 보완할 점을 적어주세요." style="width: 100%; height: 80px; border: 1px solid #ddd; border-radius: 4px; padding: 12px; font-size: 13px; font-family: 'Pretendard'; resize: none; color: #000;"></textarea>
+                    <textarea id="p-eval-self-comment" placeholder="이번 교육을 통해 느낀 점이나 보완할 점을 적어주세요." style="width: 100%; height: 80px; border: 1px solid #ddd; border-radius: 4px; padding: 12px; font-size: 13px; font-family: 'Pretendard'; resize: none; color: #000; transition: 0.3s; margin-bottom: 50px;" onfocus="this.style.borderColor='#000'; setTimeout(() => this.scrollIntoView({behavior:'smooth', block:'center'}), 300);" onblur="this.style.borderColor='#ddd';"></textarea>
                 </div>
             </div>
 
@@ -3598,11 +3605,11 @@ input, textarea {
                 <div>
                     <div style="margin-bottom: 20px;">
                         <div style="font-size: 11px; color: var(--accent-gold); margin-bottom: 8px; font-weight: 700;">EDUCATOR NAME (지도 교육자)</div>
-                        <input type="text" id="mo-eval-educator-name" placeholder="지도 교육자 성함" style="width: 100%; background: #050507; border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 12px; font-size: 14px; color: #fff; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'">
+                        <input type="text" id="mo-eval-educator-name" placeholder="지도 교육자 성함" style="width: 100%; background: #050507; border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 12px; font-size: 14px; color: #fff; outline: none; transition: 0.3s;" onfocus="this.style.borderColor='var(--accent-gold)'; setTimeout(() => this.scrollIntoView({behavior:'smooth', block:'center'}), 300);" onblur="this.style.borderColor='rgba(212,175,55,0.2)';">
                     </div>
 
                     <div style="font-size: 11px; color: var(--accent-gold); margin-bottom: 8px; font-weight: 700;">MASTER'S BRIEFING (지도 피드백)</div>
-                    <textarea id="mo-eval-master-comment" placeholder="기술적 교정 사항이나 격려의 한마디를 남겨주세요." style="width: 100%; height: 120px; background: #050507; border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 15px; font-size: 14px; color: #fff; font-family: 'Pretendard'; resize: none; line-height: 1.6;" onfocus="this.style.borderColor='var(--accent-gold)'"></textarea>
+                    <textarea id="mo-eval-master-comment" placeholder="기술적 교정 사항이나 격려의 한마디를 남겨주세요." style="width: 100%; height: 120px; background: #050507; border: 1px solid rgba(212,175,55,0.2); border-radius: 8px; padding: 15px; font-size: 14px; color: #fff; font-family: 'Pretendard'; resize: none; line-height: 1.6; transition: 0.3s; margin-bottom: 50px;" onfocus="this.style.borderColor='var(--accent-gold)'; setTimeout(() => this.scrollIntoView({behavior:'smooth', block:'center'}), 300);" onblur="this.style.borderColor='rgba(212,175,55,0.2)';"></textarea>
                 </div>
             </div>
 
@@ -8976,8 +8983,39 @@ window.mo_addStockMaster = async function() {
     document.getElementById('mo-master-add-modal').style.display = 'none';
 };
 
-      // 3. 실시간 매장 재고 현황판 화면에 그리기 (검색 엔진 탑재판)
-window.mo_renderStockStatus = function() {
+
+// 🌟 [엔진 1] 재고 0개 숨기기 상태 제어
+        window.mo_hideZeroStock = false;
+        window.mo_toggleHideZero = function(checkbox) {
+            window.mo_hideZeroStock = checkbox.checked;
+            mo_renderStockStatus(); // 스위치를 켤 때마다 리스트 즉시 리렌더링!
+        };
+
+        // 🌟 [엔진 2] 단종된 옵션 개별 핀셋 삭제
+        window.mo_deleteStockOption = async function(itemId, optionName) {
+            if(!await AlignModal.confirm(`단종된 옵션 [${optionName}]을(를) 영구 삭제하시겠습니까?`, "옵션 삭제")) return;
+            
+            // 1. 마스터 백과사전에서 해당 옵션 도려내기
+            let master = db.get('alignStockMaster', []);
+            let itemIndex = master.findIndex(i => i.id === itemId);
+            if(itemIndex !== -1 && master[itemIndex].options) {
+                master[itemIndex].options = master[itemIndex].options.filter(opt => opt !== optionName);
+                db.set('alignStockMaster', master);
+            }
+            
+            // 2. 실시간 재고 금고에서도 찌꺼기 완벽 소각
+            let records = db.get('alignStockRecords', {});
+            let stockKey = `${itemId}___${optionName}`;
+            if(records[stockKey] !== undefined) {
+                delete records[stockKey];
+                db.set('alignStockRecords', records);
+            }
+            
+            mo_renderStockStatus();
+            if(typeof app !== 'undefined' && app.toast) app.toast(`[${optionName}] 옵션이 완벽히 삭제되었습니다.`);
+        };
+
+      window.mo_renderStockStatus = function() {
             const container = document.getElementById('mo-stock-status-list');
             if(!container) return;
 
@@ -8987,7 +9025,6 @@ window.mo_renderStockStatus = function() {
             let master = db.get('alignStockMaster', []);
             let stockRecords = db.get('alignStockRecords', {}); 
 
-            // 🌟 [유령 데이터 킬러] 엑셀에서 딸려온 이름 없는 빈 줄 데이터 완벽 차단!
             master = master.filter(item => item && item.name && String(item.name).trim() !== '');
 
             if(window.mo_currentStatusFilter !== 'all') { 
@@ -9005,7 +9042,7 @@ window.mo_renderStockStatus = function() {
             const catNames = { chemical: '약제', retail: '점판', supply: '소모품', service: '서비스' };
             
             const renderStatusItems = (items) => {
-                return items.map(item => {
+                let htmlArray = items.map(item => {
                     let totalStock = 0;
                     let optionsHtml = '';
                     
@@ -9017,6 +9054,8 @@ window.mo_renderStockStatus = function() {
 
                     opts = opts.filter(opt => opt && String(opt).trim() !== '');
                     let hasOptions = opts.length > 0;
+                    
+                    let activeOptCount = 0; // 🌟 0개 숨기기 적용 후 화면에 살아남은 옵션 개수
 
                     if (hasOptions) {
                         opts.forEach(opt => {
@@ -9024,22 +9063,33 @@ window.mo_renderStockStatus = function() {
                             let qty = Number(stockRecords[stockKey]) || 0;
                             totalStock += qty;
                             
+                            // 🛡️ [0개 숨기기 필터] 토글 켜짐 & 수량이 0이면 렌더링 건너뜀!
+                            if (window.mo_hideZeroStock && qty === 0) return;
+                            
+                            activeOptCount++;
                             let qtyColor = qty > 0 ? 'var(--daily-green)' : '#5C6370';
+                            
+                            // 🌟 [핀셋 삭제 버튼(✕)] 이식 완료
                             optionsHtml += `
-                            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
                                 <span style="color: #E8E8ED; font-size: 12.5px;">- ${opt}</span>
-                                <span style="color: ${qtyColor}; font-weight: 700; font-size: 13px;">${qty}개</span>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <span style="color: ${qtyColor}; font-weight: 700; font-size: 13px;">${qty}개</span>
+                                    <button onclick="mo_deleteStockOption('${item.id}', '${opt}')" style="background: rgba(255, 69, 58, 0.1); border: 1px solid rgba(255, 69, 58, 0.3); color: var(--error); width: 24px; height: 24px; border-radius: 6px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;" onmouseover="this.style.background='rgba(255, 69, 58, 0.2)'" onmouseout="this.style.background='rgba(255, 69, 58, 0.1)'">✕</button>
+                                </div>
                             </div>`;
                         });
                     } else {
                         totalStock = Number(stockRecords[item.id]) || 0;
                     }
 
-                    // 🚨🚨 [핵심 버그 수정] flex-shrink: 0; 을 추가하여 데이터가 많아도 리스트가 찌그러지지 않게 영구 차단합니다! 🚨🚨
+                    // 🛡️ [부모 스킵 필터] 옵션이 없는 제품인데 총재고가 0이거나, 옵션이 있는데 '살아남은 옵션'이 하나도 없다면 리스트 자체에서 숨김!
+                    if (window.mo_hideZeroStock && totalStock === 0 && activeOptCount === 0) return '';
+
                     return `
                     <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 8px; overflow: hidden; flex-shrink: 0;">
-                        <div style="padding: 14px 15px; display: flex; justify-content: space-between; align-items: center; ${hasOptions ? 'cursor: pointer;' : ''}"
-                             ${hasOptions ? `onclick="const d = this.nextElementSibling; const a = this.querySelector('.arr'); if(d.style.display==='none'){d.style.display='block'; a.innerText='▲';}else{d.style.display='none'; a.innerText='▼';}"` : ''}>
+                        <div style="padding: 14px 15px; display: flex; justify-content: space-between; align-items: center; ${hasOptions && activeOptCount > 0 ? 'cursor: pointer;' : ''}"
+                             ${hasOptions && activeOptCount > 0 ? `onclick="const d = this.nextElementSibling; const a = this.querySelector('.arr'); if(d.style.display==='none'){d.style.display='block'; a.innerText='▲';}else{d.style.display='none'; a.innerText='▼';}"` : ''}>
                             
                             <div style="flex: 1; min-width: 0; padding-right: 15px; line-height: 1.4;">
                                 <span style="color: #8E8E93; font-size: 11px; font-weight:600; margin-right: 4px;">[${catNames[item.category] || '기타'}]</span> 
@@ -9048,10 +9098,10 @@ window.mo_renderStockStatus = function() {
                             
                             <div style="display: flex; align-items: center; gap: 12px; flex-shrink: 0;">
                                 <div><span style="color: var(--daily-green); font-size: 16px; font-weight: 800; font-family: 'Montserrat', sans-serif;">${totalStock}</span><span style="font-size: 11px; color: #8E8E93; margin-left: 3px;">개</span></div>
-                                ${hasOptions ? `<span class="arr" style="font-size: 10px; color: #5C6370; margin-left: 4px; font-weight: 800;">▼</span>` : `<button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; margin-left: 4px;">삭제</button>`}
+                                ${hasOptions && activeOptCount > 0 ? `<span class="arr" style="font-size: 10px; color: #5C6370; margin-left: 4px; font-weight: 800;">▼</span>` : `<button onclick="mo_deleteStockItem('${item.id}')" style="background: rgba(255, 69, 58, 0.05); border: 1px solid rgba(255, 69, 58, 0.2); color: var(--error); padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; cursor: pointer; margin-left: 4px;">삭제</button>`}
                             </div>
                         </div>
-                        ${hasOptions ? `
+                        ${hasOptions && activeOptCount > 0 ? `
                         <div style="display: none; padding: 5px 15px 15px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.02);">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-top: 5px;">
                                 <span style="font-size: 11px; color: #8E8E93;">세부 옵션별 재고 현황</span>
@@ -9060,7 +9110,10 @@ window.mo_renderStockStatus = function() {
                             ${optionsHtml}
                         </div>` : ''}
                     </div>`;
-                }).join('');
+                });
+                
+                // 빈 값('')으로 리턴된 요소들 제거 후 반환
+                return htmlArray.filter(html => html !== '').join('');
             };
 
             if (typeof AlignPaginator !== 'undefined') {
@@ -9333,26 +9386,60 @@ window.mo_copyPendingOrdersToKakao = function() {
         };
 
 
-// 🌟 오피스: 발주 확인(완료) 처리하기 (+ 재무 지출 & 재고 입고 자동 연동 완전체 엔진!)
-window.mo_completeOrder = function(orderId) {
+// 🌟 오피스: 발주 확인(완료) 처리하기 (+ 사전 경고형 유령 방어막 탑재!)
+window.mo_completeOrder = async function(orderId) { // 🚨 async 추가!
     let orders = db.get('alignPendingOrders', []);
     let orderIndex = orders.findIndex(o => o.id === orderId);
     
     if(orderIndex !== -1) {
+        let master = db.get('alignStockMaster', []);
+        
+        // 🛡️ [1단계: 사전 스캔 엔진] 유령 데이터가 있는지 먼저 찰나의 순간에 검사합니다.
+        let ghostItems = [];
+        orders[orderIndex].items.forEach(item => {
+            let baseName = item.name.replace(/\s*\[.*?\]$/, '').trim();
+            let optMatch = item.name.match(/\[(.*?)\]$/);
+            let opt = optMatch ? optMatch[1] : '';
+
+            let matchedMaster = master.find(m => m.name === baseName && m.category === item.category);
+            
+            if (matchedMaster && opt) {
+                let currentOpts = Array.isArray(matchedMaster.options) ? matchedMaster.options : [];
+                if (typeof matchedMaster.options === 'string' && matchedMaster.options.trim() !== '') {
+                    currentOpts = matchedMaster.options.split(';').map(s => s.trim());
+                    if(currentOpts.length === 1 && currentOpts[0].includes(',')) currentOpts = currentOpts[0].split(',').map(s=>s.trim());
+                }
+                // 주문한 옵션이 현재 백과사전의 옵션 리스트에 없다면 유령으로 판정!
+                if (!currentOpts.includes(opt)) {
+                    ghostItems.push(`${baseName} [${opt}]`);
+                }
+            }
+        });
+
+        // 🚨 [2단계: 인터셉트 팝업] 유령 데이터가 발견되면 결재를 일시 정지하고 원장님께 묻습니다!
+        if (ghostItems.length > 0) {
+            let ghostStr = ghostItems.join(', ');
+            let confirmMsg = `발주서에 백과사전에서 삭제(단종)된 품목이 포함되어 있습니다.<br><br><span style="color:var(--error); font-weight:700;">${ghostStr}</span><br><br>해당 품목은 재고 및 지출 장부 계산에서 <b>자동 제외(소각)</b>됩니다.<br>이대로 승인하시겠습니까?`;
+            
+            let proceed = await AlignModal.confirm(confirmMsg, "유령 데이터 감지 🚨");
+            if (!proceed) {
+                // 취소를 누르면 결재가 취소되고, 우측으로 날아갔던 스와이프 카드를 원상 복구 시킵니다.
+                mo_renderPendingOrders();
+                if(typeof app !== 'undefined' && app.toast) app.toast("승인이 취소되었습니다.");
+                return; // 🛑 여기서 함수를 강제 종료하여 아무것도 저장되지 않게 막습니다!
+            }
+        }
+
+        // --- 3단계: 기존 정상 승인 로직 진행 ---
         orders[orderIndex].status = 'completed'; // 상태를 완료로 변경
         let d = new Date();
         orders[orderIndex].completeDate = `${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')} 승인`;
         
-        // 🌟 [재무 & 재고 자동화 엔진] 승인된 품목의 원가 합산 및 재고(입고) 플러스!
-        let master = db.get('alignStockMaster', []);
         let stockRecords = db.get('alignStockRecords', {}); // 📦 실시간 재고 장부 로드
         let totalOrderCost = 0;
         
         orders[orderIndex].items.forEach(item => {
-            // 품목명 뒤에 붙은 옵션 태그(예: "[7cb]")를 무시하고 순수 백과사전 제품명 추출
             let baseName = item.name.replace(/\s*\[.*?\]$/, '').trim();
-            
-            // 🌟 [추가] 대괄호 안의 옵션명만 쏙 빼내기
             let optMatch = item.name.match(/\[(.*?)\]$/);
             let opt = optMatch ? optMatch[1] : '';
 
@@ -9360,11 +9447,24 @@ window.mo_completeOrder = function(orderId) {
             let qty = item.qty || 1; // 주문 수량
             
             if (matchedMaster) {
+                // 🛡️ 사전 스캔에서 원장님이 "확인"을 누른 경우, 여기서 유령 데이터를 최종적으로 소각합니다.
+                if (opt) {
+                    let currentOpts = Array.isArray(matchedMaster.options) ? matchedMaster.options : [];
+                    if (typeof matchedMaster.options === 'string' && matchedMaster.options.trim() !== '') {
+                        currentOpts = matchedMaster.options.split(';').map(s => s.trim());
+                        if(currentOpts.length === 1 && currentOpts[0].includes(',')) currentOpts = currentOpts[0].split(',').map(s=>s.trim());
+                    }
+                    if (!currentOpts.includes(opt)) {
+                        console.log(`🛡️ 유령 방어막 작동: 단종된 옵션 [${opt}] 입고 거부 및 소각 완료`);
+                        return; // 아래 코드를 무시하고 다음 품목으로 건너뜀!
+                    }
+                }
+
                 // 1. 재무 연동: 원가 합산
                 let unitCost = Number(matchedMaster.cost) || 0;
                 totalOrderCost += (unitCost * qty);
                 
-                // 2. 재고 연동: 옵션이 있으면 분리된 전용 ID로 입고 처리!
+                // 2. 재고 연동: 실시간 수량 증가 (입고 처리)
                 let stockKey = opt ? `${matchedMaster.id}___${opt}` : matchedMaster.id;
                 let currentStock = Number(stockRecords[stockKey]) || 0;
                 stockRecords[stockKey] = currentStock + qty;
@@ -9376,22 +9476,26 @@ window.mo_completeOrder = function(orderId) {
         
         // 원가 총합이 0원 이상이면 재무 장부에 합산
         if (totalOrderCost > 0) {
-            let expenses = db.get('alignFinanceExpenses', {rent:0, util:0, marketing:0, material:0});
+            const todayDate = new Date();
+            const curMonth = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}`;
+            
+            let expenses = db.get('alignFinanceExpenses', {month: curMonth, rent:0, util:0, marketing:0, material:0});
+            
+            // 🌟 결재할 때도 달이 바뀌었는지 체크해서 재료비만 리셋!
+            if (expenses.month !== curMonth) {
+                expenses.material = '0';
+                expenses.month = curMonth;
+            }
             
             // 기존 재료비 문자열(콤마 포함)을 숫자로 안전하게 변환하여 더함
             let currentMaterial = parseInt(String(expenses.material).replace(/[^0-9]/g, '')) || 0;
             let newMaterial = currentMaterial + totalOrderCost;
             
-            expenses.material = newMaterial.toLocaleString('ko-KR'); // 콤마 찍어서 텍스트로 저장
+            expenses.material = newMaterial.toLocaleString('ko-KR'); 
             db.set('alignFinanceExpenses', expenses);
             
-            // 🌟 [핵심 수리] 화면의 재료/비품 입력칸에도 변경된 금액을 즉시 꽂아줍니다!
             const matInput = document.getElementById('fin-exp-material');
-            if (matInput) {
-                matInput.value = expenses.material;
-            }
-            
-            // 재무 정산 차트가 열려있을 수 있으므로 실시간 화면 갱신
+            if (matInput) matInput.value = expenses.material;
             if(typeof mo_calcFinance === 'function') mo_calcFinance();
         }
     }
@@ -9407,14 +9511,14 @@ window.mo_completeOrder = function(orderId) {
     db.set('alignPendingOrders', orders);
 
     mo_renderPendingOrders(); 
-    if(typeof p_renderCompletedOrders === 'function') p_renderCompletedOrders(); // 파트너 영수증 갱신
-    if(typeof d_renderCompletedOrders === 'function') d_renderCompletedOrders(); // 디자이너 영수증 갱신
+    if(typeof p_renderCompletedOrders === 'function') p_renderCompletedOrders(); 
+    if(typeof d_renderCompletedOrders === 'function') d_renderCompletedOrders(); 
     
-    // 🌟 오피스의 재고 현황판이 열려있다면 즉시 숫자가 올라가도록 리렌더링!
     if(typeof mo_renderStockStatus === 'function') mo_renderStockStatus();
     
-    if(typeof app !== 'undefined' && app.toast) app.toast("승인 완료!<br><br>(지출 합산 및 재고 입고가 100% 자동 반영되었습니다)");
+    if(typeof app !== 'undefined' && app.toast) app.toast("승인 완료!<br><br>(지출 합산 및 재고 입고가 자동 반영되었습니다)");
 };
+
 
 // =========================================================
 // 📊 [EXCEL DATA ENGINE] 엑셀 대량 업/다운로드 자동화 로직
@@ -9712,39 +9816,7 @@ window.mo_uploadStockCSV = function(event) {
                 mo_renderStockMaster();
             };
 
-            // 🌟 [미니멀 페이롤 엔진] 오피스: 가로 스크롤 아바타 명단 렌더링
-            window.mo_renderFinanceList = function() {
-                const listEl = document.getElementById('mo-finance-list');
-                if(!listEl) return;
-
-                let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
-                // 🚨 퇴사자(숨김 처리된 사람)는 정산 명단에서 완전히 빼버립니다.
-                let activeProfiles = profiles.filter(p => !p.isHidden);
-                
-                if(activeProfiles.length === 0) {
-                    listEl.innerHTML = '<div style="color: #8E8E93; font-size: 12px; text-align: center; width: 100%;">정산 가능한 직원이 없습니다.</div>';
-                    return;
-                }
-
-                let html = '';
-                activeProfiles.forEach(p => {
-                    let isPartner = p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴');
-                    let ringColor = isPartner ? 'rgba(50, 215, 75, 0.4)' : 'rgba(212, 175, 55, 0.4)';
-                    let bgGradient = isPartner ? 'linear-gradient(135deg, rgba(50, 215, 75, 0.1), rgba(0,0,0,0.8))' : 'linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0,0,0,0.8))';
-                    let titleColor = isPartner ? '#8B949E' : 'var(--accent-gold)';
-                    let initial = p.name.charAt(0).toUpperCase();
-
-                    html += `
-                    <div onclick="mo_openPayrollFor('${p.name}', '${p.title}')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; flex-shrink: 0; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">
-                        <div style="width: 60px; height: 60px; border-radius: 20px; background: ${bgGradient}; border: 1px solid ${ringColor}; display: flex; justify-content: center; align-items: center; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
-                            <span style="color: #fff; font-size: 22px; font-weight: 300;">${initial}</span>
-                        </div>
-                        <div style="font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; letter-spacing: -0.5px;">${p.name}</div>
-                        <div style="font-size: 9px; color: ${titleColor}; font-family: 'Montserrat'; font-weight: 700; letter-spacing: 0.5px;">${p.title.toUpperCase()}</div>
-                    </div>`;
-                });
-                listEl.innerHTML = html;
-            };
+            
 
             // 🌟 [신규] 오피스 -> 페이롤(정산기) 연결 브릿지
             window.mo_openPayrollFor = function(name, title) {
@@ -11528,9 +11600,13 @@ window.mo_showGraduation = function(partnerName) {
             }
         }; // mo_calcFinance 끝나는 곳
 
-        // 지출 내용 저장
+        // 지출 내용 저장 (+ 월별 꼬리표 부착)
         window.mo_saveFinanceExpenses = function() {
+            const today = new Date();
+            const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+            
             const expenses = {
+                month: currentMonthStr, // 🌟 저장할 때 이번 달 꼬리표 부착!
                 rent: document.getElementById('fin-exp-rent').value,
                 util: document.getElementById('fin-exp-util').value,
                 marketing: document.getElementById('fin-exp-marketing').value,
@@ -11541,24 +11617,61 @@ window.mo_showGraduation = function(partnerName) {
             mo_calcFinance(); // 저장 후 차트 새로고침
         };
 
-// 🌟 [재무/지출 렌더링 픽스] 재무 탭을 열 때, 금고에 저장된 지출 내역을 입력칸에 자동으로 불러오기
-const originalRenderFinanceList = window.mo_renderFinanceList;
-window.mo_renderFinanceList = function() {
-    // 기존의 명단 동기화 로직은 그대로 실행
-    if(originalRenderFinanceList) originalRenderFinanceList();
 
-    // 💡 금고에서 기존 지출 내역 꺼내와서 화면에 꽂아주기
-    let exp = db.get('alignFinanceExpenses', null);
-    if(exp) {
-        if(document.getElementById('fin-exp-rent')) document.getElementById('fin-exp-rent').value = exp.rent || '';
-        if(document.getElementById('fin-exp-util')) document.getElementById('fin-exp-util').value = exp.util || '';
-        if(document.getElementById('fin-exp-marketing')) document.getElementById('fin-exp-marketing').value = exp.marketing || '';
-        if(document.getElementById('fin-exp-material')) document.getElementById('fin-exp-material').value = exp.material || '';
-    }
-    
-    // 불려온 지출 내역을 바탕으로 차트 다시 그리기
-    if(typeof mo_calcFinance === 'function') mo_calcFinance();
-};
+// 🌟 [통합] 페이롤 명단 렌더링 & 지출 내역 스마트 이월 엔진
+        window.mo_renderFinanceList = function() {
+            // 1. 직원 명단 아바타 렌더링
+            const listEl = document.getElementById('mo-finance-list');
+            if(listEl) {
+                let profiles = JSON.parse(localStorage.getItem('alignProfiles')) || window.alignProfiles || [];
+                let activeProfiles = profiles.filter(p => !p.isHidden); // 퇴사자 제외
+                
+                if(activeProfiles.length === 0) {
+                    listEl.innerHTML = '<div style="color: #8E8E93; font-size: 12px; text-align: center; width: 100%;">정산 가능한 직원이 없습니다.</div>';
+                } else {
+                    let html = '';
+                    activeProfiles.forEach(p => {
+                        let isPartner = p.title.toUpperCase().includes('PARTNER') || p.title.includes('파트너') || p.title.includes('인턴');
+                        let ringColor = isPartner ? 'rgba(50, 215, 75, 0.4)' : 'rgba(212, 175, 55, 0.4)';
+                        let bgGradient = isPartner ? 'linear-gradient(135deg, rgba(50, 215, 75, 0.1), rgba(0,0,0,0.8))' : 'linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0,0,0,0.8))';
+                        let titleColor = isPartner ? '#8B949E' : 'var(--accent-gold)';
+                        let initial = p.name.charAt(0).toUpperCase();
+
+                        html += `
+                        <div onclick="mo_openPayrollFor('${p.name}', '${p.title}')" style="display: flex; flex-direction: column; align-items: center; cursor: pointer; flex-shrink: 0; transition: 0.2s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">
+                            <div style="width: 60px; height: 60px; border-radius: 20px; background: ${bgGradient}; border: 1px solid ${ringColor}; display: flex; justify-content: center; align-items: center; margin-bottom: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                <span style="color: #fff; font-size: 22px; font-weight: 300;">${initial}</span>
+                            </div>
+                            <div style="font-size: 12px; font-weight: 600; color: #fff; margin-bottom: 4px; letter-spacing: -0.5px;">${p.name}</div>
+                            <div style="font-size: 9px; color: ${titleColor}; font-family: 'Montserrat'; font-weight: 700; letter-spacing: 0.5px;">${p.title.toUpperCase()}</div>
+                        </div>`;
+                    });
+                    listEl.innerHTML = html;
+                }
+            }
+
+            // 🌟 2. [자동 이월 엔진] 지출 내역 불러오기 및 재료비 매월 초기화
+            let exp = db.get('alignFinanceExpenses', null);
+            const today = new Date();
+            const currentMonthStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+
+            if(exp) {
+                // 달이 바뀌었다면 재료비(변동비)는 0으로, 임대료 등(고정비)은 그대로 놔둡니다!
+                if (exp.month !== currentMonthStr) {
+                    exp.material = '0';
+                    exp.month = currentMonthStr; // 꼬리표 갱신
+                    db.set('alignFinanceExpenses', exp);
+                }
+
+                if(document.getElementById('fin-exp-rent')) document.getElementById('fin-exp-rent').value = exp.rent || '';
+                if(document.getElementById('fin-exp-util')) document.getElementById('fin-exp-util').value = exp.util || '';
+                if(document.getElementById('fin-exp-marketing')) document.getElementById('fin-exp-marketing').value = exp.marketing || '';
+                if(document.getElementById('fin-exp-material')) document.getElementById('fin-exp-material').value = exp.material || '';
+            }
+            
+            if(typeof mo_calcFinance === 'function') mo_calcFinance();
+        };
+
 
         // 🌟 [AI CFO 멘토 엔진] 
         window.mo_callAICfo = async function() {
