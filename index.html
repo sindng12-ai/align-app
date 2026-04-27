@@ -3342,9 +3342,9 @@ input, textarea {
 
                 <div id="payroll-receipt" style="display: none; background: rgba(255,255,255,0.02); border-radius: 24px; padding: 40px 25px; margin-top: 35px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.05); position: relative; overflow: hidden;">
                                     
-                    <div style="margin-bottom: 35px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 20px;">
-                        <h3 id="receipt-title" style="color: #fff; font-weight: 300; font-size: 24px; margin: 0 0 8px 0; letter-spacing: -1px;">디자이너님의<br><strong style="font-weight:800;">급여 명세서</strong></h3>
-                        <p style="color: var(--accent-gold); font-size: 10px; font-weight: 700; margin: 0; letter-spacing: 2px;">PROJECT VL MASTER</p>
+                    <div style="margin-bottom: 25px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 15px;">
+                        <h3 id="receipt-title" style="color: #fff; font-size: 17px; margin: 0 0 6px 0; letter-spacing: -0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><span style="font-weight: 300;">디자이너님의</span> <strong style="font-weight:800;">급여 명세서</strong></h3>
+                        <p style="color: var(--accent-gold); font-size: 9px; font-weight: 700; margin: 0; letter-spacing: 2px;">PROJECT VL MASTER</p>
                     </div>
                     
                     <div style="margin-bottom: 30px;">
@@ -6341,21 +6341,23 @@ window.v_toggleApiKey = function() {
             const originalScroll = resultView.scrollTop;
             resultView.scrollTop = 0; 
 
-            // 💡 사진관(캡처 영역) 타겟팅
             const captureArea = document.getElementById('d-capture-area');
             
             // 🌟 [순간 포착 보정] 캡처되는 1초 동안만 하이엔드 테두리와 워터마크를 입힙니다!
             const originalBorder = captureArea.style.border;
             const originalBoxShadow = captureArea.style.boxShadow;
+            const originalPaddingBottom = captureArea.style.paddingBottom;
+            
             captureArea.style.border = '1px solid rgba(212,175,55,0.2)';
             captureArea.style.boxShadow = '0 20px 50px rgba(0,0,0,0.8)';
+            captureArea.style.paddingBottom = '30px'; // 하단 여백 다이어트
             
             const watermark = document.createElement('div');
             watermark.innerHTML = 'VERIFIED BY ALIGN MASTER SYSTEM';
-            watermark.style.cssText = 'text-align:center; font-family:"Montserrat", sans-serif; font-size:10px; color:rgba(255,255,255,0.2); letter-spacing:4px; margin-top:25px; font-weight:600; padding-bottom:5px;';
+            // 🌟 워터마크 미니멀리즘 적용
+            watermark.style.cssText = 'text-align:center; font-family:"Montserrat", sans-serif; font-size:7.5px; color:rgba(255,255,255,0.15); letter-spacing:3px; margin-top:20px; font-weight:600; opacity:0.8;';
             captureArea.appendChild(watermark);
 
-            // 점수 색상 보정 (iOS 버그 방어)
             const scoreEl = document.getElementById('d-res-score');
             const origColor = scoreEl.style.color;
             scoreEl.style.webkitTextFillColor = '#32D74B'; 
@@ -6363,19 +6365,20 @@ window.v_toggleApiKey = function() {
 
             // 🌟 [4K 렌더링 엔진]
             const canvas = await html2canvas(captureArea, {
-                scale: 4, // 🌟 초고해상도 지원
+                scale: 4, 
                 backgroundColor: '#050507', 
                 useCORS: true,
                 allowTaint: true,
                 logging: false,
-                scrollY: -window.scrollY // 모바일 스크롤 위치에 따른 잘림 완벽 방어
+                scrollY: -window.scrollY 
             });
 
-            // 찰칵! 찍고 난 후 원래 상태로 감쪽같이 복구
+            // 원래 상태로 감쪽같이 복구
             scoreEl.style.webkitTextFillColor = '';
             scoreEl.style.color = origColor;
             captureArea.style.border = originalBorder;
             captureArea.style.boxShadow = originalBoxShadow;
+            captureArea.style.paddingBottom = originalPaddingBottom;
             captureArea.removeChild(watermark);
             resultView.scrollTop = originalScroll;
 
@@ -6389,7 +6392,7 @@ window.v_toggleApiKey = function() {
                 
                 a.click();
                 URL.revokeObjectURL(url);
-                if(typeof app !== 'undefined' && app.toast) app.toast("갤러리에 일일 보고서가 고화질로 저장되었습니다. 📸");
+                if(typeof app !== 'undefined' && app.toast) app.toast("갤러리에 일일 보고서가 고화질로 저장되었습니다.");
                 
                 btn.innerHTML = originalHTML;
                 btn.style.pointerEvents = 'auto';
@@ -6587,7 +6590,8 @@ function pr_setMode(mode) {
                 displayName = myTitle ? `${myName} ${myTitle}님의` : `${myName} 디자이너님의`;
             }
             
-            document.getElementById('receipt-title').innerText = `${displayName} 급여 명세서`;
+            // 🌟 [타이틀 1줄 핏] 두께 차이를 주어 세련되게 렌더링
+            document.getElementById('receipt-title').innerHTML = `<span style="font-weight: 300;">${displayName}</span> <strong style="font-weight:800;">급여 명세서</strong>`;
 
             // 공제 항목들 가져오기
             const deductTax = pr_parse('tax');
@@ -6799,13 +6803,19 @@ function pr_setMode(mode) {
             // 💡 사진관(캡처 영역) 타겟팅: 명세서 박스 전체를 찰칵!
             const captureArea = document.getElementById('payroll-receipt');
 
-            // 🌟 [순간 포착 보정] 인스타 스토리에 예쁘게 담기도록 골드 테두리와 워터마크 장착
+            // 🌟 [순간 포착 보정] 인스타 스토리에 예쁘게 담기도록 골드 테두리와 워터마크 장착, 상단 여백 추가
             const originalBorder = captureArea.style.border;
+            const originalPaddingTop = captureArea.style.paddingTop;
+            const originalPaddingBottom = captureArea.style.paddingBottom;
+            
             captureArea.style.border = '1px solid rgba(212,175,55,0.4)';
+            captureArea.style.paddingTop = '60px'; // 📸 상태바 방어용 상단 에어백 장착!
+            captureArea.style.paddingBottom = '30px'; // 하단 여백 다이어트
             
             const watermark = document.createElement('div');
             watermark.innerHTML = 'VERIFIED BY ALIGN MASTER SYSTEM';
-            watermark.style.cssText = 'text-align:center; font-family:"Montserrat", sans-serif; font-size:10px; color:rgba(212,175,55,0.4); letter-spacing:4px; margin-top:35px; font-weight:600; padding-bottom:10px;';
+            // 🌟 워터마크 미니멀리즘 적용 (크기 축소, 투명도 증가, 마진 압축)
+            watermark.style.cssText = 'text-align:center; font-family:"Montserrat", sans-serif; font-size:7.5px; color:rgba(212,175,55,0.3); letter-spacing:3px; margin-top:20px; font-weight:600; opacity:0.8;';
             captureArea.appendChild(watermark);
 
             // 🌟 [4K 렌더링 엔진]
@@ -6815,11 +6825,13 @@ function pr_setMode(mode) {
                 useCORS: true,
                 allowTaint: true,
                 logging: false,
-                scrollY: -window.scrollY // 모바일 스크롤 위치에 따른 잘림 완벽 방어
+                scrollY: -window.scrollY
             });
 
             // 원상 복구
             captureArea.style.border = originalBorder;
+            captureArea.style.paddingTop = originalPaddingTop;
+            captureArea.style.paddingBottom = originalPaddingBottom;
             captureArea.removeChild(watermark);
             scrollContainer.scrollTop = originalScroll;
 
@@ -6831,7 +6843,6 @@ function pr_setMode(mode) {
                 const dTime = new Date();
                 const dStr = `${dTime.getFullYear()}${String(dTime.getMonth() + 1).padStart(2, '0')}${String(dTime.getDate()).padStart(2, '0')}`;
                 
-                // 디자이너 이름 불러와서 파일명에 박아주기
                 const myName = document.getElementById('v-set-name') ? document.getElementById('v-set-name').value.trim() : '디자이너';
                 a.download = `급여명세서_${myName}_${dStr}.png`;
                 
@@ -6850,7 +6861,6 @@ function pr_setMode(mode) {
             btn.style.pointerEvents = 'auto';
         }
     }
-
 
       // 🌟 [추가] 동적 프로필 생성 시스템 (앱 내부에서 직원 추가)
         const savedData = localStorage.getItem('alignProfiles');
