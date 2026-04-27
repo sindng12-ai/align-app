@@ -6319,7 +6319,7 @@ window.v_toggleApiKey = function() {
     // =========================================================
     // [INSTAGRAM STORY CAPTURE ENGINE] (우측 짤림 완벽 픽스본)
     // =========================================================
-    // 🟢 [이미지 저장 캡처 엔진]
+    // 🟢 [이미지 저장 캡처 엔진 - 하이엔드 4K 튜닝]
     async function d_shareToInstagram() {
         const btn = document.getElementById('d-share-btn');
         const originalHTML = btn.innerHTML;
@@ -6341,39 +6341,55 @@ window.v_toggleApiKey = function() {
             const originalScroll = resultView.scrollTop;
             resultView.scrollTop = 0; 
 
-            // 💡 사진관(캡처 영역)만 정확히 타겟팅
+            // 💡 사진관(캡처 영역) 타겟팅
             const captureArea = document.getElementById('d-capture-area');
             
-            // 점수 색상 보정
+            // 🌟 [순간 포착 보정] 캡처되는 1초 동안만 하이엔드 테두리와 워터마크를 입힙니다!
+            const originalBorder = captureArea.style.border;
+            const originalBoxShadow = captureArea.style.boxShadow;
+            captureArea.style.border = '1px solid rgba(212,175,55,0.2)';
+            captureArea.style.boxShadow = '0 20px 50px rgba(0,0,0,0.8)';
+            
+            const watermark = document.createElement('div');
+            watermark.innerHTML = 'VERIFIED BY ALIGN MASTER SYSTEM';
+            watermark.style.cssText = 'text-align:center; font-family:"Montserrat", sans-serif; font-size:10px; color:rgba(255,255,255,0.2); letter-spacing:4px; margin-top:25px; font-weight:600; padding-bottom:5px;';
+            captureArea.appendChild(watermark);
+
+            // 점수 색상 보정 (iOS 버그 방어)
             const scoreEl = document.getElementById('d-res-score');
             const origColor = scoreEl.style.color;
             scoreEl.style.webkitTextFillColor = '#32D74B'; 
             scoreEl.style.color = '#32D74B';
 
+            // 🌟 [4K 렌더링 엔진]
             const canvas = await html2canvas(captureArea, {
-                scale: 3, 
-                backgroundColor: '#050507', // 캡처 영역의 다크 배경 고정
+                scale: 4, // 🌟 초고해상도 지원
+                backgroundColor: '#050507', 
                 useCORS: true,
-                logging: false
+                allowTaint: true,
+                logging: false,
+                scrollY: -window.scrollY // 모바일 스크롤 위치에 따른 잘림 완벽 방어
             });
 
-            // 원래 상태로 복구
+            // 찰칵! 찍고 난 후 원래 상태로 감쪽같이 복구
             scoreEl.style.webkitTextFillColor = '';
             scoreEl.style.color = origColor;
+            captureArea.style.border = originalBorder;
+            captureArea.style.boxShadow = originalBoxShadow;
+            captureArea.removeChild(watermark);
             resultView.scrollTop = originalScroll;
 
             canvas.toBlob(async (blob) => {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                
                 const dTime = new Date();
                 const dStr = `${dTime.getFullYear()}${String(dTime.getMonth() + 1).padStart(2, '0')}${String(dTime.getDate()).padStart(2, '0')}`;
                 a.download = `ALIGN_리포트_${dStr}.png`;
                 
                 a.click();
                 URL.revokeObjectURL(url);
-                if(typeof app !== 'undefined' && app.toast) app.toast("갤러리에 일일 보고서가 저장되었습니다. 📸");
+                if(typeof app !== 'undefined' && app.toast) app.toast("갤러리에 일일 보고서가 고화질로 저장되었습니다. 📸");
                 
                 btn.innerHTML = originalHTML;
                 btn.style.pointerEvents = 'auto';
@@ -6758,7 +6774,7 @@ function pr_setMode(mode) {
         } // calculatePayroll 함수 끝
 
 
-// 🌟 [신규 엔진] 페이롤 명세서 전용 캡처 및 갤러리 저장 로직
+// 🌟 [신규 엔진] 페이롤 명세서 전용 캡처 및 갤러리 저장 로직 (하이엔드 4K 튜닝)
     async function pr_shareToInstagram() {
         const btn = document.getElementById('pr-share-btn');
         const originalHTML = btn.innerHTML;
@@ -6783,14 +6799,28 @@ function pr_setMode(mode) {
             // 💡 사진관(캡처 영역) 타겟팅: 명세서 박스 전체를 찰칵!
             const captureArea = document.getElementById('payroll-receipt');
 
+            // 🌟 [순간 포착 보정] 인스타 스토리에 예쁘게 담기도록 골드 테두리와 워터마크 장착
+            const originalBorder = captureArea.style.border;
+            captureArea.style.border = '1px solid rgba(212,175,55,0.4)';
+            
+            const watermark = document.createElement('div');
+            watermark.innerHTML = 'VERIFIED BY ALIGN MASTER SYSTEM';
+            watermark.style.cssText = 'text-align:center; font-family:"Montserrat", sans-serif; font-size:10px; color:rgba(212,175,55,0.4); letter-spacing:4px; margin-top:35px; font-weight:600; padding-bottom:10px;';
+            captureArea.appendChild(watermark);
+
+            // 🌟 [4K 렌더링 엔진]
             const canvas = await html2canvas(captureArea, {
-                scale: 3, // 고해상도 캡처
-                backgroundColor: '#050507', // 캡처 영역의 다크 배경 고정
+                scale: 4, // 🌟 고해상도 캡처
+                backgroundColor: '#050507', 
                 useCORS: true,
-                logging: false
+                allowTaint: true,
+                logging: false,
+                scrollY: -window.scrollY // 모바일 스크롤 위치에 따른 잘림 완벽 방어
             });
 
-            // 원래 상태로 스크롤 복구
+            // 원상 복구
+            captureArea.style.border = originalBorder;
+            captureArea.removeChild(watermark);
             scrollContainer.scrollTop = originalScroll;
 
             canvas.toBlob(async (blob) => {
@@ -6807,7 +6837,7 @@ function pr_setMode(mode) {
                 
                 a.click();
                 URL.revokeObjectURL(url);
-                if(typeof app !== 'undefined' && app.toast) app.toast("갤러리에 급여 명세서가 저장되었습니다. 📸");
+                if(typeof app !== 'undefined' && app.toast) app.toast("갤러리에 급여 명세서가 고화질로 저장되었습니다. 📸");
                 
                 btn.innerHTML = originalHTML;
                 btn.style.pointerEvents = 'auto';
@@ -6820,6 +6850,7 @@ function pr_setMode(mode) {
             btn.style.pointerEvents = 'auto';
         }
     }
+
 
       // 🌟 [추가] 동적 프로필 생성 시스템 (앱 내부에서 직원 추가)
         const savedData = localStorage.getItem('alignProfiles');
